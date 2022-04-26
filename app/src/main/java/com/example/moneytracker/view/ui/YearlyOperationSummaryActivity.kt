@@ -9,8 +9,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.math.abs
 
-class MainActivity : AppCompatActivity() {
-    // FIXME delete this code from here
+class YearlyOperationSummaryActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

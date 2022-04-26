@@ -29,7 +29,6 @@ class OperationAdapter(
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val curOperation = operations[position]
         holder.itemView.apply {
