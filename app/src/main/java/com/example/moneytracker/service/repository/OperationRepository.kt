@@ -18,7 +18,7 @@ class OperationRepository {
     }
 
     fun getOperationListInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation> {
-        return moneyTrackerApi.getOperationsByDateRange(startDate, endDate)
+        return moneyTrackerApi.getOperationListInRange(startDate, endDate)
     }
 
 //    fun addNewOperation()

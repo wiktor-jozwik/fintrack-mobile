@@ -11,67 +11,111 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Track your money"
-        app:layout_constraintBottom_toTopOf="@+id/tvIncomeText"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/glSubtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvIncomeText"
+        android:id="@+id/tvCurrentYear"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your total incomes in {current_year}:"
-        app:layout_constraintBottom_toTopOf="@+id/tvIncomeValue"
+        android:text="Current year {year} summary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSubtitle" />
+        app:layout_constraintTop_toTopOf="@+id/glSubtitle" />
 
     <TextView
-        android:id="@+id/tvIncomeValue"
+        android:id="@+id/tvIncomesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/tvOutcomeText"
+        android:layout_marginTop="50dp"
+        android:text="Incomes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvIncomeText" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentYear" />
 
     <TextView
-        android:id="@+id/tvOutcomeText"
+        android:id="@+id/tvIncomesValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your total outcomes in {current_year}:"
-        app:layout_constraintBottom_toTopOf="@+id/tvOutcomeValue"
+        android:text="{income}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvIncomeValue" />
+        app:layout_constraintTop_toBottomOf="@+id/tvIncomesText" />
 
     <TextView
-        android:id="@+id/tvOutcomeValue"
+        android:id="@+id/tvOutcomesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/btnAdd"
+        android:layout_marginTop="75dp"
+        android:text="Outcomes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOutcomeText" />
+        app:layout_constraintTop_toBottomOf="@+id/tvIncomesValue" />
+
+    <TextView
+        android:id="@+id/tvOutcomesValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="{outcome}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOutcomesText" />
+
+    <TextView
+        android:id="@+id/tvBalanceText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:text="Balance"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvOutcomesValue" />
+
+    <TextView
+        android:id="@+id/tvBalanceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="{balance}"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvBalanceText" />
 
     <Button
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnAddNew"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add new"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvOutcomeValue" />
-
+        app:layout_constraintTop_toBottomOf="@+id/tvBalanceValue" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline2"
+        android:id="@+id/glSubtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="100dp" />
+        app:layout_constraintGuide_begin="125dp" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/Outcomes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvOutcomesText,tvOutcomesValue" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/Incomes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvIncomesText,tvIncomesValue" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/Balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvBalanceValue,tvBalanceText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

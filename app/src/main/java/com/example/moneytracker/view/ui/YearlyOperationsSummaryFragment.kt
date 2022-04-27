@@ -1,7 +1,6 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.moneytracker.R
 import com.example.moneytracker.viewmodel.YearlyOperationsSummaryViewModel
 import kotlinx.android.synthetic.main.fragment_summary.*
-import java.util.*
-import kotlin.math.abs
+import java.time.LocalDateTime
 
 class YearlyOperationsSummaryFragment: Fragment() {
     override fun onCreateView(
@@ -24,17 +22,13 @@ class YearlyOperationsSummaryFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val mainViewModel = YearlyOperationsSummaryViewModel()
+        val yearlyOperationsSummaryViewModel = YearlyOperationsSummaryViewModel()
 
-        val (totalIncome, totalOutcome) = mainViewModel.calculateYearlyIncomeAndOutcome()
+        val (totalIncome, totalOutcome, balance) = yearlyOperationsSummaryViewModel.calculateYearlyIncomeAndOutcome()
 
-        Log.i("total", totalIncome.toString())
-        Log.i("total", totalOutcome.toString())
-
-        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-        tvIncomeText.text = "Your total incomes in ${currentYear}:"
-        tvIncomeValue.text = totalIncome.toString()
-        tvOutcomeText.text = "Your total outcomes in ${currentYear}:"
-        tvOutcomeValue.text = abs(totalOutcome).toString()
+        tvCurrentYear.text = "Current year ${LocalDateTime.now().year} summary"
+        tvIncomesValue.text = totalIncome.toString()
+        tvOutcomesValue.text = totalOutcome.toString()
+        tvBalanceValue.text = balance.toString()
     }
 }

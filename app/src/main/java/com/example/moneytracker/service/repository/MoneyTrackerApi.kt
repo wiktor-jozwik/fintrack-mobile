@@ -1,20 +1,16 @@
 package com.example.moneytracker.service.repository
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
+import com.example.moneytracker.service.model.CurrencyEnum
 import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.service.model.OperationCategory
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.util.*
 
 class MoneyTrackerApi: IMoneyTrackerApi {
     private fun fetchOperations(): List<Operation> {
         val c1 = OperationCategory("Kategoria1")
-        val op1 = Operation("Przelew", -1.55, c1, LocalDateTime.parse("2022-01-06T21:30:10"))
+        val op1 = Operation("Przelew", -10.55, c1, LocalDateTime.parse("2022-01-06T21:30:10"), CurrencyEnum.EUR)
 
-        val op2 = Operation("Przelew2", 12.55, c1, LocalDateTime.parse("2022-03-06T14:30:55"))
+        val op2 = Operation("Przelew2", 50.56, c1, LocalDateTime.parse("2022-03-06T14:30:55"), CurrencyEnum.USD)
 
         val op3 = Operation("Przelew3", 25.66, c1, LocalDateTime.parse("2021-12-06T16:30:33"))
 
@@ -33,11 +29,11 @@ class MoneyTrackerApi: IMoneyTrackerApi {
         return fetchOperations()
     }
 
-    override fun getOperationsByDateRange(
+    override fun getOperationListInRange(
         startDate: LocalDateTime,
         endDate: LocalDateTime
     ): List<Operation> {
-        val ops = fetchOperations()
+        val ops = getOperationList()
 
         return ops.filter {
             it.date > startDate && it.date <= endDate

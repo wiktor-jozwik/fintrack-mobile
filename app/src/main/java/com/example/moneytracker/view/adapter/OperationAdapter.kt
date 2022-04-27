@@ -1,10 +1,8 @@
 package com.example.moneytracker.view.adapter
 
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneytracker.R
 import com.example.moneytracker.service.model.Operation
@@ -34,7 +32,7 @@ class OperationAdapter(
         holder.itemView.apply {
             tvName.text = curOperation.name
             tvCategory.text = curOperation.category.name
-            tvMoneyAmount.text = curOperation.moneyAmount.toString()
+            tvMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency}"
             tvDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
         }
     }

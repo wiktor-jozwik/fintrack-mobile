@@ -6,5 +6,5 @@ import java.time.LocalDateTime
 interface IMoneyTrackerApi {
     fun getOperationList(): List<Operation>
 
-    fun getOperationsByDateRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation>
+    fun getOperationListInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation>
 }
