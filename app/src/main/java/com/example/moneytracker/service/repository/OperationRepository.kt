@@ -12,7 +12,7 @@ class OperationRepository {
 
         val data: MutableLiveData<List<Operation>> = MutableLiveData<List<Operation>>()
 
-        data.value = moneyTrackerApi.getOperationList()
+        data.value = moneyTrackerApi.getOperationList().sortedByDescending { it.date }
 
         return data
     }
@@ -20,4 +20,6 @@ class OperationRepository {
     fun getOperationListInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation> {
         return moneyTrackerApi.getOperationsByDateRange(startDate, endDate)
     }
+
+//    fun addNewOperation()
 }

@@ -8,7 +8,7 @@ import com.example.moneytracker.service.repository.OperationRepository
 import java.time.LocalDateTime
 import java.util.*
 
-class YearlyOperationSummaryViewModel: ViewModel() {
+class YearlyOperationsSummaryViewModel: ViewModel() {
     private val operationRepository: OperationRepository = OperationRepository()
 
     fun calculateYearlyIncomeAndOutcome(): Pair<Double, Double> {

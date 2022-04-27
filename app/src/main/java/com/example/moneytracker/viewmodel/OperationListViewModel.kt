@@ -9,6 +9,6 @@ class OperationListViewModel: ViewModel() {
     private val operationRepository: OperationRepository = OperationRepository()
 
     fun getOperationListObservable(): LiveData<List<Operation>> {
-        return operationRepository.getOperationList();
+        return operationRepository.getOperationList()
     }
 }
