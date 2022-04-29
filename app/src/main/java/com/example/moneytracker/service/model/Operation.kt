@@ -7,5 +7,5 @@ data class Operation(
     val moneyAmount: Double,
     val category: OperationCategory,
     val date: LocalDateTime,
-    val currency: CurrencyEnum = CurrencyEnum.PLN,
+    val currency: Currency = Currency("PLN", "zł"),
 )

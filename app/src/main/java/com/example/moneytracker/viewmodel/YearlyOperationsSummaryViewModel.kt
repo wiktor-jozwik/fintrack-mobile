@@ -1,15 +1,15 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.CurrencyEnum
+import com.example.moneytracker.service.model.OperationCategoryType
+import com.example.moneytracker.service.repository.CurrencyRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
 class YearlyOperationsSummaryViewModel: ViewModel() {
     private val operationRepository: OperationRepository = OperationRepository()
-    private val EURO_COST = 4.5516
-    private val DOLLAR_COST = 4.2324
+    private val currencyRepository: CurrencyRepository = CurrencyRepository()
     private val MONEY_FACTOR = 100
     private val CURRENCY_FACTOR = 10000
 
@@ -18,23 +18,21 @@ class YearlyOperationsSummaryViewModel: ViewModel() {
         val startDate = LocalDateTime.parse("${year}-01-01T00:00:01")
         val endDate = LocalDateTime.parse("${year}-12-31T23:59:59")
 
-        val operationsYearly = operationRepository.getOperationListInRange(startDate, endDate)
+        val operationsYearly = operationRepository.getAllOperationsInRange(startDate, endDate)
 
         var totalIncome = 0.0
         var totalOutcome = 0.0
 
         operationsYearly.forEach {
-            var currencyPrice = 1.0
-            if (it.currency == CurrencyEnum.EUR) currencyPrice = EURO_COST
-            if (it.currency == CurrencyEnum.USD) currencyPrice = DOLLAR_COST
+            val currencyPrice = currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
-            if (it.moneyAmount > 0) {
+            if (it.category.type == OperationCategoryType.INCOME) {
                 totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
             } else {
                 totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
             }
         }
-        val balance = totalIncome + totalOutcome
+        val balance = totalIncome - totalOutcome
 
         return Triple(
             roundMoney(totalIncome),

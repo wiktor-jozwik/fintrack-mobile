@@ -5,32 +5,32 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/btnOperationList"
+        android:id="@+id/buttonListOperations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Operation List"
-        app:layout_constraintEnd_toStartOf="@+id/btnYearlySummary"
+        app:layout_constraintEnd_toStartOf="@+id/buttonShowYearlySummary"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btnYearlySummary"
+        android:id="@+id/buttonShowYearlySummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Yearly Summary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/btnOperationList"
+        app:layout_constraintStart_toEndOf="@+id/buttonListOperations"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
-        android:id="@+id/flFragment"
+        android:id="@+id/frameLayoutFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnOperationList" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonListOperations" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

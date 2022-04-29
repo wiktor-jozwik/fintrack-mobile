@@ -30,10 +30,10 @@ class OperationAdapter(
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val curOperation = operations[position]
         holder.itemView.apply {
-            tvName.text = curOperation.name
-            tvCategory.text = curOperation.category.name
-            tvMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency}"
-            tvDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+            textName.text = curOperation.name
+            textCategory.text = curOperation.category.name
+            textMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency.symbol}"
+            textDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
         }
     }
 

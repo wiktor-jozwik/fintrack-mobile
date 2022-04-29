@@ -11,24 +11,16 @@ import com.example.moneytracker.view.adapter.OperationAdapter
 import com.example.moneytracker.viewmodel.OperationListViewModel
 import kotlinx.android.synthetic.main.fragment_operation_list.*
 
-class OperationListFragment : Fragment() {
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_operation_list, container, false)
-    }
-
+class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val operationListViewModel = OperationListViewModel()
 
-        operationListViewModel.getOperationListObservable().observe(viewLifecycleOwner) {
-            rvOperationItems.adapter = OperationAdapter(it)
+        operationListViewModel.getAllOperationsObservable().observe(viewLifecycleOwner) {
+            recyclerViewOperationItems.adapter = OperationAdapter(it)
         }
 
-        rvOperationItems.layoutManager = LinearLayoutManager(activity)
+        recyclerViewOperationItems.layoutManager = LinearLayoutManager(activity)
     }
 }

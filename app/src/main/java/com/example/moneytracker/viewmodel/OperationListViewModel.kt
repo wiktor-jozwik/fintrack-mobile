@@ -8,7 +8,7 @@ import com.example.moneytracker.service.repository.OperationRepository
 class OperationListViewModel: ViewModel() {
     private val operationRepository: OperationRepository = OperationRepository()
 
-    fun getOperationListObservable(): LiveData<List<Operation>> {
-        return operationRepository.getOperationList()
+    fun getAllOperationsObservable(): LiveData<List<Operation>> {
+        return operationRepository.getAllOperations()
     }
 }

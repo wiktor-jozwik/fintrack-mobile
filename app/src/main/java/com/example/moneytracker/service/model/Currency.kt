@@ -1,6 +1,6 @@
 package com.example.moneytracker.service.model
 
-data class OperationCategory (
+data class Currency (
     val name: String,
-    val type: OperationCategoryType
+    val symbol: String
 )

@@ -8,18 +8,19 @@ import java.time.LocalDateTime
 class OperationRepository {
     private val moneyTrackerApi: IMoneyTrackerApi = MoneyTrackerApi()
 
-    fun getOperationList(): LiveData<List<Operation>> {
-
+    fun getAllOperations(): LiveData<List<Operation>> {
         val data: MutableLiveData<List<Operation>> = MutableLiveData<List<Operation>>()
 
-        data.value = moneyTrackerApi.getOperationList().sortedByDescending { it.date }
+        data.value = moneyTrackerApi.getAllOperations().sortedByDescending { it.date }
 
         return data
     }
 
-    fun getOperationListInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation> {
-        return moneyTrackerApi.getOperationListInRange(startDate, endDate)
+    fun getAllOperationsInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation> {
+        return moneyTrackerApi.getAllOperationsInRange(startDate, endDate)
     }
 
-//    fun addNewOperation()
+    fun addNewOperation(name: String, moneyAmount: Double, category: String, currency: String) {
+        moneyTrackerApi.saveOperation(name, moneyAmount, category, currency)
+    }
 }
