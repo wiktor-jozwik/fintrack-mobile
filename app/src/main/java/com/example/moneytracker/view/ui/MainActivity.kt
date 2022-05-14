@@ -1,11 +1,9 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
-import android.text.TextUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.R
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_summary.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

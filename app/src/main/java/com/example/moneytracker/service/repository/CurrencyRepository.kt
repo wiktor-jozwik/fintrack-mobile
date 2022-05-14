@@ -4,11 +4,10 @@ import com.example.moneytracker.service.model.Currency
 import java.time.LocalDateTime
 
 class CurrencyRepository {
-    private val moneyTrackerApi: IMoneyTrackerApi = MoneyTrackerApi()
     private val nbpApi: INbpApi = NbpApi()
 
-    fun getAllCurrencies(): List<Currency> {
-        return moneyTrackerApi.getAllCurrencies()
+    suspend fun getAllCurrencies(): List<Currency> {
+        return MoneyTrackerApi.api.getAllCurrencies()
     }
 
     fun getPriceOfCurrencyAtDay(currency: String, date: LocalDateTime): Double {

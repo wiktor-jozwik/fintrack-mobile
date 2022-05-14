@@ -17,31 +17,50 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
-    <EditText
-        android:id="@+id/inputName"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputNameContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="Operation name"
+        app:helperText="Required"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSubtitle"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textSubtitle" >
 
-    <EditText
-        android:id="@+id/inputMoneyAmount"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputNameText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Operation name">
+
+        </com.google.android.material.textfield.TextInputEditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/inputMoneyAmountContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        android:hint="Money Amount"
+        app:helperText="Required"
+        app:helperTextTextColor="@color/red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputName"
-        android:inputType="numberDecimal" />
+        app:layout_constraintTop_toBottomOf="@+id/inputNameContainer" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputMoneyAmountText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Money Amount"
+            android:inputType="numberDecimal" >
+        </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Spinner
         android:id="@+id/inputCategory"
@@ -53,7 +72,7 @@
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputMoneyAmount"
+        app:layout_constraintTop_toBottomOf="@+id/inputMoneyAmountContainer"
         />
 
     <Spinner

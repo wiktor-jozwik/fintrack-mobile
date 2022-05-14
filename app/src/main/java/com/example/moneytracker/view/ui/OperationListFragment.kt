@@ -1,9 +1,7 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
@@ -17,7 +15,7 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
 
         val operationListViewModel = OperationListViewModel()
 
-        operationListViewModel.getAllOperationsObservable().observe(viewLifecycleOwner) {
+        operationListViewModel.getAllOperations().observe(viewLifecycleOwner) {
             recyclerViewOperationItems.adapter = OperationAdapter(it)
         }
 

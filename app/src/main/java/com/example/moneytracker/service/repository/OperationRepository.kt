@@ -1,26 +1,19 @@
 package com.example.moneytracker.service.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.example.moneytracker.service.model.Operation
-import java.time.LocalDateTime
+import com.example.moneytracker.service.model.OperationCreateInput
+import java.time.LocalDate
 
 class OperationRepository {
-    private val moneyTrackerApi: IMoneyTrackerApi = MoneyTrackerApi()
-
-    fun getAllOperations(): LiveData<List<Operation>> {
-        val data: MutableLiveData<List<Operation>> = MutableLiveData<List<Operation>>()
-
-        data.value = moneyTrackerApi.getAllOperations().sortedByDescending { it.date }
-
-        return data
+    suspend fun getAllOperations(): List<Operation> {
+        return MoneyTrackerApi.api.getAllOperations().sortedByDescending { it.date }
     }
 
-    fun getAllOperationsInRange(startDate: LocalDateTime, endDate: LocalDateTime): List<Operation> {
-        return moneyTrackerApi.getAllOperationsInRange(startDate, endDate)
+    suspend fun getAllOperationsInRanges(startDate: LocalDate, endDate: LocalDate): List<Operation> {
+        return MoneyTrackerApi.api.getAllOperationsInRange(startDate, endDate)
     }
 
-    fun addNewOperation(name: String, moneyAmount: Double, category: String, currency: String) {
-        moneyTrackerApi.saveOperation(name, moneyAmount, category, currency)
+    suspend fun addNewOperation(operationCreateInput: OperationCreateInput): Operation {
+        return MoneyTrackerApi.api.saveOperation(operationCreateInput)
     }
 }
