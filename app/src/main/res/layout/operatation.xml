@@ -17,7 +17,7 @@
             android:layout_margin="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:text="Przelew"
+            android:text="{name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +28,7 @@
             android:layout_margin="8dp"
             android:layout_marginBottom="16dp"
             android:layout_marginStart="16dp"
-            android:text="Transport"
+            android:text="{category}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -39,7 +39,7 @@
             android:layout_margin="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:text="15 PLN"
+            android:text="{money}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +50,7 @@
             android:layout_margin="8dp"
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
-            android:text="2022-02-14 15:12:23"
+            android:text="{date}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
