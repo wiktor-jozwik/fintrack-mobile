@@ -3,12 +3,16 @@ package com.example.moneytracker.view.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.R
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.moneytracker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val yearlyOperationsSummaryFragment = YearlyOperationsSummaryFragment()
         val operationListFragment = OperationListFragment()
@@ -18,14 +22,14 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
-        buttonListOperations.setOnClickListener {
+        binding.buttonListOperations.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, operationListFragment)
                 commit()
             }
         }
 
-        buttonShowYearlySummary.setOnClickListener {
+        binding.buttonShowYearlySummary.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
                 commit()

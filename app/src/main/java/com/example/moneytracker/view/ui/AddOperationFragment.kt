@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import com.example.moneytracker.R
+import com.example.moneytracker.databinding.ActivityMainBinding
 import com.example.moneytracker.databinding.FragmentAddOperationBinding
 import com.example.moneytracker.viewmodel.AddOperationViewModel
-import kotlinx.android.synthetic.main.fragment_add_operation.*
 
 class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     private var _binding: FragmentAddOperationBinding? = null
@@ -29,6 +29,11 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null;
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addOperationViewModel = AddOperationViewModel()
@@ -38,14 +43,9 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
 
         fulfillSpinners()
 
-        buttonSave.setOnClickListener {
+        binding.buttonSave.setOnClickListener {
             submitForm()
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null;
     }
 
     private fun fulfillSpinners() {
@@ -60,7 +60,7 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
                 android.R.layout.simple_spinner_item,
                 currenciesNames
             )
-            inputCurrency.adapter = currenciesAdapter
+            binding.inputCurrency.adapter = currenciesAdapter
         }
 
         categories.observe(viewLifecycleOwner) {
@@ -71,7 +71,7 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
                 android.R.layout.simple_spinner_item,
                 categoriesNames
             )
-            inputCategory.adapter = categoriesAdapter
+            binding.inputCategory.adapter = categoriesAdapter
         }
     }
 
@@ -123,10 +123,10 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
 
     private fun validForm() {
         val operation = addOperationViewModel.addNewOperation(
-            inputNameText.text.toString(),
-            inputMoneyAmountText.text.toString().toDouble(),
-            inputCategory.selectedItem.toString(),
-            inputCurrency.selectedItem.toString()
+            binding.inputNameText.text.toString(),
+            binding.inputMoneyAmountText.text.toString().toDouble(),
+            binding.inputCategory.selectedItem.toString(),
+            binding.inputCurrency.selectedItem.toString()
         )
 
         operation.observe(viewLifecycleOwner) {

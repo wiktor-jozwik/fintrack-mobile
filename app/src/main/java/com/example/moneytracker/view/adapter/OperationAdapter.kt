@@ -5,19 +5,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneytracker.R
+import com.example.moneytracker.databinding.OperatationBinding
 import com.example.moneytracker.service.model.Operation
-import kotlinx.android.synthetic.main.operatation.view.*
 import java.time.format.DateTimeFormatter
 
 class OperationAdapter(
         private val operations: List<Operation>
     ) : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
-    class OperationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    private lateinit var binding: OperatationBinding
+
+    inner class OperationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): OperationViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        binding = OperatationBinding.inflate(inflater)
+
         return OperationViewHolder(
             LayoutInflater.from(parent.context).inflate(
                 R.layout.operatation,
@@ -30,16 +35,14 @@ class OperationAdapter(
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val curOperation = operations[position]
         holder.itemView.apply {
-            textName.text = curOperation.name
-            textCategory.text = curOperation.category.name
-            textMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency.symbol}"
-            textDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+            binding.textName.text = curOperation.name
+            binding.textCategory.text = curOperation.category.name
+            binding.textMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency.symbol}"
+            binding.textDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
         }
     }
 
     override fun getItemCount(): Int {
         return operations.size
     }
-
-
 }
