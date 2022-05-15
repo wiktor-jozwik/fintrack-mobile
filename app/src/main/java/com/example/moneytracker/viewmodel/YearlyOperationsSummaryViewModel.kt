@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Operation
@@ -29,7 +28,6 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
 
         val (totalIncome, totalOutcome) = calculateIncomeAndOutcome(yearlyOperations)
         val balance = totalIncome - totalOutcome
-        Log.d("MT", balance.toString())
 
         yearlyCalculationResponse.value = Triple(
             roundMoney(totalIncome),

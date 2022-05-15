@@ -12,8 +12,6 @@ interface MoneyTrackerApiInterface {
     @GET("operations")
     suspend fun getAllOperations(): List<Operation>
 
-//    fun getAllOperations(): List<Operation>
-
     @GET("operations")
     suspend fun getAllOperationsInRange(
         @Query("start_date") startDate: LocalDate,
@@ -23,13 +21,12 @@ interface MoneyTrackerApiInterface {
     @GET("categories")
     suspend fun getAllCategories(): List<OperationCategory>
 
-//    fun getAllCategories(): List<OperationCategory>
-
     @GET("currencies")
     suspend fun getAllCurrencies(): List<Currency>
 
     @POST("operations")
-    suspend fun saveOperation(@Body operation: OperationCreateInput) : Operation
+    suspend fun saveOperation(@Body operation: OperationCreateInput): Operation
 
-    fun saveCategory(category: OperationCategory)
+    @POST("categories")
+    suspend fun saveCategory(@Body category: OperationCategory): OperationCategory
 }

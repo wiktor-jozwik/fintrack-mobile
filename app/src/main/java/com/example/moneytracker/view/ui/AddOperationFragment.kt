@@ -15,10 +15,12 @@ import com.example.moneytracker.databinding.FragmentAddOperationBinding
 import com.example.moneytracker.viewmodel.AddOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     private val addOperationViewModel: AddOperationViewModel by viewModels()
+    @Inject lateinit var operationListFragment: OperationListFragment
 
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
@@ -103,19 +105,17 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validOperationName(): String? {
-        val nameText = binding.inputNameText.text.toString()
-
-        if (nameText.isEmpty()){
+        if (binding.inputNameText.text.toString().isEmpty()){
             return "Please provide name of operation."
         }
         return null
     }
 
     private fun submitForm() {
-        val validMoneyAmount = binding.inputMoneyAmountContainer.helperText == null
-        val validName = binding.inputNameContainer.helperText == null
+        val validMoneyAmount = binding.inputMoneyAmountText.text?.isNotEmpty()
+        val validName = binding.inputNameText.text?.isNotEmpty()
 
-        if (validMoneyAmount && validName) {
+        if (validMoneyAmount == true && validName == true) {
             validForm()
         } else {
             invalidForm()
@@ -130,14 +130,14 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
                 binding.inputCategory.selectedItem.toString(),
                 binding.inputCurrency.selectedItem.toString()
             ).observe(viewLifecycleOwner) {
+                binding.inputNameText.text = null
+                binding.inputMoneyAmountText.text = null
                 switchToOperationList()
             }
         }
     }
 
     private fun switchToOperationList() {
-        val operationListFragment = OperationListFragment()
-
         parentFragmentManager.beginTransaction().apply {
             replace(R.id.frameLayoutFragment, operationListFragment)
             commit()
@@ -145,8 +145,9 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun invalidForm() {
-//        var message = ""
-//        if(binding.inputNameContainer.helperText)
+        binding.inputNameContainer.helperText = validOperationName()
+        binding.inputMoneyAmountContainer.helperText = validMoneyAmount()
+
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
             .setMessage("Please provide all fields.")

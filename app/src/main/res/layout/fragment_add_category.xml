@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
@@ -9,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="Add new income or outcome"
+        android:text="Add new category"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,58 +33,34 @@
             android:id="@+id/inputNameText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Operation name">
+            android:hint="Category name">
 
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/inputMoneyAmountContainer"
+
+    <RadioGroup
+        android:id="@+id/inputCategoryType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginEnd="30dp"
-        app:helperTextTextColor="@color/red"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputNameContainer" >
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputMoneyAmountText"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameContainer">
+        <RadioButton
+            android:id="@+id/radioButtonOutcome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Money Amount"
-            android:inputType="numberDecimal" >
-        </com.google.android.material.textfield.TextInputEditText>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Spinner
-        android:id="@+id/inputCategory"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputMoneyAmountContainer"
-        />
-
-    <Spinner
-        android:id="@+id/inputCurrency"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputCategory"
-        />
+            android:text="Outcome"
+            android:checked = "true"/>
+        <RadioButton
+            android:id="@+id/radioButtonIncome"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Income"/>
+    </RadioGroup>
 
     <Button
         android:id="@+id/buttonSave"
@@ -93,7 +70,7 @@
         android:layout_marginEnd="30dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputCurrency"
+        app:layout_constraintTop_toBottomOf="@id/inputCategoryType"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
