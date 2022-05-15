@@ -12,10 +12,17 @@ class OperationListViewModel @Inject constructor(
     private val operationRepository: OperationRepository
 ) : ViewModel() {
     private val operationsResponse: MutableLiveData<List<Operation>> = MutableLiveData()
+    private val deleteResponse: MutableLiveData<Operation> = MutableLiveData()
 
     suspend fun getAllOperations(): MutableLiveData<List<Operation>> {
         operationsResponse.value = operationRepository.getAllOperations()
 
         return operationsResponse
+    }
+
+    suspend fun deleteOperation(operationId: Int): MutableLiveData<Operation> {
+        deleteResponse.value = operationRepository.deleteOperation(operationId)
+
+        return deleteResponse
     }
 }

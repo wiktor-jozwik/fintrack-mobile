@@ -16,4 +16,8 @@ class OperationRepository {
     suspend fun addNewOperation(operationCreateInput: OperationCreateInput): Operation {
         return MoneyTrackerApi.api.saveOperation(operationCreateInput)
     }
+
+    suspend fun deleteOperation(operationId: Int): Operation {
+        return MoneyTrackerApi.api.deleteOperation(operationId)
+    }
 }

@@ -27,6 +27,9 @@ interface MoneyTrackerApiInterface {
     @POST("operations")
     suspend fun saveOperation(@Body operation: OperationCreateInput): Operation
 
+    @DELETE("operations/{id}")
+    suspend fun deleteOperation(@Path("id") operationId: Int): Operation
+
     @POST("categories")
     suspend fun saveCategory(@Body category: OperationCategory): OperationCategory
 }

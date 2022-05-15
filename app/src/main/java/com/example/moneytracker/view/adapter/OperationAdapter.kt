@@ -7,10 +7,30 @@ import com.example.moneytracker.databinding.OperatationBinding
 import com.example.moneytracker.service.model.Operation
 import java.time.format.DateTimeFormatter
 
+
 class OperationAdapter(
-        private val operations: List<Operation>
+        operations: List<Operation>,
+        private val onClickListener: OnClickListener
     ) : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
+    private var operationsList: MutableList<Operation> = operations.toMutableList()
+
     inner class OperationViewHolder(val binding: OperatationBinding) : RecyclerView.ViewHolder(binding.root)
+    class OnClickListener(val clickListener: (position: Int) -> Unit) {
+        fun onClick(position: Int) {
+            clickListener(position)
+        }
+    }
+
+    internal fun deleteOperation(operationId: Int) {
+        val position = operationsList.map {
+            it.id
+        }.indexOf(operationId)
+
+        if (position != -1) {
+            operationsList.removeAt(position)
+            notifyItemRemoved(position)
+        }
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -21,17 +41,21 @@ class OperationAdapter(
     }
 
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
-        val curOperation = operations[position]
+        val currentOperation = operationsList[position]
 
         holder.binding.apply {
-            textName.text = curOperation.name
-            textCategory.text = curOperation.category.name
-            textMoneyAmount.text = "${curOperation.moneyAmount} ${curOperation.currency.symbol}"
-            textDate.text = curOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+            id.text = currentOperation.id.toString()
+            textName.text = currentOperation.name
+            textCategory.text = currentOperation.category.name
+            textMoneyAmount.text = "${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
+            textDate.text = currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+            buttonDelete.setOnClickListener {
+                onClickListener.onClick(currentOperation.id)
+            }
         }
     }
 
     override fun getItemCount(): Int {
-        return operations.size
+        return operationsList.size
     }
 }

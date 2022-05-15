@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,10 +42,34 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
 
         viewLifecycleOwner.lifecycleScope.launch {
             operationListViewModel.getAllOperations().observe(viewLifecycleOwner) {
-                binding.recyclerViewOperationItems.adapter = OperationAdapter(it)
+                binding.recyclerViewOperationItems.adapter = OperationAdapter(
+                    it,
+                    OperationAdapter.OnClickListener { operationId ->
+                        deleteOperation(operationId,
+                            binding.recyclerViewOperationItems.adapter as OperationAdapter
+                        )
+                    }
+                )
             }
         }
 
         binding.recyclerViewOperationItems.layoutManager = LinearLayoutManager(activity)
+    }
+
+    private fun deleteOperation(operationId: Int, adapter: OperationAdapter) {
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage("Are you sure?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                viewLifecycleOwner.lifecycleScope.launch {
+                    operationListViewModel.deleteOperation(operationId)
+                    adapter.deleteOperation(operationId)
+                }
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 }
