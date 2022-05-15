@@ -3,22 +3,25 @@ package com.example.moneytracker.view.ui
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.ActivityMainBinding
 import com.example.moneytracker.databinding.FragmentAddOperationBinding
 import com.example.moneytracker.viewmodel.AddOperationViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
+    private val addOperationViewModel: AddOperationViewModel by viewModels()
+
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
-
-    private lateinit var addOperationViewModel: AddOperationViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,7 +39,6 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addOperationViewModel = AddOperationViewModel()
 
         moneyAmountFocusListener()
         operationNameFocusListener()
@@ -49,29 +51,28 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun fulfillSpinners() {
-        val currencies = addOperationViewModel.getAllCurrencies()
-        val categories = addOperationViewModel.getAllCategories()
+        viewLifecycleOwner.lifecycleScope.launch {
+            addOperationViewModel.getAllCurrencies().observe(viewLifecycleOwner) {
+                val currenciesNames = it.map { currency -> currency.name }
 
-        currencies.observe(viewLifecycleOwner) {
-            val currenciesNames = it.map { currency -> currency.name }
+                val currenciesAdapter = ArrayAdapter(
+                    activity as Context,
+                    android.R.layout.simple_spinner_item,
+                    currenciesNames
+                )
+                binding.inputCurrency.adapter = currenciesAdapter
+            }
 
-            val currenciesAdapter = ArrayAdapter(
-                activity as Context,
-                android.R.layout.simple_spinner_item,
-                currenciesNames
-            )
-            binding.inputCurrency.adapter = currenciesAdapter
-        }
+            addOperationViewModel.getAllCategories().observe(viewLifecycleOwner) {
+                val categoriesNames = it.map { category -> category.name }
 
-        categories.observe(viewLifecycleOwner) {
-            val categoriesNames = it.map { category -> category.name }
-
-            val categoriesAdapter = ArrayAdapter(
-                activity as Context,
-                android.R.layout.simple_spinner_item,
-                categoriesNames
-            )
-            binding.inputCategory.adapter = categoriesAdapter
+                val categoriesAdapter = ArrayAdapter(
+                    activity as Context,
+                    android.R.layout.simple_spinner_item,
+                    categoriesNames
+                )
+                binding.inputCategory.adapter = categoriesAdapter
+            }
         }
     }
 
@@ -122,17 +123,15 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validForm() {
-        val operation = addOperationViewModel.addNewOperation(
-            binding.inputNameText.text.toString(),
-            binding.inputMoneyAmountText.text.toString().toDouble(),
-            binding.inputCategory.selectedItem.toString(),
-            binding.inputCurrency.selectedItem.toString()
-        )
-
-        operation.observe(viewLifecycleOwner) {
-            Log.d("MT", operation.toString())
-
-            switchToOperationList()
+        viewLifecycleOwner.lifecycleScope.launch {
+            addOperationViewModel.addNewOperation(
+                binding.inputNameText.text.toString(),
+                binding.inputMoneyAmountText.text.toString().toDouble(),
+                binding.inputCategory.selectedItem.toString(),
+                binding.inputCurrency.selectedItem.toString()
+            ).observe(viewLifecycleOwner) {
+                switchToOperationList()
+            }
         }
     }
 

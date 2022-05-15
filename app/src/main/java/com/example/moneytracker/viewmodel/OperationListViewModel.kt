@@ -1,24 +1,21 @@
 package com.example.moneytracker.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.service.repository.OperationRepository
-import kotlinx.coroutines.launch
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class OperationListViewModel: ViewModel() {
-    private val operationRepository: OperationRepository = OperationRepository()
-
+@HiltViewModel
+class OperationListViewModel @Inject constructor(
+    private val operationRepository: OperationRepository
+) : ViewModel() {
     private val operationsResponse: MutableLiveData<List<Operation>> = MutableLiveData()
 
-    fun getAllOperations(): LiveData<List<Operation>> {
-        viewModelScope.launch {
-            val response = operationRepository.getAllOperations()
+    suspend fun getAllOperations(): MutableLiveData<List<Operation>> {
+        operationsResponse.value = operationRepository.getAllOperations()
 
-            operationsResponse.value = response
-        }
         return operationsResponse
     }
 }
