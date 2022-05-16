@@ -10,17 +10,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentOperationListBinding
-import com.example.moneytracker.view.adapter.OperationListAdapter
-import com.example.moneytracker.viewmodel.OperationListViewModel
+import com.example.moneytracker.databinding.FragmentCategoryListBinding
+import com.example.moneytracker.view.adapter.CategoryListAdapter
+import com.example.moneytracker.viewmodel.CategoryListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
-    private val operationListViewModel: OperationListViewModel by viewModels()
+class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
+    private val categoryListViewModel: CategoryListViewModel by viewModels()
 
-    private var _binding: FragmentOperationListBinding? = null
+    private var _binding: FragmentCategoryListBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -28,7 +28,7 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOperationListBinding.inflate(inflater, container, false)
+        _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -41,29 +41,29 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            operationListViewModel.getAllOperations().observe(viewLifecycleOwner) {
-                binding.recyclerViewOperationItems.adapter = OperationListAdapter(
+            categoryListViewModel.getAllCategories().observe(viewLifecycleOwner) {
+                binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
                     it,
-                    OperationListAdapter.OnClickListener { operationId ->
-                        deleteOperation(operationId,
-                            binding.recyclerViewOperationItems.adapter as OperationListAdapter
+                    CategoryListAdapter.OnClickListener { categoryId ->
+                        deleteCategory(categoryId,
+                            binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
                         )
                     }
                 )
             }
         }
 
-        binding.recyclerViewOperationItems.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerViewCategoryItems.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun deleteOperation(operationId: Int, adapter: OperationListAdapter) {
+    private fun deleteCategory(categoryId: Int, adapter: CategoryListAdapter) {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage("Are you sure?")
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    operationListViewModel.deleteOperation(operationId)
-                    adapter.deleteOperation(operationId)
+                    categoryListViewModel.deleteOperation(categoryId)
+                    adapter.deleteCategory(categoryId)
                 }
             }
             .setNegativeButton("No") { dialog, _ ->

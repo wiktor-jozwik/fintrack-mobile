@@ -1,6 +1,6 @@
 package com.example.moneytracker.service.model
 
-enum class OperationCategoryType {
+enum class CategoryType {
     INCOME,
     OUTCOME
 }

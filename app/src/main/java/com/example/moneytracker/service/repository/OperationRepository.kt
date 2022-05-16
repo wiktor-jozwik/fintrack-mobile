@@ -1,7 +1,7 @@
 package com.example.moneytracker.service.repository
 
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.OperationCreateInput
+import com.example.moneytracker.service.model.create_inputs.OperationCreateInput
 import java.time.LocalDate
 
 class OperationRepository {

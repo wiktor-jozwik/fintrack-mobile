@@ -1,9 +1,6 @@
 package com.example.moneytracker.modules
 
-import com.example.moneytracker.view.ui.AddCategoryFragment
-import com.example.moneytracker.view.ui.AddOperationFragment
-import com.example.moneytracker.view.ui.OperationListFragment
-import com.example.moneytracker.view.ui.YearlyOperationsSummaryFragment
+import com.example.moneytracker.view.ui.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,4 +22,7 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideOperationListFragment() = OperationListFragment()
+    @Singleton
+    @Provides
+    fun provideOperationCategoryListFragment() = CategoryListFragment()
 }

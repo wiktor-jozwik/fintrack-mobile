@@ -20,7 +20,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     private val addOperationViewModel: AddOperationViewModel by viewModels()
-    @Inject lateinit var operationListFragment: OperationListFragment
+    @Inject lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
 
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
@@ -132,14 +132,14 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
             ).observe(viewLifecycleOwner) {
                 binding.inputNameText.text = null
                 binding.inputMoneyAmountText.text = null
-                switchToOperationList()
+                switchToYearlySummary()
             }
         }
     }
 
-    private fun switchToOperationList() {
+    private fun switchToYearlySummary() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, operationListFragment)
+            replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
     }

@@ -8,10 +8,10 @@ import com.example.moneytracker.service.model.Operation
 import java.time.format.DateTimeFormatter
 
 
-class OperationAdapter(
+class OperationListAdapter(
         operations: List<Operation>,
         private val onClickListener: OnClickListener
-    ) : RecyclerView.Adapter<OperationAdapter.OperationViewHolder>() {
+    ) : RecyclerView.Adapter<OperationListAdapter.OperationViewHolder>() {
     private var operationsList: MutableList<Operation> = operations.toMutableList()
 
     inner class OperationViewHolder(val binding: OperatationBinding) : RecyclerView.ViewHolder(binding.root)

@@ -3,24 +3,22 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.OperationCategory
-import com.example.moneytracker.service.model.OperationCategoryType
-import com.example.moneytracker.service.model.OperationCreateInput
-import com.example.moneytracker.service.repository.OperationCategoryRepository
+import com.example.moneytracker.service.model.Category
+import com.example.moneytracker.service.model.CategoryType
+import com.example.moneytracker.service.model.create_inputs.CategoryCreateInput
+import com.example.moneytracker.service.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class AddCategoryViewModel @Inject constructor(
-    private val categoryRepository: OperationCategoryRepository,
+    private val categoryRepository: CategoryRepository,
 ): ViewModel() {
 
-    private val categorySaveResponse: MutableLiveData<OperationCategory> = MutableLiveData()
+    private val categorySaveResponse: MutableLiveData<Category> = MutableLiveData()
 
-    suspend fun addNewCategory(name: String, type: OperationCategoryType): LiveData<OperationCategory> {
-        val categoryCreateInput = OperationCategory(null, name, type)
+    suspend fun addNewCategory(name: String, type: CategoryType): LiveData<Category> {
+        val categoryCreateInput = CategoryCreateInput(name, type)
 
         categorySaveResponse.value = categoryRepository.addNewCategory(categoryCreateInput)
 

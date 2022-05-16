@@ -8,20 +8,30 @@
         android:id="@+id/buttonListOperations"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Operation List"
-        app:layout_constraintEnd_toStartOf="@+id/buttonShowYearlySummary"
+        android:text="Operations"
+        app:layout_constraintEnd_toStartOf="@+id/buttonListCategories"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/buttonListCategories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categories"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonListOperations"
+        app:layout_constraintEnd_toEndOf="@+id/buttonShowYearlySummary"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/buttonShowYearlySummary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Yearly Summary"
+        android:text="Summary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonListOperations"
+        app:layout_constraintStart_toEndOf="@+id/buttonListCategories"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout

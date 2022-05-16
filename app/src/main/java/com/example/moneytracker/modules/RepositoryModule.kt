@@ -1,7 +1,7 @@
 package com.example.moneytracker.modules
 
 import com.example.moneytracker.service.repository.CurrencyRepository
-import com.example.moneytracker.service.repository.OperationCategoryRepository
+import com.example.moneytracker.service.repository.CategoryRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import dagger.Module
 import dagger.Provides
@@ -17,7 +17,7 @@ object RepositoryModule {
     fun provideOperationRepository() = OperationRepository()
     @Singleton
     @Provides
-    fun provideOperationCategoryRepository() = OperationCategoryRepository()
+    fun provideOperationCategoryRepository() = CategoryRepository()
     @Singleton
     @Provides
     fun provideCurrencyRepository() = CurrencyRepository()

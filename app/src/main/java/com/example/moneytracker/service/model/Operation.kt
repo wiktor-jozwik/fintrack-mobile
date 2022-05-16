@@ -8,7 +8,7 @@ data class Operation(
     val name: String,
     @SerializedName("money_amount")
     val moneyAmount: Double,
-    val category: OperationCategory,
+    val category: Category,
     @SerializedName("created_at")
     val date: LocalDateTime,
     val currency: Currency

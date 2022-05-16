@@ -11,6 +11,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
     @Inject lateinit var operationListFragment: OperationListFragment
+    @Inject lateinit var categoryListFragment: CategoryListFragment
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +28,13 @@ class MainActivity : AppCompatActivity() {
         binding.buttonListOperations.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, operationListFragment)
+                commit()
+            }
+        }
+
+        binding.buttonListCategories.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, categoryListFragment)
                 commit()
             }
         }

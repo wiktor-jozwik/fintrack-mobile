@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Currency
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.OperationCategory
-import com.example.moneytracker.service.model.OperationCreateInput
+import com.example.moneytracker.service.model.Category
+import com.example.moneytracker.service.model.create_inputs.OperationCreateInput
 import com.example.moneytracker.service.repository.CurrencyRepository
-import com.example.moneytracker.service.repository.OperationCategoryRepository
+import com.example.moneytracker.service.repository.CategoryRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -16,12 +16,12 @@ import javax.inject.Inject
 @HiltViewModel
 class AddOperationViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
-    private val categoryRepository: OperationCategoryRepository,
+    private val categoryRepository: CategoryRepository,
     private val currencyRepository: CurrencyRepository
 ): ViewModel() {
 
     private val currenciesResponse: MutableLiveData<List<Currency>> = MutableLiveData()
-    private val categoriesResponse: MutableLiveData<List<OperationCategory>> = MutableLiveData()
+    private val categoriesResponse: MutableLiveData<List<Category>> = MutableLiveData()
     private val operationSaveResponse: MutableLiveData<Operation> = MutableLiveData()
 
     suspend fun addNewOperation(name: String, moneyAmount: Double, categoryName: String, currencyName: String): LiveData<Operation> {
@@ -38,7 +38,7 @@ class AddOperationViewModel @Inject constructor(
         return currenciesResponse
     }
 
-    suspend fun getAllCategories(): MutableLiveData<List<OperationCategory>> {
+    suspend fun getAllCategories(): MutableLiveData<List<Category>> {
         categoriesResponse.value = categoryRepository.getAllCategories()
 
         return categoriesResponse

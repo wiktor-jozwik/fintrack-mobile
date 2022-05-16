@@ -3,7 +3,7 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.OperationCategoryType
+import com.example.moneytracker.service.model.CategoryType
 import com.example.moneytracker.service.repository.CurrencyRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,9 +44,9 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         operations.forEach {
             val currencyPrice = currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
-            if (it.category.type == OperationCategoryType.INCOME) {
+            if (it.category.type == CategoryType.INCOME) {
                 totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
-            } else if (it.category.type == OperationCategoryType.OUTCOME){
+            } else if (it.category.type == CategoryType.OUTCOME){
                 totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
             }
         }

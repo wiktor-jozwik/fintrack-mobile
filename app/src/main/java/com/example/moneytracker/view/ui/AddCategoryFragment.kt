@@ -10,7 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddCategoryBinding
-import com.example.moneytracker.service.model.OperationCategoryType
+import com.example.moneytracker.service.model.CategoryType
 import com.example.moneytracker.viewmodel.AddCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -70,7 +70,7 @@ class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
                 it.id == binding.inputCategoryType.checkedRadioButtonId
             }.text
 
-        val categoryType = hashMapOf("Outcome" to OperationCategoryType.OUTCOME, "Income" to OperationCategoryType.INCOME)
+        val categoryType = hashMapOf("Outcome" to CategoryType.OUTCOME, "Income" to CategoryType.INCOME)
 
         val operationCategoryType = categoryType[selectedRadioButtonText]
 
@@ -81,7 +81,7 @@ class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
         }
     }
 
-    private fun validForm(operationCategoryType: OperationCategoryType) {
+    private fun validForm(operationCategoryType: CategoryType) {
         viewLifecycleOwner.lifecycleScope.launch {
             addCategoryViewModel.addNewCategory(
                 binding.inputNameText.text.toString(),
