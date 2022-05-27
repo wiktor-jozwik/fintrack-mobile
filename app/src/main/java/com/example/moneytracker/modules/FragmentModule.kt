@@ -25,4 +25,10 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideOperationCategoryListFragment() = CategoryListFragment()
+    @Singleton
+    @Provides
+    fun provideDatePickerFragment() = DatePickerFragment()
+    @Singleton
+    @Provides
+    fun provideTimePickerFragment() = TimePickerFragment()
 }

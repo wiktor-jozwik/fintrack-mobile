@@ -15,12 +15,25 @@ import com.example.moneytracker.databinding.FragmentAddOperationBinding
 import com.example.moneytracker.viewmodel.AddOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
+class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     private val addOperationViewModel: AddOperationViewModel by viewModels()
-    @Inject lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
+
+    @Inject
+    lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
+
+    @Inject
+    lateinit var datePickerFragment: DatePickerFragment
+
+    @Inject
+    lateinit var timePickerFragment: TimePickerFragment
 
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
@@ -42,6 +55,8 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setDateTimePickersListeners()
+
         moneyAmountFocusListener()
         operationNameFocusListener()
 
@@ -49,6 +64,47 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
 
         binding.buttonSave.setOnClickListener {
             submitForm()
+        }
+    }
+
+    private fun setDateTimePickersListeners() {
+        val calendar = Calendar.getInstance()
+        val now = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(calendar.time)
+        val today = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time)
+
+        binding.apply {
+            textDate.text = today
+            textTime.text = now
+
+            buttonDatePicker.setOnClickListener {
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val date = bundle.getString("SELECTED_DATE")
+                        textDate.text = date
+                    }
+                }
+
+                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            }
+
+            buttonTimePicker.setOnClickListener {
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val time = bundle.getString("SELECTED_TIME")
+                        textTime.text = time
+                    }
+                }
+
+                timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+            }
         }
     }
 
@@ -90,7 +146,7 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     private fun validMoneyAmount(): String? {
         val moneyAmountText = binding.inputMoneyAmountText.text.toString()
 
-        if (moneyAmountText.isEmpty()){
+        if (moneyAmountText.isEmpty()) {
             return "Please specify amount of money."
         }
         return null
@@ -105,7 +161,7 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validOperationName(): String? {
-        if (binding.inputNameText.text.toString().isEmpty()){
+        if (binding.inputNameText.text.toString().isEmpty()) {
             return "Please provide name of operation."
         }
         return null
@@ -123,10 +179,16 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validForm() {
+        val date = LocalDateTime.parse(
+            "${binding.textDate.text} ${binding.textTime.text}:00",
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
+        ).toInstant(ZoneOffset.UTC)
+
         viewLifecycleOwner.lifecycleScope.launch {
             addOperationViewModel.addNewOperation(
                 binding.inputNameText.text.toString(),
                 binding.inputMoneyAmountText.text.toString().toDouble(),
+                date,
                 binding.inputCategory.selectedItem.toString(),
                 binding.inputCurrency.selectedItem.toString()
             ).observe(viewLifecycleOwner) {
@@ -151,7 +213,7 @@ class AddOperationFragment: Fragment(R.layout.fragment_add_operation) {
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
             .setMessage("Please provide all fields.")
-            .setPositiveButton("Okay") {_,_ -> {}}
+            .setPositiveButton("Okay") { _, _ -> {} }
             .show()
     }
 }

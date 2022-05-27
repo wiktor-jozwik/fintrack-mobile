@@ -3,14 +3,15 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.Currency
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.create_inputs.OperationCreateInput
-import com.example.moneytracker.service.repository.CurrencyRepository
 import com.example.moneytracker.service.repository.CategoryRepository
+import com.example.moneytracker.service.repository.CurrencyRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.Instant
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,8 +25,8 @@ class AddOperationViewModel @Inject constructor(
     private val categoriesResponse: MutableLiveData<List<Category>> = MutableLiveData()
     private val operationSaveResponse: MutableLiveData<Operation> = MutableLiveData()
 
-    suspend fun addNewOperation(name: String, moneyAmount: Double, categoryName: String, currencyName: String): LiveData<Operation> {
-        val operationCreateInput = OperationCreateInput(name, moneyAmount, categoryName, currencyName)
+    suspend fun addNewOperation(name: String, moneyAmount: Double, date: Instant, categoryName: String, currencyName: String): LiveData<Operation> {
+        val operationCreateInput = OperationCreateInput(name, moneyAmount, date.toString(), categoryName, currencyName)
 
         operationSaveResponse.value = operationRepository.addNewOperation(operationCreateInput)
 

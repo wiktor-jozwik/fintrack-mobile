@@ -19,7 +19,7 @@ object MoneyTrackerApi {
                         ZonedDateTime.parse(
                             json.asJsonPrimitive.asString
                         ).toLocalDateTime()
-                    }).create()
+                    }).create(),
             ))
             .baseUrl(Constants.MONEY_TRACKER_API_URL)
             .client(OkHttpClient.Builder().addInterceptor(OkHttpProfilerInterceptor()).build())

@@ -9,7 +9,7 @@ data class Operation(
     @SerializedName("money_amount")
     val moneyAmount: Double,
     val category: Category,
-    @SerializedName("created_at")
+    @SerializedName("date")
     val date: LocalDateTime,
     val currency: Currency
 )
