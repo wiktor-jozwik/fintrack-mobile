@@ -19,14 +19,21 @@ class AddOperationViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val categoryRepository: CategoryRepository,
     private val currencyRepository: CurrencyRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val currenciesResponse: MutableLiveData<List<Currency>> = MutableLiveData()
     private val categoriesResponse: MutableLiveData<List<Category>> = MutableLiveData()
     private val operationSaveResponse: MutableLiveData<Operation> = MutableLiveData()
 
-    suspend fun addNewOperation(name: String, moneyAmount: Double, date: Instant, categoryName: String, currencyName: String): LiveData<Operation> {
-        val operationCreateInput = OperationCreateInput(name, moneyAmount, date.toString(), categoryName, currencyName)
+    suspend fun addNewOperation(
+        name: String,
+        moneyAmount: Double,
+        date: Instant,
+        categoryName: String,
+        currencyName: String
+    ): LiveData<Operation> {
+        val operationCreateInput =
+            OperationCreateInput(name, moneyAmount, date.toString(), categoryName, currencyName)
 
         operationSaveResponse.value = operationRepository.addNewOperation(operationCreateInput)
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textSubtitle"
@@ -12,22 +12,21 @@
         android:layout_marginTop="100dp"
         android:text="Add new category"
         android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputNameContainer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         app:helperTextTextColor="@color/red"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSubtitle" >
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textSubtitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputNameText"
@@ -43,23 +42,25 @@
         android:id="@+id/inputCategoryType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
         android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputNameContainer">
+
         <RadioButton
             android:id="@+id/radioButtonOutcome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Outcome"
-            android:checked = "true"/>
+            android:checked="true"
+            android:text="Outcome" />
+
         <RadioButton
             android:id="@+id/radioButtonIncome"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Income"/>
+            android:text="Income" />
     </RadioGroup>
 
     <Button
@@ -70,7 +71,6 @@
         android:layout_marginEnd="30dp"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputCategoryType"
-        />
+        app:layout_constraintTop_toBottomOf="@id/inputCategoryType" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

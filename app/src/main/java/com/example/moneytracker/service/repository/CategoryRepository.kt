@@ -14,4 +14,5 @@ class CategoryRepository {
 
     suspend fun deleteCategory(categoryId: Int): Category {
         return MoneyTrackerApi.api.deleteCategory(categoryId)
-    }}
+    }
+}

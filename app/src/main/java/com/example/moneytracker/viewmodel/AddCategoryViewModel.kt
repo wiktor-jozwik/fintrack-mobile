@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddCategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
-): ViewModel() {
+) : ViewModel() {
 
     private val categorySaveResponse: MutableLiveData<Category> = MutableLiveData()
 

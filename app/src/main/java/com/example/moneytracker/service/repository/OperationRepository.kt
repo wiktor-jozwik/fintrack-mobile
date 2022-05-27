@@ -9,7 +9,10 @@ class OperationRepository {
         return MoneyTrackerApi.api.getAllOperations().sortedByDescending { it.date }
     }
 
-    suspend fun getAllOperationsInRanges(startDate: LocalDate, endDate: LocalDate): List<Operation> {
+    suspend fun getAllOperationsInRanges(
+        startDate: LocalDate,
+        endDate: LocalDate
+    ): List<Operation> {
         return MoneyTrackerApi.api.getAllOperationsInRange(startDate, endDate)
     }
 

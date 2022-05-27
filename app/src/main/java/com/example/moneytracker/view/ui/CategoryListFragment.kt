@@ -45,7 +45,8 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
                 binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
                     it,
                     CategoryListAdapter.OnClickListener { categoryId ->
-                        deleteCategory(categoryId,
+                        deleteCategory(
+                            categoryId,
                             binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
                         )
                     }

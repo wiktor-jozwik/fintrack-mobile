@@ -15,10 +15,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class YearlyOperationsSummaryFragment: Fragment() {
+class YearlyOperationsSummaryFragment : Fragment() {
     private val yearlyOperationsSummaryViewModel: YearlyOperationsSummaryViewModel by viewModels()
-    @Inject lateinit var addOperationFragment: AddOperationFragment
-    @Inject lateinit var addCategoryFragment: AddCategoryFragment
+    @Inject
+    lateinit var addOperationFragment: AddOperationFragment
+    @Inject
+    lateinit var addCategoryFragment: AddCategoryFragment
 
     private var _binding: FragmentSummaryBinding? = null
     private val binding get() = _binding!!
@@ -41,12 +43,13 @@ class YearlyOperationsSummaryFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            yearlyOperationsSummaryViewModel.calculateYearlyIncomeAndOutcome().observe(viewLifecycleOwner) {
-                val (totalIncome, totalOutcome, balance) = it
-                binding.textIncomesValue.text = "$totalIncome zł"
-                binding.textOutcomesValue.text = "$totalOutcome zł"
-                binding.textBalanceValue.text = "$balance zł"
-            }
+            yearlyOperationsSummaryViewModel.calculateYearlyIncomeAndOutcome()
+                .observe(viewLifecycleOwner) {
+                    val (totalIncome, totalOutcome, balance) = it
+                    binding.textIncomesValue.text = "$totalIncome zł"
+                    binding.textOutcomesValue.text = "$totalOutcome zł"
+                    binding.textBalanceValue.text = "$balance zł"
+                }
         }
 
         binding.buttonAddOperation.setOnClickListener {

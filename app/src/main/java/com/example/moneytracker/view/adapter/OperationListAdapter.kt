@@ -47,8 +47,10 @@ class OperationListAdapter(
             id.text = currentOperation.id.toString()
             textName.text = currentOperation.name
             textCategory.text = currentOperation.category.name
-            textMoneyAmount.text = "${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
-            textDate.text = currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+            textMoneyAmount.text =
+                "${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
+            textDate.text =
+                currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
             buttonDelete.setOnClickListener {
                 onClickListener.onClick(currentOperation.id)
             }

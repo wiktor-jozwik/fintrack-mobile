@@ -12,10 +12,12 @@ import com.example.moneytracker.service.model.CategoryType
 class CategoryListAdapter(
     categories: List<Category>,
     private val onClickListener: OnClickListener
-): RecyclerView.Adapter<CategoryListAdapter.OperationCategoryViewHolder>() {
+) : RecyclerView.Adapter<CategoryListAdapter.OperationCategoryViewHolder>() {
     private var categoriesList: MutableList<Category> = categories.toMutableList()
 
-    inner class OperationCategoryViewHolder(val binding: CategoryBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class OperationCategoryViewHolder(val binding: CategoryBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
     class OnClickListener(val clickListener: (position: Int) -> Unit) {
         fun onClick(position: Int) {
             clickListener(position)

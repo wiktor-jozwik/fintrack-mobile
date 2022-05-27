@@ -15,10 +15,11 @@ import kotlin.math.roundToInt
 class YearlyOperationsSummaryViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository
-): ViewModel() {
+) : ViewModel() {
     private val MONEY_FACTOR = 100
     private val CURRENCY_FACTOR = 10000
-    private val yearlyCalculationResponse: MutableLiveData<Triple<Double, Double, Double>> = MutableLiveData()
+    private val yearlyCalculationResponse: MutableLiveData<Triple<Double, Double, Double>> =
+        MutableLiveData()
 
     suspend fun calculateYearlyIncomeAndOutcome(): MutableLiveData<Triple<Double, Double, Double>> {
         val year = LocalDate.now().year
@@ -42,11 +43,12 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         var totalOutcome = 0.0
 
         operations.forEach {
-            val currencyPrice = currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
+            val currencyPrice =
+                currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
             if (it.category.type == CategoryType.INCOME) {
                 totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
-            } else if (it.category.type == CategoryType.OUTCOME){
+            } else if (it.category.type == CategoryType.OUTCOME) {
                 totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
             }
         }

@@ -17,9 +17,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
+class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     private val addCategoryViewModel: AddCategoryViewModel by viewModels()
-    @Inject lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
+    @Inject
+    lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
 
     private var _binding: FragmentAddCategoryBinding? = null
     private val binding get() = _binding!!
@@ -57,7 +58,7 @@ class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
     }
 
     private fun validCategoryName(): String? {
-        if (binding.inputNameText.text.toString().isEmpty()){
+        if (binding.inputNameText.text.toString().isEmpty()) {
             return "Please provide name of category."
         }
         return null
@@ -70,7 +71,8 @@ class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
                 it.id == binding.inputCategoryType.checkedRadioButtonId
             }.text
 
-        val categoryType = hashMapOf("Outcome" to CategoryType.OUTCOME, "Income" to CategoryType.INCOME)
+        val categoryType =
+            hashMapOf("Outcome" to CategoryType.OUTCOME, "Income" to CategoryType.INCOME)
 
         val operationCategoryType = categoryType[selectedRadioButtonText]
 
@@ -106,7 +108,7 @@ class AddCategoryFragment: Fragment(R.layout.fragment_add_category) {
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
             .setMessage("Please provide all fields.")
-            .setPositiveButton("Okay") {_,_ -> {}}
+            .setPositiveButton("Okay") { _, _ -> {} }
             .show()
     }
 }

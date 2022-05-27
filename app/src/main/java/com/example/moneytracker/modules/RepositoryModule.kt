@@ -15,9 +15,11 @@ object RepositoryModule {
     @Singleton
     @Provides
     fun provideOperationRepository() = OperationRepository()
+
     @Singleton
     @Provides
     fun provideOperationCategoryRepository() = CategoryRepository()
+
     @Singleton
     @Provides
     fun provideCurrencyRepository() = CurrencyRepository()

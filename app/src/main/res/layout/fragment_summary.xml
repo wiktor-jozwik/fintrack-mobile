@@ -92,8 +92,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAddCategory"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBalanceValue"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/textBalanceValue" />
 
     <Button
         android:id="@+id/buttonAddCategory"

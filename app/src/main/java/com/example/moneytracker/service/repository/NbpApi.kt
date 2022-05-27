@@ -2,7 +2,7 @@ package com.example.moneytracker.service.repository
 
 import java.time.LocalDateTime
 
-class NbpApi: INbpApi {
+class NbpApi : INbpApi {
     override fun getPriceOfCurrencyAtDay(currency: String, date: LocalDateTime): Double {
         val EURO_COST = 4.5516
         val DOLLAR_COST = 4.2324

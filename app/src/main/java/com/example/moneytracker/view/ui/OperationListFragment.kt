@@ -45,7 +45,8 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
                 binding.recyclerViewOperationItems.adapter = OperationListAdapter(
                     it,
                     OperationListAdapter.OnClickListener { operationId ->
-                        deleteOperation(operationId,
+                        deleteOperation(
+                            operationId,
                             binding.recyclerViewOperationItems.adapter as OperationListAdapter
                         )
                     }
