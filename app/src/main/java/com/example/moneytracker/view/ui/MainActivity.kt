@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var operationListFragment: OperationListFragment
     @Inject
     lateinit var categoryListFragment: CategoryListFragment
+    @Inject
+    lateinit var chartFragment: ChartFragment
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +47,14 @@ class MainActivity : AppCompatActivity() {
         binding.buttonShowYearlySummary.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
+                commit()
+            }
+        }
+
+
+        binding.buttonShowChart.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, chartFragment)
                 commit()
             }
         }

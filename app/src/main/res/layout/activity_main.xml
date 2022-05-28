@@ -9,9 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Operations"
-        app:layout_constraintEnd_toStartOf="@+id/buttonListCategories"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonListCategories"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Categories"
-        app:layout_constraintEnd_toEndOf="@+id/buttonShowYearlySummary"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/buttonListOperations"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,10 +29,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Summary"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/buttonListCategories"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonListCategories"
+        app:layout_constraintStart_toEndOf="@+id/buttonShowChart"/>
+
+    <Button
+        android:id="@+id/buttonShowChart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chart"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonListOperations"
+        app:layout_constraintEnd_toStartOf="@id/buttonShowYearlySummary"/>
 
     <FrameLayout
         android:id="@+id/frameLayoutFragment"
@@ -41,6 +51,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonListOperations" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonShowChart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
