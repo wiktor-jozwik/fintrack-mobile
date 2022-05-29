@@ -1,13 +1,13 @@
 package com.example.moneytracker.service.repository
 
 import com.example.moneytracker.service.utils.Constants
-import com.google.gson.*
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import com.localebro.okhttpprofiler.OkHttpProfilerInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.time.LocalDateTime
-import java.time.ZonedDateTime
+import java.time.LocalDate
 
 object MoneyTrackerApi {
     val api: MoneyTrackerApiInterface by lazy {
@@ -15,11 +15,11 @@ object MoneyTrackerApi {
             .addConverterFactory(
                 GsonConverterFactory.create(
                     GsonBuilder().registerTypeAdapter(
-                        LocalDateTime::class.java,
+                        LocalDate::class.java,
                         JsonDeserializer { json, _, _ ->
-                            ZonedDateTime.parse(
+                            LocalDate.parse(
                                 json.asJsonPrimitive.asString
-                            ).toLocalDateTime()
+                            )
                         }).create(),
                 )
             )

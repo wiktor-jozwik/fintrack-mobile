@@ -83,26 +83,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputMoneyAmountContainer" />
 
-        <TextView
-            android:id="@+id/textTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hh:mm:ss"
-            app:layout_constraintBottom_toTopOf="@+id/inputCategory"
-            app:layout_constraintEnd_toStartOf="@+id/buttonTimePicker"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textDate" />
-
-        <Button
-            android:id="@+id/buttonTimePicker"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="30dp"
-            android:text="Pick time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonDatePicker" />
-
         <Spinner
             android:id="@+id/inputCategory"
             android:layout_width="0dp"
@@ -113,7 +93,7 @@
             android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonTimePicker" />
+            app:layout_constraintTop_toBottomOf="@+id/buttonDatePicker" />
 
         <Spinner
             android:id="@+id/inputCurrency"

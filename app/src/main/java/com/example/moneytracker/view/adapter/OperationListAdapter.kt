@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -43,6 +44,8 @@ class OperationListAdapter(
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val currentOperation = operationsList[position]
 
+        Log.d("MT", currentOperation.toString())
+
         holder.binding.apply {
             id.text = currentOperation.id.toString()
             textName.text = currentOperation.name
@@ -50,7 +53,7 @@ class OperationListAdapter(
             textMoneyAmount.text =
                 "${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
             textDate.text =
-                currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"))
+                currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             buttonDelete.setOnClickListener {
                 onClickListener.onClick(currentOperation.id)
             }

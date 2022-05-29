@@ -123,6 +123,7 @@ class ChartFragment : Fragment() {
         barChart.setDrawValueAboveBar(true)
         barChart.setMaxVisibleValueCount(10)
         barChart.setPinchZoom(false)
+        barChart.setTouchEnabled(false)
         barChart.setDrawGridBackground(false)
         barChart.extraBottomOffset = size.toFloat()
 

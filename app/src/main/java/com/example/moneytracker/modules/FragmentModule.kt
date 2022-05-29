@@ -37,8 +37,4 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideDatePickerFragment() = DatePickerFragment()
-
-    @Singleton
-    @Provides
-    fun provideTimePickerFragment() = TimePickerFragment()
 }

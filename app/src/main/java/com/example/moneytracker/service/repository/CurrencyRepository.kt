@@ -1,7 +1,7 @@
 package com.example.moneytracker.service.repository
 
 import com.example.moneytracker.service.model.Currency
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 class CurrencyRepository {
     private val nbpApi: INbpApi = NbpApi()
@@ -10,7 +10,7 @@ class CurrencyRepository {
         return MoneyTrackerApi.api.getAllCurrencies()
     }
 
-    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDateTime): Double {
+    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double {
         return nbpApi.getPriceOfCurrencyAtDay(currency, date)
     }
 }

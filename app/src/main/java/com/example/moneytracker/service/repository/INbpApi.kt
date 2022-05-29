@@ -1,7 +1,7 @@
 package com.example.moneytracker.service.repository
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 interface INbpApi {
-    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDateTime): Double
+    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double
 }

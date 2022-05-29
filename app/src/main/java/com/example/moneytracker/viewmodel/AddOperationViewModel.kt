@@ -12,6 +12,7 @@ import com.example.moneytracker.service.repository.CurrencyRepository
 import com.example.moneytracker.service.repository.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +29,7 @@ class AddOperationViewModel @Inject constructor(
     suspend fun addNewOperation(
         name: String,
         moneyAmount: Double,
-        date: Instant,
+        date: LocalDate,
         categoryName: String,
         currencyName: String
     ): LiveData<Operation> {

@@ -1,9 +1,9 @@
 package com.example.moneytracker.service.repository
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 class NbpApi : INbpApi {
-    override fun getPriceOfCurrencyAtDay(currency: String, date: LocalDateTime): Double {
+    override fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double {
         val EURO_COST = 4.5516
         val DOLLAR_COST = 4.2324
         val PLN_COST = 1.0

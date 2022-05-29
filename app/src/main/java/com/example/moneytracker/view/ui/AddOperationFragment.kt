@@ -16,8 +16,7 @@ import com.example.moneytracker.viewmodel.AddOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneOffset
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.inject.Inject
@@ -31,9 +30,6 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     @Inject
     lateinit var datePickerFragment: DatePickerFragment
-
-    @Inject
-    lateinit var timePickerFragment: TimePickerFragment
 
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
@@ -55,7 +51,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setDateTimePickersListeners()
+        setDatePickerListener()
 
         moneyAmountFocusListener()
         operationNameFocusListener()
@@ -67,14 +63,12 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         }
     }
 
-    private fun setDateTimePickersListeners() {
+    private fun setDatePickerListener() {
         val calendar = Calendar.getInstance()
-        val now = SimpleDateFormat("HH:mm", Locale.ENGLISH).format(calendar.time)
         val today = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time)
 
         binding.apply {
             textDate.text = today
-            textTime.text = now
 
             buttonDatePicker.setOnClickListener {
                 val supportFragmentManager = requireActivity().supportFragmentManager
@@ -89,21 +83,6 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                 }
 
                 datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
-            }
-
-            buttonTimePicker.setOnClickListener {
-                val supportFragmentManager = requireActivity().supportFragmentManager
-                supportFragmentManager.setFragmentResultListener(
-                    "REQUEST_KEY",
-                    viewLifecycleOwner
-                ) { resultKey, bundle ->
-                    if (resultKey == "REQUEST_KEY") {
-                        val time = bundle.getString("SELECTED_TIME")
-                        textTime.text = time
-                    }
-                }
-
-                timePickerFragment.show(supportFragmentManager, "DatePickerFragment")
             }
         }
     }
@@ -179,10 +158,10 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validForm() {
-        val date = LocalDateTime.parse(
-            "${binding.textDate.text} ${binding.textTime.text}:00",
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
-        ).toInstant(ZoneOffset.UTC)
+        val date = LocalDate.parse(
+            "${binding.textDate.text}",
+            DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        )
 
         viewLifecycleOwner.lifecycleScope.launch {
             addOperationViewModel.addNewOperation(
