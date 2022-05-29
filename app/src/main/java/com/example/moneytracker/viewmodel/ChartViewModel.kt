@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.CategoryType
@@ -23,58 +22,69 @@ class ChartViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    suspend fun getLastXMonthsOperations(num: Int): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
-        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> = MutableLiveData()
+    suspend fun getLastXMonthsOperations(x: Int): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
+        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
+            MutableLiveData()
 
-        val fromDate = LocalDate.now(ZoneId.systemDefault()).minusMonths((num - 1).toLong()).with(TemporalAdjusters.firstDayOfMonth());
+        val fromDate = LocalDate.now(ZoneId.systemDefault()).minusMonths((x - 1).toLong())
+            .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());
-
-        Log.d("MT", fromDate.toString())
-        Log.d("MT", toDate.toString())
 
         val operations = operationRepository.getAllOperationsInRanges(fromDate, toDate);
 
-        Log.d("MT", operations.toString())
+        val monthsRequired = mutableListOf<Int>()
+        var monthToInsert = fromDate.monthValue
+        for (i in 1..x) {
+            monthsRequired.add(monthToInsert)
+            monthToInsert++
+            if (monthToInsert == 13) {
+                monthToInsert = 1
+            }
+        }
 
-        incomesAndOutcomesYearlyResponse.value = groupMonthlyOperations(operations)
+        incomesAndOutcomesYearlyResponse.value =
+            groupMonthlyOperations(operations, monthsRequired.sortedBy { it })
 
         return incomesAndOutcomesYearlyResponse
     }
 
     suspend fun getAllTimeOperations(): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
-        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> = MutableLiveData()
+        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
+            MutableLiveData()
 
-        val operations =  operationRepository.getAllOperations()
-
+        val operations = operationRepository.getAllOperations()
         incomesAndOutcomesYearlyResponse.value = groupYearlyOperations(operations)
 
         return incomesAndOutcomesYearlyResponse
     }
 
-    private fun groupMonthlyOperations(operations: List<Operation>) : Pair<MutableList<BarEntry>,  MutableList<BarEntry>> {
-        val monthlyOperations = operations.groupBy {
+    private fun groupMonthlyOperations(
+        operations: List<Operation>,
+        monthsRequired: List<Int>
+    ): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+        val monthlyOperationsMap = operations.groupBy {
             it.date.monthValue
-        }.entries.sortedBy { it.key }
+        }.toMutableMap()
 
-        return getOutcomesAndIncomesBarsGrouped(monthlyOperations)
+        monthsRequired.forEach {
+            if (!monthlyOperationsMap.containsKey(it)) {
+                monthlyOperationsMap[it] = listOf()
+            }
+        }
+        val monthlyOperationsEntries = monthlyOperationsMap.entries.sortedBy { it.key }
+
+        return getMonthlyOutcomesAndIncomesBarsGrouped(monthlyOperationsEntries)
     }
 
-    private fun groupYearlyOperations(operations: List<Operation>) : Pair<MutableList<BarEntry>,  MutableList<BarEntry>> {
-        val monthlyOperations = operations.groupBy {
+    private fun groupYearlyOperations(operations: List<Operation>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+        val yearlyOperations = operations.groupBy {
             it.date.year
         }.entries.sortedBy { it.key }
 
-        return getOutcomesAndIncomesBarsGrouped(monthlyOperations)
-    }
-
-    private fun getOutcomesAndIncomesBarsGrouped(groupedOperations: List<Map.Entry<Int, List<Operation>>>) : Pair<MutableList<BarEntry>,  MutableList<BarEntry>> {
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 
-        val month = Calendar.getInstance().get(Calendar.MONTH)
-        var indexToInsert = 0
-
-        groupedOperations.forEach { (date , operations) ->
+        yearlyOperations.forEach { (date, operations) ->
             var incomes = 0.0
             var outcomes = 0.0
             operations.forEach { op ->
@@ -87,14 +97,48 @@ class ChartViewModel @Inject constructor(
                     outcomes += op.moneyAmount * currencyPrice
                 }
             }
+            outcomesBars.add(BarEntry(date.toFloat(), roundMoney(outcomes).toFloat()))
+            incomesBars.add(BarEntry(date.toFloat(), roundMoney(incomes).toFloat()))
+        }
 
-            if (outcomesBars.size > month) {
-                outcomesBars.add(indexToInsert, BarEntry(date.toFloat(), roundMoney(outcomes).toFloat()))
-                incomesBars.add(indexToInsert, BarEntry(date.toFloat(), roundMoney(incomes).toFloat()))
-                indexToInsert += 1
+        return Pair(incomesBars, outcomesBars)
+    }
+
+    private fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+        val outcomesBars = mutableListOf<BarEntry>()
+        val incomesBars = mutableListOf<BarEntry>()
+
+        val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+        var indexToInsert = 0
+
+        monthOperations.forEach { (month, operations) ->
+            var incomes = 0.0
+            var outcomes = 0.0
+
+            operations.forEach { op ->
+                val currencyPrice =
+                    currencyRepository.getPriceOfCurrencyAtDay(op.currency.name, op.date)
+
+                if (op.category.type == CategoryType.INCOME) {
+                    incomes += op.moneyAmount * currencyPrice
+                } else if (op.category.type == CategoryType.OUTCOME) {
+                    outcomes += op.moneyAmount * currencyPrice
+                }
+            }
+
+            if (outcomesBars.size > currentMonth) {
+                outcomesBars.add(
+                    indexToInsert,
+                    BarEntry(month.toFloat(), roundMoney(outcomes).toFloat())
+                )
+                incomesBars.add(
+                    indexToInsert,
+                    BarEntry(month.toFloat(), roundMoney(incomes).toFloat())
+                )
+                indexToInsert++
             } else {
-                outcomesBars.add(BarEntry(date.toFloat(), roundMoney(outcomes).toFloat()))
-                incomesBars.add(BarEntry(date.toFloat(), roundMoney(incomes).toFloat()))
+                outcomesBars.add(BarEntry(month.toFloat(), roundMoney(outcomes).toFloat()))
+                incomesBars.add(BarEntry(month.toFloat(), roundMoney(incomes).toFloat()))
             }
         }
 

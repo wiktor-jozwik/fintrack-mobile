@@ -1,14 +1,11 @@
 package com.example.moneytracker.view.ui
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -21,6 +18,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -29,20 +27,20 @@ import java.util.*
 
 @AndroidEntryPoint
 class ChartFragment : Fragment() {
-    var xAxisValues: List<String> =
+    private var monthLabels: List<String> =
         listOf(
-            "January",
-            "February",
-            "March",
-            "April",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
             "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December"
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec"
         )
 
 
@@ -68,362 +66,132 @@ class ChartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setThreeMonthChart()
+        setXMonthChart(6)
+        binding.radioButtonSixMonth.isChecked = true
+
         binding.radioGroupPeriod.setOnCheckedChangeListener { _, switchId ->
             when (switchId) {
-                binding.radioButtonThreeMonth.id -> setThreeMonthChart()
-                binding.radioButtonSixMonth.id -> setSixMonthChart()
-                binding.radioButtonTwelveMonth.id -> setTwelveMonthChart()
+                binding.radioButtonThreeMonth.id -> setXMonthChart(3)
+                binding.radioButtonSixMonth.id -> setXMonthChart(6)
+                binding.radioButtonTwelveMonth.id -> setXMonthChart(12)
                 binding.radioButtonAllTime.id -> setAllTimeChart()
             }
         }
-
-//        initChart()
     }
 
-    private fun setThreeMonthChart() {
+    private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartViewModel.getLastXMonthsOperations(3).observe(viewLifecycleOwner) {
-                Log.d("MT", it.first.toString())
-                Log.d("MT", it.second.toString())
-                val barChart = binding.barChart
-                val set1 = BarDataSet(it.first, "Incomes");
-                set1.setColor(ContextCompat.getColor(requireContext(), R.color.green))
-                set1.setValueTextSize(10f);
+            chartViewModel.getLastXMonthsOperations(size).observe(viewLifecycleOwner) {
+                val xLabels = getMonthXLabels(size)
 
-                val set2 = BarDataSet(it.second, "Outcomes");
-                set2.setColor(ContextCompat.getColor(requireContext(), R.color.red))
-                set2.setValueTextSize(10f);
-
-                val data = BarData(set1, set2)
-                barChart.getAxisLeft().setAxisMinimum(0f);
-
-                barChart.description.isEnabled = false
-                barChart.axisRight.axisMinimum = 0f
-                barChart.setDrawBarShadow(false)
-                barChart.setDrawValueAboveBar(true)
-                barChart.setMaxVisibleValueCount(10)
-                barChart.setPinchZoom(false)
-                barChart.setDrawGridBackground(false)
-
-
-                val l = barChart.legend
-                l.isWordWrapEnabled = true
-                l.textSize = 14f
-                l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                l.orientation = Legend.LegendOrientation.HORIZONTAL
-                l.setDrawInside(false)
-                l.form = Legend.LegendForm.CIRCLE
-
-                val xAxis = barChart.xAxis
-                xAxis.granularity = 1f
-                xAxis.setCenterAxisLabels(true)
-                xAxis.setDrawGridLines(false)
-                xAxis.labelRotationAngle = -45f
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-                xAxis.axisMaximum = 3f
-
-
-                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisValues.slice(2..5))
-
-
-                val leftAxis = barChart.axisLeft
-                leftAxis.removeAllLimitLines()
-                leftAxis.typeface = Typeface.DEFAULT
-                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-                leftAxis.textColor = Color.BLACK
-                leftAxis.setDrawGridLines(false)
-                barChart.axisRight.isEnabled = false
-
-                val groupSpace = 0.06f
-                val barSpace = 0.02f
-                val barWidth = 0.45f
-                binding.barChart.getXAxis().setAxisMinimum(0f)
-                binding.barChart.getXAxis().setAxisMaximum(3f)
-
-                binding.barChart.getXAxis().setCenterAxisLabels(true)
-
-                data.barWidth = barWidth
-                barChart.data = data
-
-                binding.barChart.groupBars(0f, groupSpace, barSpace)
-                binding.barChart.invalidate()
-                barChart.invalidate()
+                drawChart(it, size, xLabels)
             }
         }
     }
-
-    private fun setSixMonthChart() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            chartViewModel.getLastXMonthsOperations(6).observe(viewLifecycleOwner) {
-                Log.d("MT", it.first.toString())
-                Log.d("MT", it.second.toString())
-                val barChart = binding.barChart
-                val set1 = BarDataSet(it.first, "Incomes");
-                set1.setColor(ContextCompat.getColor(requireContext(), R.color.green))
-                set1.setValueTextSize(10f);
-
-                val set2 = BarDataSet(it.second, "Outcomes");
-                set2.setColor(ContextCompat.getColor(requireContext(), R.color.red))
-                set2.setValueTextSize(10f);
-
-                val data = BarData(set1, set2)
-                barChart.getAxisLeft().setAxisMinimum(0f);
-
-                barChart.description.isEnabled = false
-                barChart.axisRight.axisMinimum = 0f
-                barChart.setDrawBarShadow(false)
-                barChart.setDrawValueAboveBar(true)
-                barChart.setMaxVisibleValueCount(10)
-                barChart.setPinchZoom(false)
-                barChart.setDrawGridBackground(false)
-
-
-                val l = barChart.legend
-                l.isWordWrapEnabled = true
-                l.textSize = 14f
-                l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                l.orientation = Legend.LegendOrientation.HORIZONTAL
-                l.setDrawInside(false)
-                l.form = Legend.LegendForm.CIRCLE
-
-                val xAxis = barChart.xAxis
-                xAxis.granularity = 1f
-                xAxis.setCenterAxisLabels(true)
-                xAxis.setDrawGridLines(false)
-                xAxis.labelRotationAngle = -45f
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-                xAxis.axisMaximum = 6f
-
-                val newXAxisLabels = mutableListOf(xAxisValues.last())
-                newXAxisLabels += xAxisValues.slice(0..4)
-                Log.d("MT", newXAxisLabels.toString())
-                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(newXAxisLabels)
-
-
-                val leftAxis = barChart.axisLeft
-                leftAxis.removeAllLimitLines()
-                leftAxis.typeface = Typeface.DEFAULT
-                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-                leftAxis.textColor = Color.BLACK
-                leftAxis.setDrawGridLines(false)
-                barChart.axisRight.isEnabled = false
-
-                val groupSpace = 0.06f
-                val barSpace = 0.02f
-                val barWidth = 0.45f
-                binding.barChart.getXAxis().setAxisMinimum(0f)
-                binding.barChart.getXAxis().setAxisMaximum(6f)
-
-                binding.barChart.getXAxis().setCenterAxisLabels(true)
-
-                data.barWidth = barWidth
-                barChart.data = data
-
-                binding.barChart.groupBars(0f, groupSpace, barSpace)
-                binding.barChart.invalidate()
-                barChart.invalidate()
-            }
-        }
-    }
-
-    private fun setTwelveMonthChart() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            chartViewModel.getLastXMonthsOperations(12).observe(viewLifecycleOwner) {
-                Log.d("MT", 12.toString())
-
-                Log.d("MT", it.first.toString())
-                Log.d("MT", it.second.toString())
-                val barChart = binding.barChart
-                val set1 = BarDataSet(it.first, "Incomes");
-                set1.setColor(ContextCompat.getColor(requireContext(), R.color.green))
-                set1.setValueTextSize(10f);
-
-                val set2 = BarDataSet(it.second, "Outcomes");
-                set2.setColor(ContextCompat.getColor(requireContext(), R.color.red))
-                set2.setValueTextSize(10f);
-
-                val data = BarData(set1, set2)
-                barChart.getAxisLeft().setAxisMinimum(0f);
-
-                barChart.description.isEnabled = false
-                barChart.axisRight.axisMinimum = 0f
-                barChart.setDrawBarShadow(false)
-                barChart.setDrawValueAboveBar(true)
-                barChart.setMaxVisibleValueCount(10)
-                barChart.setPinchZoom(false)
-                barChart.setDrawGridBackground(false)
-
-
-                val l = barChart.legend
-                l.isWordWrapEnabled = true
-                l.textSize = 14f
-                l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                l.orientation = Legend.LegendOrientation.HORIZONTAL
-                l.setDrawInside(false)
-                l.form = Legend.LegendForm.CIRCLE
-
-                val xAxis = barChart.xAxis
-                xAxis.granularity = 1f
-                xAxis.setCenterAxisLabels(true)
-                xAxis.setDrawGridLines(false)
-                xAxis.labelRotationAngle = -45f
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-                xAxis.axisMaximum = 12f
-
-                val newXAxisLabels = xAxisValues.slice(5..11) +xAxisValues.slice(0..4)
-                Log.d("MT", newXAxisLabels.toString())
-                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(newXAxisLabels)
-
-
-                val leftAxis = barChart.axisLeft
-                leftAxis.removeAllLimitLines()
-                leftAxis.typeface = Typeface.DEFAULT
-                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-                leftAxis.textColor = Color.BLACK
-                leftAxis.setDrawGridLines(false)
-                barChart.axisRight.isEnabled = false
-
-                val groupSpace = 0.06f
-                val barSpace = 0.02f
-                val barWidth = 0.45f
-                binding.barChart.getXAxis().setAxisMinimum(0f)
-                binding.barChart.getXAxis().setAxisMaximum(12f)
-
-                binding.barChart.getXAxis().setCenterAxisLabels(true)
-
-                data.barWidth = barWidth
-                barChart.data = data
-
-                binding.barChart.groupBars(0f, groupSpace, barSpace)
-                binding.barChart.invalidate()
-                barChart.invalidate()
-            }
-        }
-    }
-
-//    private fun setAllTimeChart() {
-//
-//    }
 
     private fun setAllTimeChart() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             chartViewModel.getAllTimeOperations().observe(viewLifecycleOwner) {
-                val barChart = binding.barChart
-//                Log.d("MT", it.first.toString())
+                val xLabels = getYearsXLabelsFromOperations(it.first)
 
-                val set1 = BarDataSet(it.first, "Incomes");
-                set1.setColor(ContextCompat.getColor(requireContext(), R.color.green))
-                set1.setValueTextSize(10f);
-
-                val set2 = BarDataSet(it.second, "Outcomes");
-                set2.setColor(ContextCompat.getColor(requireContext(), R.color.red))
-                set2.setValueTextSize(10f);
-
-                val data = BarData(set1, set2)
-
-                val l = barChart.legend
-                l.isWordWrapEnabled = true
-                l.textSize = 14f
-                l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-                l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-                l.orientation = Legend.LegendOrientation.HORIZONTAL
-                l.setDrawInside(false)
-                l.form = Legend.LegendForm.CIRCLE
-
-                val xAxis = barChart.xAxis
-                xAxis.granularity = 1f
-                xAxis.setCenterAxisLabels(true)
-                xAxis.setDrawGridLines(false)
-                xAxis.labelRotationAngle = -45f
-                xAxis.position = XAxis.XAxisPosition.BOTTOM
-                xAxis.axisMaximum = 3f
-
-                val xAxLabels = listOf("2020", "2021", "2022")
-
-                barChart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxLabels)
-
-
-                val leftAxis = barChart.axisLeft
-                leftAxis.removeAllLimitLines()
-                leftAxis.typeface = Typeface.DEFAULT
-                leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-                leftAxis.textColor = Color.BLACK
-                leftAxis.setDrawGridLines(false)
-                barChart.axisRight.isEnabled = false
-
-                val groupSpace = 0.06f
-                val barSpace = 0.02f
-                val barWidth = 0.45f
-                binding.barChart.getXAxis().setAxisMinimum(0f)
-                binding.barChart.getXAxis().setAxisMaximum(3f)
-
-                binding.barChart.getXAxis().setCenterAxisLabels(true)
-
-                data.barWidth = barWidth
-                barChart.data = data
-
-                binding.barChart.groupBars(0f, groupSpace, barSpace)
-                binding.barChart.invalidate()
-                barChart.invalidate()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//                val firstYear = it.first[0].x
-//
-//                val groupSpace = 0.06f
-//                val barSpace = 0.02f
-//                val barWidth = 0.45f
-//
-//
-//                val set1 = BarDataSet(it.first, "Incomes");
-//                set1.setColor(ContextCompat.getColor(requireContext(), R.color.green))
-//                set1.setValueTextSize(10f);
-//
-//                val set2 = BarDataSet(it.second, "Outcomes");
-//                set2.setColor(ContextCompat.getColor(requireContext(), R.color.red))
-//                set2.setValueTextSize(10f);
-//
-//                val data = BarData(set1, set2)
-//                data.barWidth = barWidth
-//
-////                val xAxis: XAxis = barChart.getXAxis()
-//
-//                val xAxisLabel = mutableListOf<String>()
-//                xAxisLabel.add("2020")
-//                xAxisLabel.add("2021")
-//                xAxisLabel.add("2022")
-//                barChart.getXAxis().setValueFormatter(IndexAxisValueFormatter(xAxisLabel));
-//
-//
-//                barChart.data = data
-//                barChart.groupBars((firstYear - 0.5).toFloat(), groupSpace, barSpace)
-//
-//                barChart.invalidate()
+                drawChart(it, xLabels.size, xLabels)
             }
         }
+    }
+
+    private fun drawChart(
+        incomeAndOutcomesBars: Pair<List<BarEntry>, List<BarEntry>>,
+        size: Int,
+        xLabels: List<String>
+    ) {
+        val barChart = binding.barChart
+
+        val incomesSet = BarDataSet(incomeAndOutcomesBars.first, "Incomes");
+        incomesSet.color = ContextCompat.getColor(requireContext(), R.color.green)
+        incomesSet.valueTextSize = 10f;
+
+        val outcomesSet = BarDataSet(incomeAndOutcomesBars.second, "Outcomes");
+        outcomesSet.color = ContextCompat.getColor(requireContext(), R.color.red)
+        outcomesSet.valueTextSize = 10f;
+
+        val data = BarData(incomesSet, outcomesSet)
+        barChart.axisLeft.axisMinimum = 0f;
+
+        barChart.description.isEnabled = false
+        barChart.axisRight.axisMinimum = 0f
+        barChart.setDrawBarShadow(false)
+        barChart.setDrawValueAboveBar(true)
+        barChart.setMaxVisibleValueCount(10)
+        barChart.setPinchZoom(false)
+        barChart.setDrawGridBackground(false)
+        barChart.extraBottomOffset = size.toFloat()
+
+        val legend = barChart.legend
+        legend.isWordWrapEnabled = true
+        legend.textSize = 14f
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.form = Legend.LegendForm.CIRCLE
+
+        val xAxis = barChart.xAxis
+        xAxis.granularity = 1f
+        xAxis.setCenterAxisLabels(true)
+        xAxis.setDrawGridLines(false)
+        xAxis.labelRotationAngle = -45f
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.axisMinimum = 0f
+        xAxis.axisMaximum = size.toFloat()
+        xAxis.textSize = 12f
+
+        xAxis.labelCount = xLabels.size;
+        xAxis.valueFormatter = IndexAxisValueFormatter(xLabels)
+
+        val leftAxis = barChart.axisLeft
+        leftAxis.removeAllLimitLines()
+        leftAxis.typeface = Typeface.DEFAULT
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        leftAxis.textColor = Color.BLACK
+        leftAxis.setDrawGridLines(false)
+
+        val rightAxis = barChart.axisRight
+        rightAxis.isEnabled = false
+
+        val groupSpace = 0.06f
+        val barSpace = 0.02f
+        val barWidth = 0.45f
+
+        data.barWidth = barWidth
+        barChart.data = data
+
+        barChart.groupBars(0f, groupSpace, barSpace)
+        barChart.invalidate()
+        barChart.animateY(700)
+    }
+
+    private fun getMonthXLabels(size: Int): List<String> {
+        val xLabels = mutableListOf<String>()
+
+        val currentMonthIndex = Calendar.getInstance().get(Calendar.MONTH)
+        val firstMonth = (currentMonthIndex - size) + 2
+
+        if (firstMonth <= 0) {
+            xLabels += monthLabels.slice(11 + firstMonth..11)
+            xLabels += monthLabels.slice(0..currentMonthIndex)
+        } else {
+            xLabels += monthLabels.slice(firstMonth - 1..currentMonthIndex)
+        }
+        return xLabels
+    }
+
+    private fun getYearsXLabelsFromOperations(yearlyBars: List<BarEntry>): List<String> {
+        val xLabels = mutableListOf<String>()
+
+        yearlyBars.forEach {
+            xLabels.add(it.x.toInt().toString())
+        }
+
+        return xLabels
     }
 }
