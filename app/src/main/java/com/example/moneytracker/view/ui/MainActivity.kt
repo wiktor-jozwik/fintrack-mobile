@@ -1,6 +1,7 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.ActivityMainBinding
@@ -12,9 +13,9 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
     @Inject
-    lateinit var operationListFragment: OperationListFragment
+    lateinit var addFragment: AddFragment
     @Inject
-    lateinit var categoryListFragment: CategoryListFragment
+    lateinit var listFragment: ListFragment
     @Inject
     lateinit var chartFragment: ChartFragment
     private lateinit var binding: ActivityMainBinding
@@ -30,29 +31,36 @@ class MainActivity : AppCompatActivity() {
             commit()
         }
 
-        binding.buttonListOperations.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, operationListFragment)
-                commit()
-            }
-        }
+        binding.buttonMain.setOnClickListener {
+            Log.d("MT", "main")
 
-        binding.buttonListCategories.setOnClickListener {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, categoryListFragment)
-                commit()
-            }
-        }
-
-        binding.buttonShowYearlySummary.setOnClickListener {
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
                 commit()
             }
         }
 
+        binding.buttonList.setOnClickListener {
+            Log.d("MT", "list")
 
-        binding.buttonShowChart.setOnClickListener {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, listFragment)
+                commit()
+            }
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            Log.d("MT", "add")
+
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, addFragment)
+                commit()
+            }
+        }
+
+        binding.buttonChart.setOnClickListener {
+            Log.d("MT", "chart")
+
             supportFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragment, chartFragment)
                 commit()

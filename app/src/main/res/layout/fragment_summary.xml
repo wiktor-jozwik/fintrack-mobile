@@ -84,26 +84,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textBalance" />
 
-    <Button
-        android:id="@+id/buttonAddOperation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add operation"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddCategory"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textBalanceValue" />
-
-    <Button
-        android:id="@+id/buttonAddCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add category"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonAddOperation"
-        app:layout_constraintTop_toBottomOf="@+id/textBalanceValue" />
-
     <androidx.constraintlayout.widget.Group
         android:id="@+id/Outcomes"
         android:layout_width="wrap_content"

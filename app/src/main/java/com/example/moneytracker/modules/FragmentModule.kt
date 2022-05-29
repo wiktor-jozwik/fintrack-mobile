@@ -36,5 +36,13 @@ object FragmentModule {
 
     @Singleton
     @Provides
+    fun provideListFragment() = ListFragment()
+
+    @Singleton
+    @Provides
+    fun provideAddFragment() = AddFragment()
+
+    @Singleton
+    @Provides
     fun provideDatePickerFragment() = DatePickerFragment()
 }

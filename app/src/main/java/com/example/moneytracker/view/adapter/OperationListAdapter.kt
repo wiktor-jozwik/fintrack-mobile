@@ -44,8 +44,6 @@ class OperationListAdapter(
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val currentOperation = operationsList[position]
 
-        Log.d("MT", currentOperation.toString())
-
         holder.binding.apply {
             id.text = currentOperation.id.toString()
             textName.text = currentOperation.name

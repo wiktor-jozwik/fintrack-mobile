@@ -1,6 +1,7 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,19 +51,6 @@ class YearlyOperationsSummaryFragment : Fragment() {
                     binding.textOutcomesValue.text = "$totalOutcome zł"
                     binding.textBalanceValue.text = "$balance zł"
                 }
-        }
-
-        binding.buttonAddOperation.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, addOperationFragment)
-                commit()
-            }
-        }
-        binding.buttonAddCategory.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, addCategoryFragment)
-                commit()
-            }
         }
     }
 }
