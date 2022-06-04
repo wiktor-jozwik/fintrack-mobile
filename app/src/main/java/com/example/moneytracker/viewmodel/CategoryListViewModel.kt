@@ -3,8 +3,7 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.repository.CategoryRepository
+import com.example.moneytracker.service.repository.internal.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

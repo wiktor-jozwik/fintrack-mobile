@@ -12,6 +12,22 @@ import javax.inject.Singleton
 object FragmentModule {
     @Singleton
     @Provides
+    fun provideWelcomeFragment() = WelcomeFragment()
+
+    @Singleton
+    @Provides
+    fun provideLoginFragment() = LoginUserFragment()
+
+    @Singleton
+    @Provides
+    fun provideRegisterUserFragment() = RegisterUserFragment()
+
+    @Singleton
+    @Provides
+    fun provideHomeFragment() = HomeFragment()
+
+    @Singleton
+    @Provides
     fun provideYearlyOperationsSummaryFragment() = YearlyOperationsSummaryFragment()
 
     @Singleton

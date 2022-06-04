@@ -6,12 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.Currency
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.create_inputs.OperationCreateInput
-import com.example.moneytracker.service.repository.CategoryRepository
-import com.example.moneytracker.service.repository.CurrencyRepository
-import com.example.moneytracker.service.repository.OperationRepository
+import com.example.moneytracker.service.model.createinputs.OperationCreateInput
+import com.example.moneytracker.service.repository.internal.CategoryRepository
+import com.example.moneytracker.service.repository.internal.CurrencyRepository
+import com.example.moneytracker.service.repository.internal.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.time.Instant
 import java.time.LocalDate
 import javax.inject.Inject
 

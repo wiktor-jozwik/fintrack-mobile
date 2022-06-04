@@ -1,4 +1,4 @@
-package com.example.moneytracker.service.repository
+package com.example.moneytracker.service.repository.internal
 
 import com.example.moneytracker.service.utils.Constants
 import com.google.gson.GsonBuilder
@@ -23,7 +23,7 @@ object MoneyTrackerApi {
                         }).create(),
                 )
             )
-            .baseUrl(Constants.MONEY_TRACKER_API_URL)
+            .baseUrl(Constants.MONEY_TRACKER_URL)
             .client(OkHttpClient.Builder().addInterceptor(OkHttpProfilerInterceptor()).build())
             .build()
             .create(MoneyTrackerApiInterface::class.java)

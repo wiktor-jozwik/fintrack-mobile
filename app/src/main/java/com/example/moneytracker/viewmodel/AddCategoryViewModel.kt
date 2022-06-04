@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.CategoryType
-import com.example.moneytracker.service.model.create_inputs.CategoryCreateInput
-import com.example.moneytracker.service.repository.CategoryRepository
+import com.example.moneytracker.service.model.createinputs.CategoryCreateInput
+import com.example.moneytracker.service.repository.internal.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

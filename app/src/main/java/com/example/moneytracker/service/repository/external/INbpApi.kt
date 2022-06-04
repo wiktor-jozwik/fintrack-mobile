@@ -1,4 +1,4 @@
-package com.example.moneytracker.service.repository
+package com.example.moneytracker.service.repository.external
 
 import java.time.LocalDate
 

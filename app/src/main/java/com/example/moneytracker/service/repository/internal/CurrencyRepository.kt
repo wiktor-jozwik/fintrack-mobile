@@ -1,6 +1,8 @@
-package com.example.moneytracker.service.repository
+package com.example.moneytracker.service.repository.internal
 
 import com.example.moneytracker.service.model.Currency
+import com.example.moneytracker.service.repository.external.INbpApi
+import com.example.moneytracker.service.repository.external.NbpApi
 import java.time.LocalDate
 
 class CurrencyRepository {

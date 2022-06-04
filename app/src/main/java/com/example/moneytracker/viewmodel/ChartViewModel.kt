@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.CategoryType
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.repository.CurrencyRepository
-import com.example.moneytracker.service.repository.OperationRepository
+import com.example.moneytracker.service.repository.internal.CurrencyRepository
+import com.example.moneytracker.service.repository.internal.OperationRepository
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
