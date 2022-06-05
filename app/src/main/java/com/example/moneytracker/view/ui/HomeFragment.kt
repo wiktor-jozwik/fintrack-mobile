@@ -94,14 +94,14 @@ class HomeFragment @Inject constructor(
                 homeViewModel.logoutUser().observe(viewLifecycleOwner) {
                     if (it.success) {
                         with(sharedPreferences.edit()) {
-                            putString(getString(R.string.jwt_auth_token), "")
+                            putString("JWT_AUTH_TOKEN", "")
                             apply()
                         }
                     }
                 }
 
                 parentFragmentManager.beginTransaction().apply {
-                    replace(R.id.homeFrameLayoutFragment, welcomeFragment)
+                    replace(R.id.mainFrameLayoutFragment, welcomeFragment)
                     commit()
                 }
             }

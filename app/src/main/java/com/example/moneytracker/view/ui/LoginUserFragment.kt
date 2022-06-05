@@ -3,6 +3,11 @@ package com.example.moneytracker.view.ui
 import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
+import android.util.Log
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserLoginBinding
+import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.viewmodel.LoginUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -47,6 +53,9 @@ class LoginUserFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        emailTextChangeListener()
+        passwordTextChangeListener()
+
         binding.buttonGoBack.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.mainFrameLayoutFragment, welcomeFragment)
@@ -58,18 +67,56 @@ class LoginUserFragment @Inject constructor(
             submitForm()
         }
     }
-
+    
     private fun submitForm() {
-//        val validMoneyAmount = binding.inputMoneyAmountText.text?.isNotEmpty()
-//        val validName = binding.inputNameText.text?.isNotEmpty()
-        val validEmail = true
-        val validPassword = true // pass == passConf
-
-        if (validEmail == true && validPassword == true) {
+        if (validateEmail() == null && validatePassword() == null) {
             validForm()
         } else {
             invalidForm()
         }
+    }
+
+    private fun emailTextChangeListener() {
+        binding.inputEmailText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.inputEmailContainer.helperText = validateEmail()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+    }
+
+    private fun validateEmail(): String? {
+        val emailText = binding.inputEmailText.text.toString()
+
+        if (emailText.isEmpty() || !emailText.isValidEmail()) {
+            return "Please provide valid email."
+        }
+        return null
+    }
+
+    private fun passwordTextChangeListener() {
+        binding.inputPasswordText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.inputPasswordContainer.helperText = validatePassword()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+    }
+
+    private fun validatePassword(): String? {
+        val password = binding.inputPasswordText.text.toString()
+        if (password.isEmpty()) {
+            return "Please provide password."
+        }
+        return null
     }
 
     private fun validForm() {
@@ -79,9 +126,15 @@ class LoginUserFragment @Inject constructor(
                 binding.inputPasswordText.text.toString(),
             ).observe(viewLifecycleOwner) {
                 with(sharedPreferences.edit()) {
-                    putString(getString(R.string.jwt_auth_token), it.jwt)
+                    putString("JWT_AUTH_TOKEN", it.jwt)
                     apply()
                 }
+
+                binding.inputEmailText.setText("")
+                binding.inputEmailContainer.helperText = ""
+                binding.inputPasswordText.setText("")
+                binding.inputPasswordContainer.helperText = ""
+
                 switchToHome()
             }
         }
@@ -95,12 +148,15 @@ class LoginUserFragment @Inject constructor(
     }
 
     private fun invalidForm() {
-//        binding.inputNameContainer.helperText = validOperationName()
-//        binding.inputMoneyAmountContainer.helperText = validMoneyAmount()
+        val emailText = validateEmail()
+        val passwordText = validatePassword()
+
+        binding.inputEmailContainer.helperText = emailText
+        binding.inputPasswordContainer.helperText = passwordText
 
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
-            .setMessage("Please provide all fields.")
+            .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }
             .show()
     }

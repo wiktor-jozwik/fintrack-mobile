@@ -3,15 +3,19 @@ package com.example.moneytracker.view.ui
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddOperationBinding
+import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.viewmodel.AddOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -53,8 +57,8 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
         setDatePickerListener()
 
-        moneyAmountFocusListener()
-        operationNameFocusListener()
+        moneyAmountTextChangeListener()
+        operationNameTextChangeListener()
 
         fulfillSpinners()
 
@@ -113,16 +117,34 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         }
     }
 
-
-    private fun moneyAmountFocusListener() {
-        binding.inputMoneyAmountText.setOnFocusChangeListener { _, focused ->
-            if (!focused) {
-                binding.inputMoneyAmountContainer.helperText = validMoneyAmount()
-            }
+    private fun submitForm() {
+        if (
+            validateMoneyAmount() == null &&
+            validateOperationName() == null &&
+            validateCategoryPresence() &&
+            validateCurrencyPresence()
+        ) {
+            validForm()
+        } else {
+            invalidForm()
         }
     }
 
-    private fun validMoneyAmount(): String? {
+    private fun moneyAmountTextChangeListener() {
+        binding.inputMoneyAmountText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.inputMoneyAmountContainer.helperText = validateMoneyAmount()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
+
+    }
+
+    private fun validateMoneyAmount(): String? {
         val moneyAmountText = binding.inputMoneyAmountText.text.toString()
 
         if (moneyAmountText.isEmpty()) {
@@ -131,30 +153,33 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         return null
     }
 
-    private fun operationNameFocusListener() {
-        binding.inputNameText.setOnFocusChangeListener { _, focused ->
-            if (!focused) {
-                binding.inputNameContainer.helperText = validOperationName()
+    private fun operationNameTextChangeListener() {
+        binding.inputNameText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
-        }
+
+            override fun afterTextChanged(p0: Editable?) {
+                binding.inputNameContainer.helperText = validateOperationName()
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+        })
     }
 
-    private fun validOperationName(): String? {
-        if (binding.inputNameText.text.toString().isEmpty()) {
+    private fun validateOperationName(): String? {
+        if (binding.inputNameText.text.toString().removeSpaces().isBlank()) {
             return "Please provide name of operation."
         }
         return null
     }
 
-    private fun submitForm() {
-        val validMoneyAmount = binding.inputMoneyAmountText.text?.isNotEmpty()
-        val validName = binding.inputNameText.text?.isNotEmpty()
+    private fun validateCategoryPresence(): Boolean {
+        return binding.inputCategory.selectedItem != null && binding.inputCategory.selectedItem.toString().isNotEmpty()
+    }
 
-        if (validMoneyAmount == true && validName == true) {
-            validForm()
-        } else {
-            invalidForm()
-        }
+    private fun validateCurrencyPresence(): Boolean {
+        return binding.inputCurrency.selectedItem != null && binding.inputCurrency.selectedItem.toString().isNotEmpty()
     }
 
     private fun validForm() {
@@ -171,8 +196,12 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                 binding.inputCategory.selectedItem.toString(),
                 binding.inputCurrency.selectedItem.toString()
             ).observe(viewLifecycleOwner) {
-                binding.inputNameText.text = null
-                binding.inputMoneyAmountText.text = null
+
+                binding.inputNameText.setText("")
+                binding.inputNameContainer.helperText = ""
+                binding.inputMoneyAmountText.setText("")
+                binding.inputMoneyAmountContainer.helperText = ""
+
                 switchToYearlySummary()
             }
         }
@@ -186,12 +215,15 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun invalidForm() {
-        binding.inputNameContainer.helperText = validOperationName()
-        binding.inputMoneyAmountContainer.helperText = validMoneyAmount()
+        val nameText = validateOperationName()
+        val moneyAmountText = validateMoneyAmount()
+
+        binding.inputNameContainer.helperText = nameText
+        binding.inputMoneyAmountContainer.helperText = moneyAmountText
 
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
-            .setMessage("Please provide all fields.")
+            .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }
             .show()
     }

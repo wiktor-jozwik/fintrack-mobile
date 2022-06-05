@@ -2,6 +2,9 @@ package com.example.moneytracker.view.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddCategoryBinding
 import com.example.moneytracker.service.model.CategoryType
+import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.viewmodel.AddCategoryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -19,6 +23,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     private val addCategoryViewModel: AddCategoryViewModel by viewModels()
+
     @Inject
     lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
 
@@ -36,36 +41,20 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null;
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        operationNameFocusListener()
+        categoryNameTextChangeListener()
 
         binding.buttonSave.setOnClickListener {
             submitForm()
         }
     }
 
-    private fun operationNameFocusListener() {
-        binding.inputNameText.setOnFocusChangeListener { _, focused ->
-            if (!focused) {
-                binding.inputNameContainer.helperText = validCategoryName()
-            }
-        }
-    }
-
-    private fun validCategoryName(): String? {
-        if (binding.inputNameText.text.toString().isEmpty()) {
-            return "Please provide name of category."
-        }
-        return null
-    }
-
     private fun submitForm() {
-        val validName = binding.inputNameText.text?.isNotEmpty()
         val selectedRadioButtonText =
             listOf(binding.radioButtonIncome, binding.radioButtonOutcome).first {
                 it.id == binding.inputCategoryType.checkedRadioButtonId
@@ -76,7 +65,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
 
         val operationCategoryType = categoryType[selectedRadioButtonText]
 
-        if (validName == true && operationCategoryType != null) {
+        if (validateCategoryName() == null && operationCategoryType != null) {
             validForm(operationCategoryType)
         } else {
             invalidForm()
@@ -86,10 +75,13 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     private fun validForm(operationCategoryType: CategoryType) {
         viewLifecycleOwner.lifecycleScope.launch {
             addCategoryViewModel.addNewCategory(
-                binding.inputNameText.text.toString(),
+                binding.inputNameText.text.toString().removeSpaces(),
                 operationCategoryType
             ).observe(viewLifecycleOwner) {
-                binding.inputNameText.text = null
+
+                binding.inputNameText.setText("")
+                binding.inputNameContainer.helperText = ""
+
                 switchToSummary()
             }
         }
@@ -102,12 +94,34 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         }
     }
 
+
+    private fun categoryNameTextChangeListener() {
+        binding.inputNameText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+
+            override fun afterTextChanged(p0: Editable?) {}
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                binding.inputNameContainer.helperText = validateCategoryName()
+            }
+        })
+    }
+
+    private fun validateCategoryName(): String? {
+        if (binding.inputNameText.text.toString().removeSpaces().isBlank()) {
+            return "Please provide name of category."
+        }
+        return null
+    }
+
     private fun invalidForm() {
-        binding.inputNameContainer.helperText = validCategoryName()
+        val categoryNameText = validateCategoryName()
+
+        binding.inputNameContainer.helperText = categoryNameText
 
         AlertDialog.Builder(activity)
             .setTitle("Invalid form")
-            .setMessage("Please provide all fields.")
+            .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }
             .show()
     }

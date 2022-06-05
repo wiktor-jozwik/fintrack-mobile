@@ -57,7 +57,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Money Amount"
-                android:inputType="numberDecimal"></com.google.android.material.textfield.TextInputEditText>
+                android:inputType="numberDecimal">
+
+            </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,21 +91,21 @@
             android:id="@+id/textCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select category"
-            android:layout_marginTop="60dp"
             android:layout_marginStart="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:layout_marginTop="60dp"
+            android:text="Select category"
             app:layout_constraintEnd_toStartOf="@+id/inputCategory"
-            app:layout_constraintTop_toBottomOf="@+id/buttonDatePicker"/>
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonDatePicker" />
 
         <Spinner
             android:id="@+id/inputCategory"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="30dp"
+            android:spinnerMode="dropdown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@id/textCategory"
@@ -113,12 +115,12 @@
             android:id="@+id/textCurrency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Select currency"
-            android:layout_marginTop="60dp"
             android:layout_marginStart="30dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            android:layout_marginTop="60dp"
+            android:text="Select currency"
             app:layout_constraintEnd_toStartOf="@+id/inputCurrency"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputCategory" />
 
         <Spinner
@@ -128,8 +130,8 @@
             android:layout_marginTop="60dp"
             android:layout_marginEnd="30dp"
             android:spinnerMode="dropdown"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
             app:layout_constraintStart_toEndOf="@+id/textCurrency"
             app:layout_constraintTop_toBottomOf="@+id/inputCategory" />
 
