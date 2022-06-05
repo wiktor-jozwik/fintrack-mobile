@@ -49,7 +49,7 @@ class LoginUserFragment @Inject constructor(
 
         binding.buttonGoBack.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
                 commit()
             }
         }
@@ -89,7 +89,7 @@ class LoginUserFragment @Inject constructor(
 
     private fun switchToHome() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, homeFragment)
+            replace(R.id.mainFrameLayoutFragment, homeFragment)
             commit()
         }
     }

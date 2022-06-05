@@ -1,7 +1,9 @@
 package com.example.moneytracker.view.ui
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentOperationListBinding
+import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.view.adapter.OperationListAdapter
 import com.example.moneytracker.viewmodel.OperationListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,24 +40,33 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         _binding = null;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            operationListViewModel.getAllOperations().observe(viewLifecycleOwner) {
-                binding.recyclerViewOperationItems.adapter = OperationListAdapter(
-                    it,
-                    OperationListAdapter.OnClickListener { operationId ->
-                        deleteOperation(
-                            operationId,
-                            binding.recyclerViewOperationItems.adapter as OperationListAdapter
-                        )
-                    }
-                )
-            }
+        val deleteLambda = OperationListAdapter.OnClickListener { operationId ->
+            deleteOperation(
+                operationId,
+                binding.recyclerViewOperationItems.adapter as OperationListAdapter
+            )
         }
 
-        binding.recyclerViewOperationItems.layoutManager = LinearLayoutManager(activity)
+        viewLifecycleOwner.lifecycleScope.launch {
+            operationListViewModel.getAllOperations().observe(viewLifecycleOwner) {
+
+                binding.recyclerViewOperationItems.adapter = OperationListAdapter(
+                    it,
+                    deleteLambda
+                )
+            }
+            binding.recyclerViewOperationItems.adapter!!.notifyDataSetChanged()
+        }
+
+        binding.recyclerViewOperationItems.adapter = OperationListAdapter(
+            listOf(),
+            deleteLambda
+        )
+        binding.recyclerViewOperationItems.layoutManager = LinearLayoutManager(context)
     }
 
     private fun deleteOperation(operationId: Int, adapter: OperationListAdapter) {

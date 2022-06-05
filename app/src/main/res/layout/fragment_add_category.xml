@@ -37,17 +37,26 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/textCategoryType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select category type"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameContainer" />
+
 
     <RadioGroup
         android:id="@+id/inputCategoryType"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputNameContainer">
+        app:layout_constraintTop_toBottomOf="@+id/textCategoryType">
 
         <RadioButton
             android:id="@+id/radioButtonOutcome"

@@ -1,6 +1,7 @@
 package com.example.moneytracker.view.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,21 +38,22 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("MT", "555")
 
-        parentFragmentManager.beginTransaction().apply {
+        childFragmentManager.beginTransaction().apply {
             replace(R.id.frameLayoutFragmentList, operationListFragment)
             commit()
         }
 
         binding.buttonShowOperations.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
+            childFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragmentList, operationListFragment)
                 commit()
             }
         }
 
         binding.buttonShowCategories.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
+            childFragmentManager.beginTransaction().apply {
                 replace(R.id.frameLayoutFragmentList, categoryListFragment)
                 commit()
             }

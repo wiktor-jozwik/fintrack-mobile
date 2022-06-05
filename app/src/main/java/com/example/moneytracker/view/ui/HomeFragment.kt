@@ -57,34 +57,34 @@ class HomeFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
 
         childFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
+            replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
 
         binding.buttonHome.setOnClickListener {
             childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
+                replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
                 commit()
             }
         }
 
         binding.buttonList.setOnClickListener {
             childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, listFragment)
+                replace(R.id.homeFrameLayoutFragment, listFragment)
                 commit()
             }
         }
 
         binding.buttonAdd.setOnClickListener {
             childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, addFragment)
+                replace(R.id.homeFrameLayoutFragment, addFragment)
                 commit()
             }
         }
 
         binding.buttonChart.setOnClickListener {
             childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, chartFragment)
+                replace(R.id.homeFrameLayoutFragment, chartFragment)
                 commit()
             }
         }
@@ -101,7 +101,7 @@ class HomeFragment @Inject constructor(
                 }
 
                 parentFragmentManager.beginTransaction().apply {
-                    replace(R.id.frameLayoutFragment, welcomeFragment)
+                    replace(R.id.homeFrameLayoutFragment, welcomeFragment)
                     commit()
                 }
             }

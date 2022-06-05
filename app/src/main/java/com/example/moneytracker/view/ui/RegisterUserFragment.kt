@@ -46,7 +46,7 @@ class RegisterUserFragment: Fragment(R.layout.fragment_user_register) {
 
         binding.buttonGoBack.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
                 commit()
             }
         }
@@ -83,7 +83,7 @@ class RegisterUserFragment: Fragment(R.layout.fragment_user_register) {
 
     private fun switchToLogin() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, loginUserFragment)
+            replace(R.id.mainFrameLayoutFragment, loginUserFragment)
             commit()
         }
     }

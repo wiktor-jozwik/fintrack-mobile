@@ -31,12 +31,12 @@ class MainActivity : AppCompatActivity() {
 
         if (token != null && token.isNotEmpty()) {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, homeFragment)
+                replace(R.id.mainFrameLayoutFragment, homeFragment)
                 commit()
             }
         } else {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
                 commit()
             }
         }

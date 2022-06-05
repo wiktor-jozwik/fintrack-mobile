@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.ui
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoryListBinding
 import com.example.moneytracker.view.adapter.CategoryListAdapter
+import com.example.moneytracker.view.adapter.OperationListAdapter
 import com.example.moneytracker.viewmodel.CategoryListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -37,23 +39,31 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         _binding = null;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val deleteLambda = CategoryListAdapter.OnClickListener { categoryId ->
+            deleteCategory(
+                categoryId,
+                binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
+            )
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             categoryListViewModel.getAllCategories().observe(viewLifecycleOwner) {
                 binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
                     it,
-                    CategoryListAdapter.OnClickListener { categoryId ->
-                        deleteCategory(
-                            categoryId,
-                            binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
-                        )
-                    }
+                    deleteLambda
                 )
+                binding.recyclerViewCategoryItems.adapter!!.notifyDataSetChanged()
             }
         }
 
+        binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
+            listOf(),
+            deleteLambda
+        )
         binding.recyclerViewCategoryItems.layoutManager = LinearLayoutManager(activity)
     }
 

@@ -14,7 +14,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ConfigModule {
-
     @Singleton
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
@@ -24,7 +23,6 @@ object ConfigModule {
     @Provides
     fun provideServiceInterceptor(sharedPreferences: SharedPreferences): ServiceInterceptor =
         ServiceInterceptor(sharedPreferences)
-
 
     @Singleton
     @Provides

@@ -40,14 +40,14 @@ class WelcomeFragment : Fragment(R.layout.fragment_welcome) {
 
         binding.buttonShowLogin.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, loginUserFragment)
+                replace(R.id.mainFrameLayoutFragment, loginUserFragment)
                 commit()
             }
         }
 
         binding.buttonShowRegister.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragment, registerFragment)
+                replace(R.id.mainFrameLayoutFragment, registerFragment)
                 commit()
             }
         }

@@ -40,14 +40,14 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         binding.buttonShowAddOperation.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragmentAdd, addOperationFragment)
+                replace(R.id.homeFrameLayoutFragment, addOperationFragment)
                 commit()
             }
         }
 
         binding.buttonShowAddCategory.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragmentAdd, addCategoryFragment)
+                replace(R.id.homeFrameLayoutFragment, addCategoryFragment)
                 commit()
             }
         }

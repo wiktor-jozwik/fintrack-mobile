@@ -6,7 +6,7 @@
 
 
     <FrameLayout
-        android:id="@+id/frameLayoutFragment"
+        android:id="@+id/homeFrameLayoutFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonHome"
@@ -25,7 +25,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonAdd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutFragment"
+        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_main" />
 
     <ImageView
@@ -39,7 +39,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonList"
         app:layout_constraintStart_toEndOf="@+id/buttonHome"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutFragment"
+        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_add" />
 
     <ImageView
@@ -53,7 +53,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonChart"
         app:layout_constraintStart_toEndOf="@+id/buttonAdd"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutFragment"
+        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_operations_list" />
 
     <ImageView
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/buttonLogout"
         app:layout_constraintStart_toEndOf="@+id/buttonList"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutFragment"
+        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_chart" />
 
     <ImageView
@@ -81,7 +81,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonChart"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayoutFragment"
+        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_logout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

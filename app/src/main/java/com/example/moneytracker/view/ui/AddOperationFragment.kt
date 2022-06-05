@@ -180,7 +180,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     private fun switchToYearlySummary() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
+            replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
     }

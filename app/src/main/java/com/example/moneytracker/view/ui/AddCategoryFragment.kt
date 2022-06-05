@@ -97,7 +97,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
 
     private fun switchToSummary() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, yearlyOperationsSummaryFragment)
+            replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
     }
