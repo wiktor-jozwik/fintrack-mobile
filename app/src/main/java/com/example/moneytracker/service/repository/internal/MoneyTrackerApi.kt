@@ -8,8 +8,11 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
+import javax.inject.Inject
 
-object MoneyTrackerApi {
+class MoneyTrackerApi @Inject constructor(
+    private val serviceInterceptor: ServiceInterceptor,
+) {
     val api: MoneyTrackerApiInterface by lazy {
         Retrofit.Builder()
             .addConverterFactory(
@@ -24,7 +27,12 @@ object MoneyTrackerApi {
                 )
             )
             .baseUrl(Constants.MONEY_TRACKER_URL)
-            .client(OkHttpClient.Builder().addInterceptor(OkHttpProfilerInterceptor()).build())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(OkHttpProfilerInterceptor())
+                    .addInterceptor(serviceInterceptor)
+                    .build()
+            )
             .build()
             .create(MoneyTrackerApiInterface::class.java)
     }

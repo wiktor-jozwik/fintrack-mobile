@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,12 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var welcomeFragment: WelcomeFragment
+
+    @Inject
+    lateinit var homeFragment: HomeFragment
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,9 +27,18 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragment, welcomeFragment)
-            commit()
+        val token = sharedPreferences.getString(getString(R.string.jwt_auth_token), "")
+
+        if (token != null && token.isNotEmpty()) {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, homeFragment)
+                commit()
+            }
+        } else {
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, welcomeFragment)
+                commit()
+            }
         }
     }
 }

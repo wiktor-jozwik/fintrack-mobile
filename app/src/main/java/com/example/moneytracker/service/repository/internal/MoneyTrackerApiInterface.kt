@@ -1,7 +1,8 @@
 package com.example.moneytracker.service.repository.internal
 
 import com.example.moneytracker.service.model.*
-import com.example.moneytracker.service.model.createinputs.*
+import com.example.moneytracker.service.model.createinputs.CategoryCreateInput
+import com.example.moneytracker.service.model.createinputs.OperationCreateInput
 import com.example.moneytracker.service.model.createinputs.userlogin.UserLoginInput
 import com.example.moneytracker.service.model.createinputs.userregister.UserRegisterInput
 import com.example.moneytracker.service.utils.Constants.Companion.MONEY_TRACKER_API_ENDPOINT
@@ -43,5 +44,5 @@ interface MoneyTrackerApiInterface {
     suspend fun loginUser(@Body user: UserLoginInput): JwtResponse
 
     @DELETE("logout")
-    suspend fun logoutUser()
+    suspend fun logoutUser(): ApiResponse
 }

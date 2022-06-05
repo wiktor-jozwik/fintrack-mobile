@@ -1,5 +1,6 @@
 package com.example.moneytracker.modules
 
+import android.content.SharedPreferences
 import com.example.moneytracker.view.ui.*
 import dagger.Module
 import dagger.Provides
@@ -16,7 +17,8 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideLoginFragment() = LoginUserFragment()
+    fun provideLoginFragment(sharedPreferences: SharedPreferences) =
+        LoginUserFragment(sharedPreferences)
 
     @Singleton
     @Provides
@@ -24,7 +26,7 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideHomeFragment() = HomeFragment()
+    fun provideHomeFragment(sharedPreferences: SharedPreferences) = HomeFragment(sharedPreferences)
 
     @Singleton
     @Provides

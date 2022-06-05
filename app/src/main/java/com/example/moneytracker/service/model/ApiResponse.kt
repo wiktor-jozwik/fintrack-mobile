@@ -1,7 +1,6 @@
 package com.example.moneytracker.service.model
 
-data class JwtResponse(
+data class ApiResponse(
     val success: Boolean,
-    val jwt: String,
     val response: String
 )

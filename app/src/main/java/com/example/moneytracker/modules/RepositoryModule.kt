@@ -1,12 +1,13 @@
 package com.example.moneytracker.modules
 
-import com.example.moneytracker.service.repository.internal.CurrencyRepository
-import com.example.moneytracker.service.repository.internal.CategoryRepository
-import com.example.moneytracker.service.repository.internal.OperationRepository
-import com.example.moneytracker.service.repository.internal.UserRepository
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.preference.PreferenceManager
+import com.example.moneytracker.service.repository.internal.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -15,17 +16,17 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun provideUserRepository() = UserRepository()
+    fun provideUserRepository(moneyTrackerApi: MoneyTrackerApi) = UserRepository(moneyTrackerApi)
 
     @Singleton
     @Provides
-    fun provideOperationRepository() = OperationRepository()
+    fun provideOperationRepository(moneyTrackerApi: MoneyTrackerApi) = OperationRepository(moneyTrackerApi)
 
     @Singleton
     @Provides
-    fun provideOperationCategoryRepository() = CategoryRepository()
+    fun provideOperationCategoryRepository(moneyTrackerApi: MoneyTrackerApi) = CategoryRepository(moneyTrackerApi)
 
     @Singleton
     @Provides
-    fun provideCurrencyRepository() = CurrencyRepository()
+    fun provideCurrencyRepository(moneyTrackerApi: MoneyTrackerApi) = CurrencyRepository(moneyTrackerApi)
 }

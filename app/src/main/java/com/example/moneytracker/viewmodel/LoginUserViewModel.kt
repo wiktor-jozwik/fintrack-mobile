@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.JwtResponse
@@ -20,8 +19,6 @@ class LoginUserViewModel @Inject constructor(
         val userLoginInput = UserLoginInput(UserLoginForm(email, password))
 
         userLoginResponse.value = userRepository.loginUser(userLoginInput)
-
-        Log.d("MT", userLoginResponse.value.toString())
 
         return userLoginResponse
     }

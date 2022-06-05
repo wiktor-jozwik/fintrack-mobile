@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Money Tracker</string>
+    <string name="jwt_auth_token">JWT_AUTH_TOKEN</string>
 </resources>

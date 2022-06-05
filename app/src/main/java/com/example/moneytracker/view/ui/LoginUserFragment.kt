@@ -1,6 +1,7 @@
 package com.example.moneytracker.view.ui
 
 import android.app.AlertDialog
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginUserFragment : Fragment(R.layout.fragment_user_login) {
+class LoginUserFragment @Inject constructor(
+    private val sharedPreferences: SharedPreferences,
+) : Fragment(R.layout.fragment_user_login) {
     private val loginUserViewModel: LoginUserViewModel by viewModels()
 
     @Inject
@@ -66,6 +69,10 @@ class LoginUserFragment : Fragment(R.layout.fragment_user_login) {
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
             ).observe(viewLifecycleOwner) {
+                with(sharedPreferences.edit()) {
+                    putString(getString(R.string.jwt_auth_token), it.jwt)
+                    apply()
+                }
                 switchToHome()
             }
         }
