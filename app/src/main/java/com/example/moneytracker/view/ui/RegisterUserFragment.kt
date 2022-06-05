@@ -21,6 +21,8 @@ class RegisterUserFragment: Fragment(R.layout.fragment_user_register) {
 
     @Inject
     lateinit var loginUserFragment: LoginUserFragment
+    @Inject
+    lateinit var welcomeFragment: WelcomeFragment
 
     private var _binding: FragmentUserRegisterBinding? = null
     private val binding get() = _binding!!
@@ -41,6 +43,13 @@ class RegisterUserFragment: Fragment(R.layout.fragment_user_register) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonGoBack.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, welcomeFragment)
+                commit()
+            }
+        }
 
         binding.buttonRegister.setOnClickListener {
             submitForm()

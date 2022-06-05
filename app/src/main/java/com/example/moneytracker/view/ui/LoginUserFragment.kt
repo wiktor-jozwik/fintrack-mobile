@@ -24,6 +24,8 @@ class LoginUserFragment @Inject constructor(
 
     @Inject
     lateinit var homeFragment: HomeFragment
+    @Inject
+    lateinit var welcomeFragment: WelcomeFragment
 
     private var _binding: FragmentUserLoginBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +46,13 @@ class LoginUserFragment @Inject constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonGoBack.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.frameLayoutFragment, welcomeFragment)
+                commit()
+            }
+        }
 
         binding.buttonLogin.setOnClickListener {
             submitForm()
