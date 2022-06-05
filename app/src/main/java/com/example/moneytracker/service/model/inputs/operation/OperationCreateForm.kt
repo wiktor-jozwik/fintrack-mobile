@@ -1,8 +1,8 @@
-package com.example.moneytracker.service.model.createinputs
+package com.example.moneytracker.service.model.inputs.operation
 
 import com.google.gson.annotations.SerializedName
 
-data class OperationCreateInput(
+data class OperationCreateForm(
     @SerializedName("name")
     val name: String,
     @SerializedName("money_amount")

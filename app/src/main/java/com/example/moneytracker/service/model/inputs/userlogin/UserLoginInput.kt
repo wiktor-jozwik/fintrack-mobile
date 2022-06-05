@@ -1,4 +1,4 @@
-package com.example.moneytracker.service.model.createinputs.userlogin
+package com.example.moneytracker.service.model.inputs.userlogin
 
 import com.google.gson.annotations.SerializedName
 

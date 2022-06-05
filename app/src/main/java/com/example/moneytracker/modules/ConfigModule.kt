@@ -30,5 +30,4 @@ object ConfigModule {
     @Provides
     fun provideMoneyTrackerApi(serviceInterceptor: ServiceInterceptor): MoneyTrackerApi =
         MoneyTrackerApi(serviceInterceptor)
-
 }

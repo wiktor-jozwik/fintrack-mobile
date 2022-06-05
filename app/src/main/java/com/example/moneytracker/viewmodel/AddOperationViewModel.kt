@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.Currency
 import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.createinputs.OperationCreateInput
+import com.example.moneytracker.service.model.inputs.operation.OperationCreateForm
+import com.example.moneytracker.service.model.inputs.operation.OperationCreateInput
 import com.example.moneytracker.service.repository.internal.CategoryRepository
 import com.example.moneytracker.service.repository.internal.CurrencyRepository
 import com.example.moneytracker.service.repository.internal.OperationRepository
@@ -33,7 +34,15 @@ class AddOperationViewModel @Inject constructor(
         currencyName: String
     ): LiveData<Operation> {
         val operationCreateInput =
-            OperationCreateInput(name, moneyAmount, date.toString(), categoryName, currencyName)
+            OperationCreateInput(
+                OperationCreateForm(
+                    name,
+                    moneyAmount,
+                    date.toString(),
+                    categoryName,
+                    currencyName
+                )
+            )
 
         operationSaveResponse.value = operationRepository.addNewOperation(operationCreateInput)
 

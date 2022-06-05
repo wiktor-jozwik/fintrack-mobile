@@ -10,10 +10,9 @@ class ServiceInterceptor @Inject constructor(
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        var request = chain.request()
-
         val token = sharedPreferences.getString("JWT_AUTH_TOKEN", "")
 
+        var request = chain.request()
         if (request.header("No-Authentication") == null) {
             if (token != null && token.isNotEmpty()) {
                 val bearerToken = "Bearer $token"
@@ -22,7 +21,6 @@ class ServiceInterceptor @Inject constructor(
                     .addHeader("Authorization", bearerToken)
                     .build()
             }
-
         }
 
         return chain.proceed(request)

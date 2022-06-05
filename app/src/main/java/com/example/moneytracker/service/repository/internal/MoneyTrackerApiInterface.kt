@@ -1,10 +1,10 @@
 package com.example.moneytracker.service.repository.internal
 
 import com.example.moneytracker.service.model.*
-import com.example.moneytracker.service.model.createinputs.CategoryCreateInput
-import com.example.moneytracker.service.model.createinputs.OperationCreateInput
-import com.example.moneytracker.service.model.createinputs.userlogin.UserLoginInput
-import com.example.moneytracker.service.model.createinputs.userregister.UserRegisterInput
+import com.example.moneytracker.service.model.inputs.category.CategoryCreateInput
+import com.example.moneytracker.service.model.inputs.operation.OperationCreateInput
+import com.example.moneytracker.service.model.inputs.userlogin.UserLoginInput
+import com.example.moneytracker.service.model.inputs.userregister.UserRegisterInput
 import com.example.moneytracker.service.utils.Constants.Companion.MONEY_TRACKER_API_ENDPOINT
 import retrofit2.http.*
 import java.time.LocalDate

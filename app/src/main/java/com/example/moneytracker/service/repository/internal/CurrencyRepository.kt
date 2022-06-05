@@ -11,11 +11,9 @@ class CurrencyRepository @Inject constructor(
 ) {
     private val nbpApi: INbpApi = NbpApi()
 
-    suspend fun getAllCurrencies(): List<Currency> {
-        return moneyTrackerApi.api.getAllCurrencies()
-    }
+    suspend fun getAllCurrencies(): List<Currency> =
+        moneyTrackerApi.api.getAllCurrencies()
 
-    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double {
-        return nbpApi.getPriceOfCurrencyAtDay(currency, date)
-    }
+    fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double =
+        nbpApi.getPriceOfCurrencyAtDay(currency, date)
 }
