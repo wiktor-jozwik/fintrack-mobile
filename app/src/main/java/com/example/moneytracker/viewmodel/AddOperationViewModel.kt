@@ -1,7 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.service.model.Currency
@@ -12,6 +10,7 @@ import com.example.moneytracker.service.repository.internal.CategoryRepository
 import com.example.moneytracker.service.repository.internal.CurrencyRepository
 import com.example.moneytracker.service.repository.internal.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import retrofit2.Response
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -22,17 +21,13 @@ class AddOperationViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 
-    private val currenciesResponse: MutableLiveData<List<Currency>> = MutableLiveData()
-    private val categoriesResponse: MutableLiveData<List<Category>> = MutableLiveData()
-    private val operationSaveResponse: MutableLiveData<Operation> = MutableLiveData()
-
     suspend fun addNewOperation(
         name: String,
         moneyAmount: Double,
         date: LocalDate,
         categoryName: String,
         currencyName: String
-    ): LiveData<Operation> {
+    ): Response<Operation> {
         val operationCreateInput =
             OperationCreateInput(
                 OperationCreateForm(
@@ -44,20 +39,14 @@ class AddOperationViewModel @Inject constructor(
                 )
             )
 
-        operationSaveResponse.value = operationRepository.addNewOperation(operationCreateInput)
-
-        return operationSaveResponse
+        return operationRepository.addNewOperation(operationCreateInput)
     }
 
-    suspend fun getAllCurrencies(): MutableLiveData<List<Currency>> {
-        currenciesResponse.value = currencyRepository.getAllCurrencies()
-
-        return currenciesResponse
+    suspend fun getAllCurrencies(): Response<List<Currency>> {
+        return currencyRepository.getAllCurrencies()
     }
 
-    suspend fun getAllCategories(): MutableLiveData<List<Category>> {
-        categoriesResponse.value = categoryRepository.getAllCategories()
-
-        return categoriesResponse
+    suspend fun getAllCategories(): Response<List<Category>> {
+        return categoryRepository.getAllCategories()
     }
 }

@@ -9,16 +9,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.core.widget.doAfterTextChanged
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddOperationBinding
+import com.example.moneytracker.service.model.Category
+import com.example.moneytracker.service.model.Currency
+import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.view.ui.utils.removeSpaces
+import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddOperationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -35,6 +41,10 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     @Inject
     lateinit var datePickerFragment: DatePickerFragment
 
+    private var addOperationLiveData: MutableLiveData<Response<Operation>> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
+    private var categoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
+
     private var _binding: FragmentAddOperationBinding? = null
     private val binding get() = _binding!!
 
@@ -50,17 +60,34 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+        addOperationLiveData = MutableLiveData()
+        currencyLiveData = MutableLiveData()
+        categoryLiveData = MutableLiveData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        clearHelpers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        addOperationLiveData.observe(viewLifecycleOwner) {
+            try {
+                responseErrorHandler(it)
+                switchToYearlySummary()
+                clearFields()
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+        fulfillSpinners()
 
         setDatePickerListener()
 
         moneyAmountTextChangeListener()
         operationNameTextChangeListener()
-
-        fulfillSpinners()
 
         binding.buttonSave.setOnClickListener {
             submitForm()
@@ -93,27 +120,38 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     private fun fulfillSpinners() {
         viewLifecycleOwner.lifecycleScope.launch {
-            addOperationViewModel.getAllCurrencies().observe(viewLifecycleOwner) {
-                val currenciesNames = it.map { currency -> currency.name }
-
-                val currenciesAdapter = ArrayAdapter(
-                    activity as Context,
-                    android.R.layout.simple_spinner_item,
-                    currenciesNames
-                )
-                binding.inputCurrency.adapter = currenciesAdapter
+            currencyLiveData.observe(viewLifecycleOwner) {
+                try {
+                    val res = responseErrorHandler(it)
+                    val currenciesNames = res.map { currency -> currency.name }
+                    val currenciesAdapter = ArrayAdapter(
+                        activity as Context,
+                        android.R.layout.simple_spinner_item,
+                        currenciesNames
+                    )
+                    binding.inputCurrency.adapter = currenciesAdapter
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                }
             }
 
-            addOperationViewModel.getAllCategories().observe(viewLifecycleOwner) {
-                val categoriesNames = it.map { category -> category.name }
+            currencyLiveData.value = addOperationViewModel.getAllCurrencies()
 
-                val categoriesAdapter = ArrayAdapter(
-                    activity as Context,
-                    android.R.layout.simple_spinner_item,
-                    categoriesNames
-                )
-                binding.inputCategory.adapter = categoriesAdapter
+            categoryLiveData.observe(viewLifecycleOwner) {
+                try {
+                    val res = responseErrorHandler(it)
+                    val categoriesNames = res.map { category -> category.name }
+                    val categoriesAdapter = ArrayAdapter(
+                        activity as Context,
+                        android.R.layout.simple_spinner_item,
+                        categoriesNames
+                    )
+                    binding.inputCategory.adapter = categoriesAdapter
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                }
             }
+            categoryLiveData.value = addOperationViewModel.getAllCategories()
         }
     }
 
@@ -175,11 +213,13 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     }
 
     private fun validateCategoryPresence(): Boolean {
-        return binding.inputCategory.selectedItem != null && binding.inputCategory.selectedItem.toString().isNotEmpty()
+        return binding.inputCategory.selectedItem != null && binding.inputCategory.selectedItem.toString()
+            .isNotEmpty()
     }
 
     private fun validateCurrencyPresence(): Boolean {
-        return binding.inputCurrency.selectedItem != null && binding.inputCurrency.selectedItem.toString().isNotEmpty()
+        return binding.inputCurrency.selectedItem != null && binding.inputCurrency.selectedItem.toString()
+            .isNotEmpty()
     }
 
     private fun validForm() {
@@ -189,21 +229,13 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         )
 
         viewLifecycleOwner.lifecycleScope.launch {
-            addOperationViewModel.addNewOperation(
+            addOperationLiveData.value = addOperationViewModel.addNewOperation(
                 binding.inputNameText.text.toString(),
                 binding.inputMoneyAmountText.text.toString().toDouble(),
                 date,
                 binding.inputCategory.selectedItem.toString(),
                 binding.inputCurrency.selectedItem.toString()
-            ).observe(viewLifecycleOwner) {
-
-                binding.inputNameText.setText("")
-                binding.inputNameContainer.helperText = ""
-                binding.inputMoneyAmountText.setText("")
-                binding.inputMoneyAmountContainer.helperText = ""
-
-                switchToYearlySummary()
-            }
+            )
         }
     }
 
@@ -212,6 +244,17 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
             replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
+    }
+
+    private fun clearFields() {
+        binding.inputNameText.setText("")
+        binding.inputMoneyAmountText.setText("")
+        clearHelpers()
+    }
+
+    private fun clearHelpers() {
+        binding.inputNameContainer.helperText = ""
+        binding.inputMoneyAmountContainer.helperText = ""
     }
 
     private fun invalidForm() {

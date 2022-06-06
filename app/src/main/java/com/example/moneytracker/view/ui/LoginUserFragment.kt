@@ -11,15 +11,21 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserLoginBinding
+import com.example.moneytracker.service.model.JwtResponse
+import com.example.moneytracker.service.model.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
+import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.LoginUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -32,6 +38,8 @@ class LoginUserFragment @Inject constructor(
     lateinit var homeFragment: HomeFragment
     @Inject
     lateinit var welcomeFragment: WelcomeFragment
+
+    private var loginUserLiveData: MutableLiveData<Response<JwtResponse>> = MutableLiveData()
 
     private var _binding: FragmentUserLoginBinding? = null
     private val binding get() = _binding!!
@@ -47,11 +55,32 @@ class LoginUserFragment @Inject constructor(
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null;
+        _binding = null
+        loginUserLiveData = MutableLiveData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        clearHelpers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        loginUserLiveData.observe(viewLifecycleOwner) {
+            try {
+                val res = responseErrorHandler(it)
+                with(sharedPreferences.edit()) {
+                    putString("JWT_AUTH_TOKEN", res.jwt)
+                    apply()
+                }
+
+                switchToHome()
+                clearFields()
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+        }
 
         emailTextChangeListener()
         passwordTextChangeListener()
@@ -121,22 +150,10 @@ class LoginUserFragment @Inject constructor(
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            loginUserViewModel.loginUser(
+            loginUserLiveData.value = loginUserViewModel.loginUser(
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
-            ).observe(viewLifecycleOwner) {
-                with(sharedPreferences.edit()) {
-                    putString("JWT_AUTH_TOKEN", it.jwt)
-                    apply()
-                }
-
-                binding.inputEmailText.setText("")
-                binding.inputEmailContainer.helperText = ""
-                binding.inputPasswordText.setText("")
-                binding.inputPasswordContainer.helperText = ""
-
-                switchToHome()
-            }
+            )
         }
     }
 
@@ -145,6 +162,17 @@ class LoginUserFragment @Inject constructor(
             replace(R.id.mainFrameLayoutFragment, homeFragment)
             commit()
         }
+    }
+
+    private fun clearFields() {
+        binding.inputEmailText.setText("")
+        binding.inputPasswordText.setText("")
+        clearHelpers()
+    }
+
+    private fun clearHelpers() {
+        binding.inputEmailContainer.helperText = ""
+        binding.inputPasswordContainer.helperText = ""
     }
 
     private fun invalidForm() {

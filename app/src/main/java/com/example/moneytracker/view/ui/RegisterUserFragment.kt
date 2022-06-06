@@ -4,19 +4,23 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserRegisterBinding
+import com.example.moneytracker.service.model.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
+import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.RegisterUserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -28,6 +32,8 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
 
     @Inject
     lateinit var welcomeFragment: WelcomeFragment
+
+    private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
 
     private var _binding: FragmentUserRegisterBinding? = null
     private val binding get() = _binding!!
@@ -44,10 +50,26 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+        registerUserLiveData = MutableLiveData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        clearHelpers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        registerUserLiveData.observe(viewLifecycleOwner) {
+            try {
+                responseErrorHandler(it)
+                switchToLogin()
+                clearFields()
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+        }
 
         emailTextChangeListener()
         passwordTextChangeListener()
@@ -74,21 +96,11 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            registerUserViewModel.registerUser(
+            registerUserLiveData.value = registerUserViewModel.registerUser(
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
                 binding.inputPasswordConfirmationText.text.toString()
-            ).observe(viewLifecycleOwner) {
-
-                binding.inputEmailText.setText("")
-                binding.inputEmailContainer.helperText = ""
-                binding.inputPasswordText.setText("")
-                binding.inputPasswordContainer.helperText = ""
-                binding.inputPasswordConfirmationText.setText("")
-                binding.inputPasswordConfirmationContainer.helperText = ""
-
-                switchToLogin()
-            }
+            )
         }
     }
 
@@ -99,6 +111,18 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
         }
     }
 
+    private fun clearFields() {
+        binding.inputEmailText.setText("")
+        binding.inputPasswordText.setText("")
+        binding.inputPasswordConfirmationText.setText("")
+        clearHelpers()
+    }
+
+    private fun clearHelpers() {
+        binding.inputEmailContainer.helperText = ""
+        binding.inputPasswordContainer.helperText = ""
+        binding.inputPasswordConfirmationContainer.helperText = ""
+    }
 
     private fun emailTextChangeListener() {
         binding.inputEmailText.addTextChangedListener(object : TextWatcher {
@@ -116,7 +140,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
     private fun validateEmail(): String? {
         val emailText = binding.inputEmailText.text.toString()
 
-        if (emailText.isEmpty()) {
+        if (emailText.isBlank()) {
             return "Please provide email."
         } else if (!emailText.isValidEmail()) {
             return "Please provide valid email."

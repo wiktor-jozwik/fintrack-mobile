@@ -38,7 +38,6 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("MT", "555")
 
         childFragmentManager.beginTransaction().apply {
             replace(R.id.frameLayoutFragmentList, operationListFragment)
