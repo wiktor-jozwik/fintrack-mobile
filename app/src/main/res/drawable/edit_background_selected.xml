@@ -9,10 +9,7 @@
             <stroke
                 android:width="2dp"
                 android:color="@color/primary" />
-
             <solid android:color="@color/background" />
-
         </shape>
-
     </item>
 </layer-list>

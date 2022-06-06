@@ -1,13 +1,9 @@
 package com.example.moneytracker.view.ui
 
-import android.app.AlertDialog
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,10 +15,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserLoginBinding
 import com.example.moneytracker.service.model.JwtResponse
-import com.example.moneytracker.service.model.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.LoginUserViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -95,7 +91,7 @@ class LoginUserFragment @Inject constructor(
             submitForm()
         }
     }
-    
+
     private fun submitForm() {
         if (validateEmail() == null && validatePassword() == null) {
             validForm()
@@ -181,7 +177,7 @@ class LoginUserFragment @Inject constructor(
         binding.inputEmailContainer.helperText = emailText
         binding.inputPasswordContainer.helperText = passwordText
 
-        AlertDialog.Builder(activity)
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")
             .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }

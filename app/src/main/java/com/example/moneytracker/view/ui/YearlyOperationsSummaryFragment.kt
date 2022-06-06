@@ -53,14 +53,34 @@ class YearlyOperationsSummaryFragment : Fragment() {
         yearlyOperationsLiveData.observe(viewLifecycleOwner) {
             val (totalIncome, totalOutcome, balance) = it
             binding.textIncomesValue.text = "$totalIncome PLN"
-            binding.textIncomesValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_green))
+            binding.textIncomesValue.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.main_green
+                )
+            )
             binding.textOutcomesValue.text = "$totalOutcome PLN"
-            binding.textOutcomesValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_red))
+            binding.textOutcomesValue.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.main_red
+                )
+            )
             binding.textBalanceValue.text = "$balance PLN"
             if (balance > 0) {
-                binding.textBalanceValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_green))
+                binding.textBalanceValue.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.main_green
+                    )
+                )
             } else if (balance < 0) {
-                binding.textBalanceValue.setTextColor(ContextCompat.getColor(requireContext(), R.color.main_red))
+                binding.textBalanceValue.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.main_red
+                    )
+                )
             }
         }
 

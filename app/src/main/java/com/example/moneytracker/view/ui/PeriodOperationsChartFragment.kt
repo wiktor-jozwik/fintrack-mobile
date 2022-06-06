@@ -80,11 +80,12 @@ class PeriodOperationsChartFragment : Fragment() {
 
     private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            periodOperationsChartViewModel.getLastXMonthsOperations(size).observe(viewLifecycleOwner) {
-                val xLabels = getMonthXLabels(size)
+            periodOperationsChartViewModel.getLastXMonthsOperations(size)
+                .observe(viewLifecycleOwner) {
+                    val xLabels = getMonthXLabels(size)
 
-                drawChart(it, size, xLabels)
-            }
+                    drawChart(it, size, xLabels)
+                }
         }
     }
 

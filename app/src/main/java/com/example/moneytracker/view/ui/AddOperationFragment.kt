@@ -1,6 +1,5 @@
 package com.example.moneytracker.view.ui
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -22,6 +21,7 @@ import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddOperationViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -264,7 +264,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         binding.inputNameContainer.helperText = nameText
         binding.inputMoneyAmountContainer.helperText = moneyAmountText
 
-        AlertDialog.Builder(activity)
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")
             .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }

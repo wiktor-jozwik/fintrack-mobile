@@ -1,6 +1,5 @@
 package com.example.moneytracker.view.ui
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,6 +18,7 @@ import com.example.moneytracker.service.model.CategoryType
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddCategoryViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -145,7 +145,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
 
         binding.inputNameContainer.helperText = categoryNameText
 
-        AlertDialog.Builder(activity)
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")
             .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }

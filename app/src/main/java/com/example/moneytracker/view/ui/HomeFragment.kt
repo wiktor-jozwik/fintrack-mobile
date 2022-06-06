@@ -15,6 +15,7 @@ import com.example.moneytracker.databinding.FragmentHomeBinding
 import com.example.moneytracker.service.model.ApiResponse
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.HomeViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -111,9 +112,18 @@ class HomeFragment @Inject constructor(
         }
 
         binding.buttonLogout.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                logoutUserLiveData.value = homeViewModel.logoutUser()
-            }
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+                .setCancelable(false)
+                .setMessage("Are you sure to logout?")
+                .setPositiveButton("Yes") { _, _ ->
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        logoutUserLiveData.value = homeViewModel.logoutUser()
+                    }
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
     }
 

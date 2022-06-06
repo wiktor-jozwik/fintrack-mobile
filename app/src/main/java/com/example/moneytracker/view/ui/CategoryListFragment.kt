@@ -1,7 +1,6 @@
 package com.example.moneytracker.view.ui
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

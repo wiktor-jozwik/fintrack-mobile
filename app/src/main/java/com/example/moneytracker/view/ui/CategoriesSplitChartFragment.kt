@@ -13,8 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoriesSplitChartBinding
 import com.example.moneytracker.viewmodel.CategoriesSplitChartViewModel
-import com.example.moneytracker.viewmodel.PeriodOperationsChartViewModel
-import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -50,14 +48,15 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
-            categoriesSplitChartViewModel.getSplitOperationByCategories().observe(viewLifecycleOwner) {
-                Log.d("MT", it.toString())
-                drawChart(it.first, it.second)
-            }
+            categoriesSplitChartViewModel.getSplitOperationByCategories()
+                .observe(viewLifecycleOwner) {
+                    Log.d("MT", it.toString())
+                    drawChart(it.first, it.second)
+                }
         }
     }
 
-    private  fun drawChart(xLabels: List<String>, bars: List<BarEntry>) {
+    private fun drawChart(xLabels: List<String>, bars: List<BarEntry>) {
         val barChart = binding.barChart
 
         val categoriesSet = BarDataSet(bars, "Categories");
@@ -100,7 +99,7 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
         rightAxis.isEnabled = false
 
         barChart.data = data
-        barChart.setVisibleXRangeMaximum(10f)
+        barChart.setVisibleXRangeMaximum(8f)
         barChart.invalidate()
         barChart.animateY(700)
     }
