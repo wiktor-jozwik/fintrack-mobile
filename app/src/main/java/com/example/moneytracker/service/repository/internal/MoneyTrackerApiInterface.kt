@@ -36,7 +36,7 @@ interface MoneyTrackerApiInterface {
     suspend fun saveCategory(@Body category: CategoryCreateInput): Response<Category>
 
     @DELETE("${MONEY_TRACKER_API_ENDPOINT}/categories/{id}")
-    suspend fun deleteCategory(@Path("id") categoryId: Int): Category
+    suspend fun deleteCategory(@Path("id") categoryId: Int): Response<Category>
 
     @POST("register")
     suspend fun registerUser(@Body user: UserRegisterInput): Response<User>

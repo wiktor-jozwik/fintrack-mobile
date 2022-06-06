@@ -12,15 +12,11 @@ import javax.inject.Inject
 class CategoryListViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
-    private val deleteResponse: MutableLiveData<Category> = MutableLiveData()
-
     suspend fun getAllCategories(): Response<List<Category>> {
         return categoryRepository.getAllCategories()
     }
 
-    suspend fun deleteOperation(categoryId: Int): MutableLiveData<Category> {
-        deleteResponse.value = categoryRepository.deleteCategory(categoryId)
-
-        return deleteResponse
+    suspend fun deleteCategory(categoryId: Int): Response<Category> {
+        return categoryRepository.deleteCategory(categoryId)
     }
 }

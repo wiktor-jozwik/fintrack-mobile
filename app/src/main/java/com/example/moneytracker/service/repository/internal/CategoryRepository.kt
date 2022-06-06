@@ -14,6 +14,6 @@ class CategoryRepository @Inject constructor(
     suspend fun addNewCategory(category: CategoryCreateInput): Response<Category> =
         moneyTrackerApi.api.saveCategory(category)
 
-    suspend fun deleteCategory(categoryId: Int): Category =
+    suspend fun deleteCategory(categoryId: Int): Response<Category> =
         moneyTrackerApi.api.deleteCategory(categoryId)
 }

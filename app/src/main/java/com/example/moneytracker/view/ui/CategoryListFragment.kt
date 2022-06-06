@@ -27,6 +27,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
     private val categoryListViewModel: CategoryListViewModel by viewModels()
 
     private var listCategoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
+    private var deleteCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
 
     private var _binding: FragmentCategoryListBinding? = null
     private val binding get() = _binding!!
@@ -44,6 +45,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         super.onDestroyView()
         _binding = null
         listCategoryLiveData = MutableLiveData()
+        deleteCategoryLiveData = MutableLiveData()
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -53,7 +55,6 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         val deleteLambda = CategoryListAdapter.OnClickListener { categoryId ->
             deleteCategory(
                 categoryId,
-                binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
             )
         }
 
@@ -70,6 +71,16 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
             }
         }
 
+        deleteCategoryLiveData.observe(viewLifecycleOwner) {
+            try {
+                val res = responseErrorHandler(it)
+                val adapter = binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
+                adapter.deleteCategory(res.id)
+            } catch (e: Exception) {
+                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             listCategoryLiveData.value = categoryListViewModel.getAllCategories()
         }
@@ -81,14 +92,13 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         binding.recyclerViewCategoryItems.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun deleteCategory(categoryId: Int, adapter: CategoryListAdapter) {
+    private fun deleteCategory(categoryId: Int) {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage("Are you sure?")
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    categoryListViewModel.deleteOperation(categoryId)
-                    adapter.deleteCategory(categoryId)
+                    deleteCategoryLiveData.value = categoryListViewModel.deleteCategory(categoryId)
                 }
             }
             .setNegativeButton("No") { dialog, _ ->
