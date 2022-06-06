@@ -6,32 +6,32 @@
 
     <TextView
         android:id="@+id/textRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextTitle"
         android:text="Register your account using email and password"
-        app:layout_constraintBottom_toTopOf="@+id/inputEmailContainer"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="120dp" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputEmailContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
-        app:helperTextTextColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/inputPasswordContainer"
+        style="@style/TextInputLayout"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineTitle"
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputEmailText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/TextInputEditText"
             android:hint="Email"
             android:inputType="textEmailAddress">
 
@@ -40,13 +40,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputPasswordContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
-        app:helperTextTextColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/inputPasswordConfirmationContainer"
+        style="@style/TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputEmailContainer"
@@ -54,8 +48,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputPasswordText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/TextInputEditText"
             android:hint="Password"
             android:inputType="textPassword">
 
@@ -64,13 +57,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputPasswordConfirmationContainer"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
-        app:helperTextTextColor="@color/red"
-        app:layout_constraintBottom_toTopOf="@+id/guidelineButtons"
+        style="@style/TextInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputPasswordContainer"
@@ -78,8 +65,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputPasswordConfirmationText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/TextInputEditText"
             android:hint="Reapat password"
             android:inputType="textPassword">
 
@@ -87,34 +73,30 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/buttonGoBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:layout_marginStart="30dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintBottom_toBottomOf="@+id/guidelineButtons"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRegister"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputPasswordConfirmationContainer"/>
-
-    <Button
         android:id="@+id/buttonRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/FullWidthButton"
         android:text="Register"
-        android:layout_marginEnd="30dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintBottom_toBottomOf="@+id/guidelineButtons"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonGoBack"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputPasswordConfirmationContainer" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineButtons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintGuide_end="100dp"
-        android:orientation="horizontal"/>
+    <TextView
+        android:id="@+id/loginText"
+        style="@style/LoginRegisterText"
+        android:text="Have an account?"
+        app:layout_constraintEnd_toStartOf="@id/loginLink"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
+
+    <TextView
+        android:id="@+id/loginLink"
+        style="@style/LoginRegisterLink"
+        android:text="Login instead"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@id/loginText"
+        app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

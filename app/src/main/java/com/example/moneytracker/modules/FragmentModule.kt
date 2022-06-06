@@ -13,12 +13,11 @@ import javax.inject.Singleton
 object FragmentModule {
     @Singleton
     @Provides
-    fun provideWelcomeFragment() = WelcomeFragment()
-
-    @Singleton
-    @Provides
-    fun provideLoginFragment(sharedPreferences: SharedPreferences) =
-        LoginUserFragment(sharedPreferences)
+    fun provideLoginFragment(
+        sharedPreferences: SharedPreferences,
+        registerUserFragment: RegisterUserFragment
+    ) =
+        LoginUserFragment(sharedPreferences, registerUserFragment)
 
     @Singleton
     @Provides

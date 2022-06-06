@@ -45,7 +45,7 @@ class CategoryListAdapter(
 
     override fun onBindViewHolder(holder: OperationCategoryViewHolder, position: Int) {
         val currentCategory = categoriesList[position]
-        val color = if (currentCategory.type == CategoryType.OUTCOME) R.color.red else R.color.green
+        val color = if (currentCategory.type == CategoryType.OUTCOME) R.color.main_red else R.color.main_green
 
         holder.binding.apply {
             id.text = currentCategory.id.toString()

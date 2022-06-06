@@ -16,10 +16,7 @@
 
     <ImageView
         android:id="@+id/buttonHome"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/HomeNavigationItem"
         android:contentDescription="Home screen"
         android:text="{home}"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,10 +27,7 @@
 
     <ImageView
         android:id="@+id/buttonAdd"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/HomeNavigationItem"
         android:contentDescription="Add"
         android:text="{add}"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,10 +38,7 @@
 
     <ImageView
         android:id="@+id/buttonList"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/HomeNavigationItem"
         android:contentDescription="List"
         android:text="{list}"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -58,10 +49,7 @@
 
     <ImageView
         android:id="@+id/buttonChart"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/HomeNavigationItem"
         android:contentDescription="Show chart"
         android:text="{chart}"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,10 +60,7 @@
 
     <ImageView
         android:id="@+id/buttonLogout"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        style="@style/HomeNavigationItem"
         android:contentDescription="Logout"
         android:text="{logout}"
         app:layout_constraintBottom_toBottomOf="parent"

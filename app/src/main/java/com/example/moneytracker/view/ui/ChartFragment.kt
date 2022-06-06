@@ -106,12 +106,17 @@ class ChartFragment : Fragment() {
     ) {
         val barChart = binding.barChart
 
+//        barChart.getAxisLeft().setTextColor(); // left y-axis
+//        barChart.getXAxis().setTextColor(...);
+//        barChart.getLegend().setTextColor(...);
+//        barChart.getDescription().setTextColor(...);
+
         val incomesSet = BarDataSet(incomeAndOutcomesBars.first, "Incomes");
-        incomesSet.color = ContextCompat.getColor(requireContext(), R.color.green)
+        incomesSet.color = ContextCompat.getColor(requireContext(), R.color.main_green)
         incomesSet.valueTextSize = 10f;
 
         val outcomesSet = BarDataSet(incomeAndOutcomesBars.second, "Outcomes");
-        outcomesSet.color = ContextCompat.getColor(requireContext(), R.color.red)
+        outcomesSet.color = ContextCompat.getColor(requireContext(), R.color.main_red)
         outcomesSet.valueTextSize = 10f;
 
         val data = BarData(incomesSet, outcomesSet)
@@ -135,6 +140,7 @@ class ChartFragment : Fragment() {
         legend.orientation = Legend.LegendOrientation.HORIZONTAL
         legend.setDrawInside(false)
         legend.form = Legend.LegendForm.CIRCLE
+        legend.textColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val xAxis = barChart.xAxis
         xAxis.granularity = 1f
@@ -145,6 +151,7 @@ class ChartFragment : Fragment() {
         xAxis.axisMinimum = 0f
         xAxis.axisMaximum = size.toFloat()
         xAxis.textSize = 12f
+        xAxis.textColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         xAxis.labelCount = xLabels.size;
         xAxis.valueFormatter = IndexAxisValueFormatter(xLabels)
@@ -153,8 +160,8 @@ class ChartFragment : Fragment() {
         leftAxis.removeAllLimitLines()
         leftAxis.typeface = Typeface.DEFAULT
         leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        leftAxis.textColor = Color.BLACK
         leftAxis.setDrawGridLines(false)
+        leftAxis.textColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val rightAxis = barChart.axisRight
         rightAxis.isEnabled = false

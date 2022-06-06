@@ -16,33 +16,24 @@
 
         <RadioButton
             android:id="@+id/radioButtonThreeMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/ChartRadioButton"
             android:checked="true"
             android:text="3 Month" />
 
         <RadioButton
             android:id="@+id/radioButtonSixMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/ChartRadioButton"
+
             android:text="6 Month" />
 
         <RadioButton
             android:id="@+id/radioButtonTwelveMonth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="3dp"
+            style="@style/ChartRadioButton"
             android:text="12 Month" />
 
         <RadioButton
             android:id="@+id/radioButtonAllTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="3dp"
+            style="@style/ChartRadioButton"
             android:text="All time" />
     </RadioGroup>
 

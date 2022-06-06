@@ -30,9 +30,6 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
     @Inject
     lateinit var loginUserFragment: LoginUserFragment
 
-    @Inject
-    lateinit var welcomeFragment: WelcomeFragment
-
     private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
 
     private var _binding: FragmentUserRegisterBinding? = null
@@ -74,9 +71,9 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
         emailTextChangeListener()
         passwordTextChangeListener()
 
-        binding.buttonGoBack.setOnClickListener {
+        binding.loginLink.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, loginUserFragment)
                 commit()
             }
         }

@@ -12,7 +12,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var welcomeFragment: WelcomeFragment
+    lateinit var loginUserFragment: LoginUserFragment
 
     @Inject
     lateinit var homeFragment: HomeFragment
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, loginUserFragment)
                 commit()
             }
         }

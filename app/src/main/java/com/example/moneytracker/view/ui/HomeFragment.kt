@@ -39,7 +39,7 @@ class HomeFragment @Inject constructor(
     lateinit var chartFragment: ChartFragment
 
     @Inject
-    lateinit var welcomeFragment: WelcomeFragment
+    lateinit var loginUserFragment: LoginUserFragment
 
     private var logoutUserLiveData: MutableLiveData<Response<ApiResponse>> = MutableLiveData()
 
@@ -71,7 +71,7 @@ class HomeFragment @Inject constructor(
                     putString("JWT_AUTH_TOKEN", "")
                     apply()
                 }
-                switchToWelcome()
+                switchToLogin()
             } catch (e: Exception) {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
             }
@@ -117,9 +117,9 @@ class HomeFragment @Inject constructor(
         }
     }
 
-    private fun switchToWelcome() {
+    private fun switchToLogin() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, welcomeFragment)
+            replace(R.id.mainFrameLayoutFragment, loginUserFragment)
             commit()
         }
     }

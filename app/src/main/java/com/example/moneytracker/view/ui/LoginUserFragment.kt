@@ -31,13 +31,12 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class LoginUserFragment @Inject constructor(
     private val sharedPreferences: SharedPreferences,
+    private val registerUserFragment: RegisterUserFragment
 ) : Fragment(R.layout.fragment_user_login) {
     private val loginUserViewModel: LoginUserViewModel by viewModels()
 
     @Inject
     lateinit var homeFragment: HomeFragment
-    @Inject
-    lateinit var welcomeFragment: WelcomeFragment
 
     private var loginUserLiveData: MutableLiveData<Response<JwtResponse>> = MutableLiveData()
 
@@ -85,9 +84,9 @@ class LoginUserFragment @Inject constructor(
         emailTextChangeListener()
         passwordTextChangeListener()
 
-        binding.buttonGoBack.setOnClickListener {
+        binding.registerLink.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, welcomeFragment)
+                replace(R.id.mainFrameLayoutFragment, registerUserFragment)
                 commit()
             }
         }
