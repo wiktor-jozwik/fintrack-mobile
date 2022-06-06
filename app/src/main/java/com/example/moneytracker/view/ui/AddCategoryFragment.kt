@@ -29,7 +29,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     private val addCategoryViewModel: AddCategoryViewModel by viewModels()
 
     @Inject
-    lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
+    lateinit var addFragment: AddFragment
 
     private var addCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
 
@@ -62,7 +62,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         addCategoryLiveData.observe(viewLifecycleOwner) {
             try {
                 responseErrorHandler(it)
-                switchToYearlySummary()
+                switchToAdd()
                 clearFields()
                 binding.radioButtonOutcome.isChecked = true
                 binding.radioButtonIncome.isChecked = false
@@ -105,9 +105,9 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         }
     }
 
-    private fun switchToYearlySummary() {
+    private fun switchToAdd() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
+            replace(R.id.homeFrameLayoutFragment, addFragment)
             commit()
         }
     }

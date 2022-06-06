@@ -4,47 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RadioGroup
-        android:id="@+id/radioGroupPeriod"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/textTitle"
+        style="@style/TextTitle"
+        android:text="Show chart"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowPeriodOperationsChart"
+        style="@style/FullWidthButton"
+        android:layout_marginTop="30dp"
+        android:text="Operations period"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShowCategoriesSplitChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="@id/guidelineTitle" />
 
-        <RadioButton
-            android:id="@+id/radioButtonThreeMonth"
-            style="@style/ChartRadioButton"
-            android:checked="true"
-            android:text="3 Month" />
-
-        <RadioButton
-            android:id="@+id/radioButtonSixMonth"
-            style="@style/ChartRadioButton"
-
-            android:text="6 Month" />
-
-        <RadioButton
-            android:id="@+id/radioButtonTwelveMonth"
-            style="@style/ChartRadioButton"
-            android:text="12 Month" />
-
-        <RadioButton
-            android:id="@+id/radioButtonAllTime"
-            style="@style/ChartRadioButton"
-            android:text="All time" />
-    </RadioGroup>
-
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/barChart"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowCategoriesSplitChart"
+        style="@style/FullWidthButton"
+        android:layout_marginTop="30dp"
+        android:text="Categories split"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroupPeriod" />
+        app:layout_constraintTop_toBottomOf="@id/buttonShowPeriodOperationsChart" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

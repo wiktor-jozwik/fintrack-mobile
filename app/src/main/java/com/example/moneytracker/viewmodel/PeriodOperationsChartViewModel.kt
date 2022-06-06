@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
 
 
 @HiltViewModel
-class ChartViewModel @Inject constructor(
+class PeriodOperationsChartViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {

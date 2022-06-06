@@ -36,7 +36,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     private val addOperationViewModel: AddOperationViewModel by viewModels()
 
     @Inject
-    lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
+    lateinit var addFragment: AddFragment
 
     @Inject
     lateinit var datePickerFragment: DatePickerFragment
@@ -75,7 +75,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         addOperationLiveData.observe(viewLifecycleOwner) {
             try {
                 responseErrorHandler(it)
-                switchToYearlySummary()
+                addFragment()
                 clearFields()
             } catch (e: Exception) {
                 Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
@@ -239,9 +239,9 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         }
     }
 
-    private fun switchToYearlySummary() {
+    private fun addFragment() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
+            replace(R.id.homeFrameLayoutFragment, addFragment)
             commit()
         }
     }

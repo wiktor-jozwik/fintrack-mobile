@@ -53,6 +53,14 @@ object FragmentModule {
 
     @Singleton
     @Provides
+    fun providePeriodOperationsChartFragment() = PeriodOperationsChartFragment()
+
+    @Singleton
+    @Provides
+    fun provideCategoriesSplitChartFragment() = CategoriesSplitChartFragment()
+
+    @Singleton
+    @Provides
     fun provideListFragment() = ListFragment()
 
     @Singleton
