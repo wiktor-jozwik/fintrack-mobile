@@ -22,6 +22,7 @@ class CategoriesSplitChartViewModel @Inject constructor(
             MutableLiveData()
 
         var categoriesNames = mutableListOf<String>()
+        val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
 
         val operations = operationRepository.getAllOperations()
@@ -32,15 +33,14 @@ class CategoriesSplitChartViewModel @Inject constructor(
             it.category
         }
 
-        var index = 0
         categoriesOutcomeGrouped.forEach { (category, operations) ->
             var outcome = 0.0
             operations.forEach {
-                outcome += it.moneyAmount
+                val currencyPrice = currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
+                outcome += it.moneyAmount * currencyPrice
             }
             categoriesNames.add(category.name)
-            categoriesBars.add(BarEntry(index.toFloat(), outcome.toFloat()))
-            index++
+            categoriesValues.add(outcome)
         }
 
         val maxCharsOfCategory = 10
@@ -52,10 +52,15 @@ class CategoriesSplitChartViewModel @Inject constructor(
             }
         }.toMutableList()
 
-        outcomesCategoriesSplit.value = Pair(
-            categoriesNames,
-            categoriesBars
-        )
+        val sortedCategories = categoriesNames.zip(categoriesValues).sortedByDescending {
+            it.second
+        }.unzip()
+
+        sortedCategories.second.forEachIndexed { index, value ->
+            categoriesBars.add(BarEntry(index.toFloat(), value.toFloat()))
+        }
+
+        outcomesCategoriesSplit.value = Pair(sortedCategories.first, categoriesBars)
 
         return outcomesCategoriesSplit
     }
