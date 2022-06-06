@@ -16,6 +16,7 @@ import com.example.moneytracker.databinding.FragmentOperationListBinding
 import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.view.adapter.OperationListAdapter
 import com.example.moneytracker.viewmodel.OperationListViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -70,9 +71,9 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
     }
 
     private fun deleteOperation(operationId: Int, adapter: OperationListAdapter) {
-        val builder = AlertDialog.Builder(activity)
-        builder.setMessage("Are you sure?")
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setCancelable(false)
+            .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
                     operationListViewModel.deleteOperation(operationId)
@@ -82,7 +83,6 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
             .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
-        val alert = builder.create()
-        alert.show()
+            .show()
     }
 }

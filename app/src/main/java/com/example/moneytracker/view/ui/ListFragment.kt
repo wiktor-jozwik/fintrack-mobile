@@ -39,21 +39,16 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        childFragmentManager.beginTransaction().apply {
-            replace(R.id.frameLayoutFragmentList, operationListFragment)
-            commit()
-        }
-
         binding.buttonShowOperations.setOnClickListener {
-            childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragmentList, operationListFragment)
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, operationListFragment)
                 commit()
             }
         }
 
         binding.buttonShowCategories.setOnClickListener {
-            childFragmentManager.beginTransaction().apply {
-                replace(R.id.frameLayoutFragmentList, categoryListFragment)
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, categoryListFragment)
                 commit()
             }
         }

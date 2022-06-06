@@ -18,6 +18,7 @@ import com.example.moneytracker.service.model.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.RegisterUserViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -192,10 +193,10 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
         binding.inputPasswordContainer.helperText = passwordText
         binding.inputPasswordConfirmationContainer.helperText = passwordText
 
-        AlertDialog.Builder(activity)
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")
             .setMessage("Please provide requested fields.")
-            .setPositiveButton("Okay") { _, _ -> {} }
+            .setPositiveButton("Okay") { _, _ -> }
             .show()
     }
 }

@@ -4,24 +4,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/buttonShowAddOperation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Operation"
-        app:layout_constraintEnd_toStartOf="@+id/buttonShowAddCategory"
+    <TextView
+        android:id="@+id/textTitle"
+        style="@style/TextTitle"
+        android:text="Add"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonShowAddCategory"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowAddOperation"
+        style="@style/FullWidthButton"
+        android:layout_marginTop="30dp"
+        android:text="Operation"
+        app:layout_constraintBottom_toTopOf="@+id/buttonShowAddCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineTitle" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowAddCategory"
+        style="@style/FullWidthButton"
+        android:layout_marginTop="30dp"
         android:text="Category"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonShowAddOperation"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonShowAddOperation" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

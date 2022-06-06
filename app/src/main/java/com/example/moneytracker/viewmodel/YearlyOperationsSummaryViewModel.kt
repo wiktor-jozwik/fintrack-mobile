@@ -1,14 +1,10 @@
 package com.example.moneytracker.viewmodel
 
-import android.app.AlertDialog
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.service.model.CategoryType
+import com.example.moneytracker.service.model.Operation
 import com.example.moneytracker.service.repository.internal.CurrencyRepository
 import com.example.moneytracker.service.repository.internal.OperationRepository
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -21,8 +17,6 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
 ) : ViewModel() {
     private val MONEY_FACTOR = 100
     private val CURRENCY_FACTOR = 10000
-//    private val yearlyCalculationResponse: MutableLiveData<Triple<Double, Double, Double>> =
-//        MutableLiveData()
 
     suspend fun calculateYearlyIncomeAndOutcome(): Triple<Double, Double, Double> {
         val year = LocalDate.now().year
@@ -38,7 +32,6 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
             roundMoney(totalOutcome),
             roundMoney(balance)
         )
-//        return yearlyCalculationResponse
     }
 
     private fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Double, Double> {

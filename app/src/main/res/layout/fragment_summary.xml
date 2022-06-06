@@ -7,41 +7,49 @@
     tools:context=".view.ui.MainActivity">
 
     <TextView
-        android:id="@+id/textSubtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:id="@+id/textTitle"
+        style="@style/TextTitle"
         android:text="Track your money"
-        android:textSize="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textCurrentYear"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="120dp" />
+
+    <TextView
+        android:id="@+id/textSubtitleTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         android:text="Current year summary"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textSubtitle" />
+        app:layout_constraintTop_toTopOf="@+id/guidelineTitle" />
 
     <TextView
         android:id="@+id/textIncomes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:text="Incomes"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textCurrentYear" />
+        app:layout_constraintTop_toBottomOf="@+id/textSubtitleTitle" />
 
     <TextView
         android:id="@+id/textIncomesValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="{income}"
+        android:text=""
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textIncomes" />
@@ -52,6 +60,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:text="Outcomes"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textIncomesValue" />
@@ -60,7 +69,8 @@
         android:id="@+id/textOutcomesValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="{outcome}"
+        android:text=""
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textOutcomes" />
@@ -71,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
         android:text="Balance"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textOutcomesValue" />
@@ -79,27 +90,10 @@
         android:id="@+id/textBalanceValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="{balance}"
+        android:text=""
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textBalance" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/Outcomes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="textOutcomes,textOutcomesValue" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/Incomes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="textIncomes,textIncomesValue" />
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/Balance"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="textBalanceValue,textBalance" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

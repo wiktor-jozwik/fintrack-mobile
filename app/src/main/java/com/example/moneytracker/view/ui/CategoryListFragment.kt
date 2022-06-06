@@ -18,6 +18,7 @@ import com.example.moneytracker.service.model.Category
 import com.example.moneytracker.view.adapter.CategoryListAdapter
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.CategoryListViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -93,9 +94,9 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
     }
 
     private fun deleteCategory(categoryId: Int) {
-        val builder = AlertDialog.Builder(activity)
-        builder.setMessage("Are you sure?")
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setCancelable(false)
+            .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
                     deleteCategoryLiveData.value = categoryListViewModel.deleteCategory(categoryId)
@@ -104,7 +105,6 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
             .setNegativeButton("No") { dialog, _ ->
                 dialog.dismiss()
             }
-        val alert = builder.create()
-        alert.show()
+            .show()
     }
 }

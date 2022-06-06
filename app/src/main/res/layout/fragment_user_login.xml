@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/textLogin"
         style="@style/TextTitle"
-        android:text="Provide your user account information"
+        android:text="Login to track your operations"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonLogin"
         style="@style/FullWidthButton"
         android:text="Login"
@@ -67,7 +67,7 @@
     <TextView
         android:id="@+id/registerText"
         style="@style/LoginRegisterText"
-        android:text="Without account?"
+        android:text="Don't have account?"
         app:layout_constraintEnd_toStartOf="@id/registerLink"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"

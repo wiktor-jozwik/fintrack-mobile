@@ -106,18 +106,15 @@ class ChartFragment : Fragment() {
     ) {
         val barChart = binding.barChart
 
-//        barChart.getAxisLeft().setTextColor(); // left y-axis
-//        barChart.getXAxis().setTextColor(...);
-//        barChart.getLegend().setTextColor(...);
-//        barChart.getDescription().setTextColor(...);
-
         val incomesSet = BarDataSet(incomeAndOutcomesBars.first, "Incomes");
         incomesSet.color = ContextCompat.getColor(requireContext(), R.color.main_green)
         incomesSet.valueTextSize = 10f;
+        incomesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val outcomesSet = BarDataSet(incomeAndOutcomesBars.second, "Outcomes");
         outcomesSet.color = ContextCompat.getColor(requireContext(), R.color.main_red)
         outcomesSet.valueTextSize = 10f;
+        outcomesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val data = BarData(incomesSet, outcomesSet)
         barChart.axisLeft.axisMinimum = 0f;

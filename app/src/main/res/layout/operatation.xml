@@ -70,7 +70,8 @@
             android:contentDescription="Delete icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_delete" />
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="@color/main_red" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
