@@ -5,53 +5,48 @@ import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
+import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class YearlyOperationsSummaryViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
-    private val currencyRepository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository,
+    private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
-    private val MONEYFACTOR = 100
-    private val CURRENCY_FACTOR = 10000
-
     suspend fun calculateYearlyIncomeAndOutcome(): Triple<Double, Double, Double> {
         val year = LocalDate.now().year
         val startDate = LocalDate.parse("${year}-01-01")
         val endDate = LocalDate.parse("${year}-12-31")
         val yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate)
 
-        val (totalIncome, totalOutcome) = calculateIncomeAndOutcome(yearlyOperations)
-        val balance = totalIncome - totalOutcome
+        val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomeAndOutcome(yearlyOperations)
+        val balanceDecimal = totalIncomeDecimal - totalOutcomeDecimal
 
         return Triple(
-            roundMoney(totalIncome),
-            roundMoney(totalOutcome),
-            roundMoney(balance)
+            currencyCalculator.convertToFloatAndRound(totalIncomeDecimal),
+            currencyCalculator.convertToFloatAndRound(totalOutcomeDecimal),
+            currencyCalculator.convertToFloatAndRound(balanceDecimal)
         )
     }
 
-    private suspend fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Double, Double> {
-        var totalIncome = 0.0
-        var totalOutcome = 0.0
+    private suspend fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Long, Long> {
+        var totalIncomeDecimal: Long = 0
+        var totalOutcomeDecimal: Long = 0
 
         operations.forEach {
             val currencyPrice =
                 currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
-            if (it.category.type == CategoryType.INCOME) {
-                totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEYFACTOR
-            } else if (it.category.type == CategoryType.OUTCOME) {
-                totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEYFACTOR
+            val moneyDecimal = currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
+
+            when (it.category.type) {
+                CategoryType.INCOME -> totalIncomeDecimal += moneyDecimal
+                CategoryType.OUTCOME -> totalOutcomeDecimal += moneyDecimal
             }
         }
-        return Pair(totalIncome, totalOutcome)
-    }
-
-    private fun roundMoney(money: Double): Double {
-        return (money / (CURRENCY_FACTOR * MONEYFACTOR) * 100.0).roundToInt() / 100.0
+        return Pair(totalIncomeDecimal, totalOutcomeDecimal)
     }
 }

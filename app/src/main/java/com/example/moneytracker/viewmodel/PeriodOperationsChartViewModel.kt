@@ -6,6 +6,7 @@ import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
+import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -13,13 +14,13 @@ import java.time.ZoneId
 import java.time.temporal.TemporalAdjusters
 import java.util.*
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 
 @HiltViewModel
 class PeriodOperationsChartViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
-    private val currencyRepository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository,
+    private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
 
     suspend fun getLastXMonthsOperations(x: Int): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
@@ -85,20 +86,32 @@ class PeriodOperationsChartViewModel @Inject constructor(
         val incomesBars = mutableListOf<BarEntry>()
 
         yearlyOperations.forEach { (date, operations) ->
-            var incomes = 0.0
-            var outcomes = 0.0
-            operations.forEach { op ->
+            var incomesDecimal: Long = 0
+            var outcomesDecimal: Long = 0
+            operations.forEach {
                 val currencyPrice =
-                    currencyRepository.getPriceOfCurrencyAtDay(op.currency.name, op.date)
+                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
-                if (op.category.type == CategoryType.INCOME) {
-                    incomes += op.moneyAmount * currencyPrice
-                } else if (op.category.type == CategoryType.OUTCOME) {
-                    outcomes += op.moneyAmount * currencyPrice
+                val moneyDecimal =
+                    currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
+
+                when (it.category.type) {
+                    CategoryType.INCOME -> incomesDecimal += moneyDecimal
+                    CategoryType.OUTCOME -> outcomesDecimal += moneyDecimal
                 }
             }
-            outcomesBars.add(BarEntry(date.toFloat(), roundMoney(outcomes).toFloat()))
-            incomesBars.add(BarEntry(date.toFloat(), roundMoney(incomes).toFloat()))
+            incomesBars.add(
+                BarEntry(
+                    date.toFloat(),
+                    currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                )
+            )
+            outcomesBars.add(
+                BarEntry(
+                    date.toFloat(),
+                    currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                )
+            )
         }
 
         return Pair(incomesBars, outcomesBars)
@@ -112,40 +125,54 @@ class PeriodOperationsChartViewModel @Inject constructor(
         var indexToInsert = 0
 
         monthOperations.forEach { (month, operations) ->
-            var incomes = 0.0
-            var outcomes = 0.0
+            var incomesDecimal: Long = 0
+            var outcomesDecimal: Long = 0
 
-            operations.forEach { op ->
+            operations.forEach {
                 val currencyPrice =
-                    currencyRepository.getPriceOfCurrencyAtDay(op.currency.name, op.date)
+                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
-                if (op.category.type == CategoryType.INCOME) {
-                    incomes += op.moneyAmount * currencyPrice
-                } else if (op.category.type == CategoryType.OUTCOME) {
-                    outcomes += op.moneyAmount * currencyPrice
+                val moneyDecimal =
+                    currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
+
+                when (it.category.type) {
+                    CategoryType.INCOME -> incomesDecimal += moneyDecimal
+                    CategoryType.OUTCOME -> outcomesDecimal += moneyDecimal
                 }
             }
 
             if (outcomesBars.size > currentMonth) {
-                outcomesBars.add(
-                    indexToInsert,
-                    BarEntry(month.toFloat(), roundMoney(outcomes).toFloat())
-                )
                 incomesBars.add(
                     indexToInsert,
-                    BarEntry(month.toFloat(), roundMoney(incomes).toFloat())
+                    BarEntry(
+                        month.toFloat(),
+                        currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                    )
+                )
+                outcomesBars.add(
+                    indexToInsert,
+                    BarEntry(
+                        month.toFloat(),
+                        currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                    )
                 )
                 indexToInsert++
             } else {
-                outcomesBars.add(BarEntry(month.toFloat(), roundMoney(outcomes).toFloat()))
-                incomesBars.add(BarEntry(month.toFloat(), roundMoney(incomes).toFloat()))
+                incomesBars.add(
+                    BarEntry(
+                        month.toFloat(),
+                        currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                    )
+                )
+                outcomesBars.add(
+                    BarEntry(
+                        month.toFloat(),
+                        currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                    )
+                )
             }
         }
 
         return Pair(incomesBars, outcomesBars)
-    }
-
-    private fun roundMoney(money: Double): Double {
-        return (money * 100.0).roundToInt() / 100.0
     }
 }
