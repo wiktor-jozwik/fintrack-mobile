@@ -2,8 +2,11 @@ package com.example.moneytracker.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moneytracker.R
 import com.example.moneytracker.databinding.OperatationBinding
+import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
 import java.time.format.DateTimeFormatter
 
@@ -11,10 +14,12 @@ import java.time.format.DateTimeFormatter
 class OperationListAdapter(
     operations: List<Operation>,
     private val onClickListener: OnClickListener
-    ) : RecyclerView.Adapter<OperationListAdapter.OperationViewHolder>() {
+) : RecyclerView.Adapter<OperationListAdapter.OperationViewHolder>() {
     private var operationsList: MutableList<Operation> = operations.toMutableList()
 
-    inner class OperationViewHolder(val binding: OperatationBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class OperationViewHolder(val binding: OperatationBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
     class OnClickListener(val clickListener: (position: Int) -> Unit) {
         fun onClick(position: Int) {
             clickListener(position)
@@ -47,12 +52,33 @@ class OperationListAdapter(
             id.text = currentOperation.id.toString()
             textName.text = currentOperation.name
             textCategory.text = currentOperation.category.name
-            textMoneyAmount.text =
-                "${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
             textDate.text =
                 currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             buttonDelete.setOnClickListener {
                 onClickListener.onClick(currentOperation.id)
+            }
+
+            when (currentOperation.category.type) {
+                CategoryType.INCOME -> {
+                    textMoneyAmount.setTextColor(
+                        ContextCompat.getColor(
+                            textMoneyAmount.context,
+                            R.color.main_green
+                        )
+                    )
+                    textMoneyAmount.text =
+                        "+${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
+                }
+                CategoryType.OUTCOME -> {
+                    textMoneyAmount.setTextColor(
+                        ContextCompat.getColor(
+                            textMoneyAmount.context,
+                            R.color.main_red
+                        )
+                    )
+                    textMoneyAmount.text =
+                        "-${currentOperation.moneyAmount} ${currentOperation.currency.symbol}"
+                }
             }
         }
     }

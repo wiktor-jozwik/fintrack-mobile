@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -79,11 +80,25 @@ class HomeFragment @Inject constructor(
         }
 
         childFragmentManager.beginTransaction().apply {
+            setButtonsWhite()
+            binding.buttonHome.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
             replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
             commit()
         }
 
         binding.buttonHome.setOnClickListener {
+            setButtonsWhite()
+            binding.buttonHome.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, yearlyOperationsSummaryFragment)
                 commit()
@@ -91,6 +106,13 @@ class HomeFragment @Inject constructor(
         }
 
         binding.buttonList.setOnClickListener {
+            setButtonsWhite()
+            binding.buttonList.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, listFragment)
                 commit()
@@ -98,6 +120,13 @@ class HomeFragment @Inject constructor(
         }
 
         binding.buttonAdd.setOnClickListener {
+            setButtonsWhite()
+            binding.buttonAdd.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, addFragment)
                 commit()
@@ -105,6 +134,13 @@ class HomeFragment @Inject constructor(
         }
 
         binding.buttonChart.setOnClickListener {
+            setButtonsWhite()
+            binding.buttonChart.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
             childFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, chartFragment)
                 commit()
@@ -132,5 +168,13 @@ class HomeFragment @Inject constructor(
             replace(R.id.mainFrameLayoutFragment, loginUserFragment)
             commit()
         }
+    }
+
+    private fun setButtonsWhite() {
+        val color = ContextCompat.getColor(requireContext(), R.color.white)
+        binding.buttonHome.setColorFilter(color)
+        binding.buttonList.setColorFilter(color)
+        binding.buttonAdd.setColorFilter(color)
+        binding.buttonChart.setColorFilter(color)
     }
 }
