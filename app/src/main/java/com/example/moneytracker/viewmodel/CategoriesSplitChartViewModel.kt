@@ -1,15 +1,12 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.CategoryType
-import com.example.moneytracker.service.repository.internal.CurrencyRepository
-import com.example.moneytracker.service.repository.internal.OperationRepository
+import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.repository.mt.CurrencyRepository
+import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.lang.Integer.max
-import java.lang.Math.min
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,14 +26,15 @@ class CategoriesSplitChartViewModel @Inject constructor(
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME
-        } .groupBy {
+        }.groupBy {
             it.category
         }
 
         categoriesOutcomeGrouped.forEach { (category, operations) ->
             var outcome = 0.0
             operations.forEach {
-                val currencyPrice = currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
+                val currencyPrice =
+                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
                 outcome += it.moneyAmount * currencyPrice
             }
             categoriesNames.add(category.name)

@@ -1,6 +1,7 @@
 package com.example.moneytracker.modules
 
-import com.example.moneytracker.service.repository.internal.*
+import com.example.moneytracker.service.repository.mt.*
+import com.example.moneytracker.service.repository.nbp.NbpApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,5 +25,5 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideCurrencyRepository(moneyTrackerApi: MoneyTrackerApi) = CurrencyRepository(moneyTrackerApi)
+    fun provideCurrencyRepository(moneyTrackerApi: MoneyTrackerApi, nbpApi: NbpApi) = CurrencyRepository(moneyTrackerApi, nbpApi)
 }

@@ -1,10 +1,10 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.User
-import com.example.moneytracker.service.model.inputs.userregister.UserRegisterForm
-import com.example.moneytracker.service.model.inputs.userregister.UserRegisterInput
-import com.example.moneytracker.service.repository.internal.UserRepository
+import com.example.moneytracker.service.model.mt.User
+import com.example.moneytracker.service.model.mt.inputs.userregister.UserRegisterForm
+import com.example.moneytracker.service.model.mt.inputs.userregister.UserRegisterInput
+import com.example.moneytracker.service.repository.mt.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject

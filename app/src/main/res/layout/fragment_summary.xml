@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.ui.MainActivity">
 
+
     <TextView
         android:id="@+id/textTitle"
         style="@style/TextTitle"
@@ -44,6 +45,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textSubtitleTitle" />
 
+    <ProgressBar
+        android:id="@+id/textIncomesProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:translationX="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/textIncomesValue"
+        app:layout_constraintTop_toBottomOf="@+id/textIncomes" />
+
     <TextView
         android:id="@+id/textIncomesValue"
         android:layout_width="wrap_content"
@@ -52,6 +61,7 @@
         android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textIncomesProgressBar"
         app:layout_constraintTop_toBottomOf="@+id/textIncomes" />
 
     <TextView
@@ -64,6 +74,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textIncomesValue" />
+
+    <ProgressBar
+        android:id="@+id/textOutcomesProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:translationX="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/textOutcomesValue"
+        app:layout_constraintTop_toBottomOf="@+id/textOutcomes" />
 
     <TextView
         android:id="@+id/textOutcomesValue"
@@ -85,6 +103,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textOutcomesValue" />
+
+    <ProgressBar
+        android:id="@+id/textBalanceProgressBar"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:translationX="10dp"
+        app:layout_constraintEnd_toStartOf="@+id/textBalanceValue"
+        app:layout_constraintTop_toBottomOf="@+id/textBalance" />
 
     <TextView
         android:id="@+id/textBalanceValue"

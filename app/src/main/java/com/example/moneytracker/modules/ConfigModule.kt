@@ -2,8 +2,9 @@ package com.example.moneytracker.modules
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.moneytracker.service.repository.internal.MoneyTrackerApi
-import com.example.moneytracker.service.repository.internal.ServiceInterceptor
+import com.example.moneytracker.service.repository.mt.MoneyTrackerApi
+import com.example.moneytracker.service.repository.mt.ServiceInterceptor
+import com.example.moneytracker.service.repository.nbp.NbpApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,9 @@ object ConfigModule {
     @Provides
     fun provideMoneyTrackerApi(serviceInterceptor: ServiceInterceptor): MoneyTrackerApi =
         MoneyTrackerApi(serviceInterceptor)
+
+    @Singleton
+    @Provides
+    fun provideNbpApi(): NbpApi =
+        NbpApi()
 }

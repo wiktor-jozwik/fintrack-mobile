@@ -2,10 +2,10 @@ package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.CategoryType
-import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.repository.internal.CurrencyRepository
-import com.example.moneytracker.service.repository.internal.OperationRepository
+import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.service.repository.mt.CurrencyRepository
+import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -58,7 +58,7 @@ class PeriodOperationsChartViewModel @Inject constructor(
         return incomesAndOutcomesYearlyResponse
     }
 
-    private fun groupMonthlyOperations(
+    private suspend fun groupMonthlyOperations(
         operations: List<Operation>,
         monthsRequired: List<Int>
     ): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
@@ -76,7 +76,7 @@ class PeriodOperationsChartViewModel @Inject constructor(
         return getMonthlyOutcomesAndIncomesBarsGrouped(monthlyOperationsEntries)
     }
 
-    private fun groupYearlyOperations(operations: List<Operation>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+    private suspend fun groupYearlyOperations(operations: List<Operation>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
         val yearlyOperations = operations.groupBy {
             it.date.year
         }.entries.sortedBy { it.key }
@@ -104,7 +104,7 @@ class PeriodOperationsChartViewModel @Inject constructor(
         return Pair(incomesBars, outcomesBars)
     }
 
-    private fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+    private suspend fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 

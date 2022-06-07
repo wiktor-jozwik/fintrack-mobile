@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentHomeBinding
-import com.example.moneytracker.service.model.ApiResponse
+import com.example.moneytracker.service.model.mt.ApiResponse
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.HomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

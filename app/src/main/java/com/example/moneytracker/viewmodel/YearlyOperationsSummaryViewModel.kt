@@ -1,10 +1,10 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.CategoryType
-import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.repository.internal.CurrencyRepository
-import com.example.moneytracker.service.repository.internal.OperationRepository
+import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.service.repository.mt.CurrencyRepository
+import com.example.moneytracker.service.repository.mt.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
 import javax.inject.Inject
@@ -15,7 +15,7 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
-    private val MONEY_FACTOR = 100
+    private val MONEYFACTOR = 100
     private val CURRENCY_FACTOR = 10000
 
     suspend fun calculateYearlyIncomeAndOutcome(): Triple<Double, Double, Double> {
@@ -34,7 +34,7 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         )
     }
 
-    private fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Double, Double> {
+    private suspend fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Double, Double> {
         var totalIncome = 0.0
         var totalOutcome = 0.0
 
@@ -43,15 +43,15 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
                 currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
 
             if (it.category.type == CategoryType.INCOME) {
-                totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
+                totalIncome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEYFACTOR
             } else if (it.category.type == CategoryType.OUTCOME) {
-                totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEY_FACTOR
+                totalOutcome += it.moneyAmount * CURRENCY_FACTOR * currencyPrice * MONEYFACTOR
             }
         }
         return Pair(totalIncome, totalOutcome)
     }
 
     private fun roundMoney(money: Double): Double {
-        return (money / (CURRENCY_FACTOR * MONEY_FACTOR) * 100.0).roundToInt() / 100.0
+        return (money / (CURRENCY_FACTOR * MONEYFACTOR) * 100.0).roundToInt() / 100.0
     }
 }

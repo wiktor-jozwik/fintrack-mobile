@@ -1,14 +1,14 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.Currency
-import com.example.moneytracker.service.model.Operation
-import com.example.moneytracker.service.model.inputs.operation.OperationCreateForm
-import com.example.moneytracker.service.model.inputs.operation.OperationCreateInput
-import com.example.moneytracker.service.repository.internal.CategoryRepository
-import com.example.moneytracker.service.repository.internal.CurrencyRepository
-import com.example.moneytracker.service.repository.internal.OperationRepository
+import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.service.model.mt.Currency
+import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateForm
+import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateInput
+import com.example.moneytracker.service.repository.mt.CategoryRepository
+import com.example.moneytracker.service.repository.mt.CurrencyRepository
+import com.example.moneytracker.service.repository.mt.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import java.time.LocalDate

@@ -6,8 +6,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.CategoryBinding
-import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.CategoryType
+import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.service.model.mt.CategoryType
 
 class CategoryListAdapter(
     categories: List<Category>,

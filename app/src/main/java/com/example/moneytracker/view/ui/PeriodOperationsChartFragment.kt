@@ -69,6 +69,9 @@ class PeriodOperationsChartFragment : Fragment() {
         binding.radioButtonSixMonth.isChecked = true
 
         binding.radioGroupPeriod.setOnCheckedChangeListener { _, switchId ->
+            binding.barChart.clear()
+            binding.barChartProgressBar.visibility = View.VISIBLE
+
             when (switchId) {
                 binding.radioButtonThreeMonth.id -> setXMonthChart(3)
                 binding.radioButtonSixMonth.id -> setXMonthChart(6)
@@ -80,8 +83,10 @@ class PeriodOperationsChartFragment : Fragment() {
 
     private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
+            binding.barChart.setNoDataText("")
             periodOperationsChartViewModel.getLastXMonthsOperations(size)
                 .observe(viewLifecycleOwner) {
+                    binding.barChartProgressBar.visibility = View.INVISIBLE
                     val xLabels = getMonthXLabels(size)
 
                     drawChart(it, size, xLabels)
@@ -92,6 +97,7 @@ class PeriodOperationsChartFragment : Fragment() {
     private fun setAllTimeChart() {
         viewLifecycleOwner.lifecycleScope.launch {
             periodOperationsChartViewModel.getAllTimeOperations().observe(viewLifecycleOwner) {
+                binding.barChartProgressBar.visibility = View.INVISIBLE
                 val xLabels = getYearsXLabelsFromOperations(it.first)
 
                 drawChart(it, xLabels.size, xLabels)
@@ -139,6 +145,7 @@ class PeriodOperationsChartFragment : Fragment() {
         legend.setDrawInside(false)
         legend.form = Legend.LegendForm.CIRCLE
         legend.textColor = ContextCompat.getColor(requireContext(), R.color.text)
+        legend.yOffset = 15f
 
         val xAxis = barChart.xAxis
         xAxis.granularity = 1f
@@ -173,7 +180,7 @@ class PeriodOperationsChartFragment : Fragment() {
 
         barChart.groupBars(0f, groupSpace, barSpace)
         barChart.invalidate()
-        barChart.animateY(700)
+        barChart.animateY(600)
     }
 
     private fun getMonthXLabels(size: Int): List<String> {

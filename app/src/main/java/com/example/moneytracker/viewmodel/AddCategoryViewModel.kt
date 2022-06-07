@@ -1,11 +1,11 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.CategoryType
-import com.example.moneytracker.service.model.inputs.category.CategoryCreateForm
-import com.example.moneytracker.service.model.inputs.category.CategoryCreateInput
-import com.example.moneytracker.service.repository.internal.CategoryRepository
+import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.model.mt.inputs.category.CategoryCreateForm
+import com.example.moneytracker.service.model.mt.inputs.category.CategoryCreateInput
+import com.example.moneytracker.service.repository.mt.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject

@@ -2,7 +2,6 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,9 +47,10 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
+            binding.barChart.setNoDataText("")
             categoriesSplitChartViewModel.getSplitOperationByCategories()
                 .observe(viewLifecycleOwner) {
-                    Log.d("MT", it.toString())
+                    binding.barChartProgressBar.visibility = View.INVISIBLE
                     drawChart(it.first, it.second)
                 }
         }
@@ -101,6 +101,6 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
         barChart.data = data
         barChart.setVisibleXRangeMaximum(8f)
         barChart.invalidate()
-        barChart.animateY(700)
+        barChart.animateY(600)
     }
 }

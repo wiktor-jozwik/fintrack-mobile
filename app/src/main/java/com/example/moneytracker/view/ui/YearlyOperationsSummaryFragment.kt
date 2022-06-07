@@ -51,6 +51,9 @@ class YearlyOperationsSummaryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         yearlyOperationsLiveData.observe(viewLifecycleOwner) {
+            binding.textIncomesProgressBar.visibility = View.INVISIBLE
+            binding.textOutcomesProgressBar.visibility = View.INVISIBLE
+            binding.textBalanceProgressBar.visibility = View.INVISIBLE
             val (totalIncome, totalOutcome, balance) = it
             binding.textIncomesValue.text = "$totalIncome PLN"
             binding.textIncomesValue.setTextColor(

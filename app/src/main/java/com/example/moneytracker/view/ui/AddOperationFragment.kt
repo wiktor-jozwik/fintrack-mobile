@@ -15,9 +15,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddOperationBinding
-import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.Currency
-import com.example.moneytracker.service.model.Operation
+import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.service.model.mt.Currency
+import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddOperationViewModel

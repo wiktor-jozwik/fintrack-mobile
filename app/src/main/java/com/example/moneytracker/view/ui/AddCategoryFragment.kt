@@ -13,8 +13,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddCategoryBinding
-import com.example.moneytracker.service.model.Category
-import com.example.moneytracker.service.model.CategoryType
+import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddCategoryViewModel

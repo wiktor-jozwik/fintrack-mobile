@@ -1,17 +1,16 @@
 package com.example.moneytracker.view.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneytracker.databinding.OperatationBinding
-import com.example.moneytracker.service.model.Operation
+import com.example.moneytracker.service.model.mt.Operation
 import java.time.format.DateTimeFormatter
 
 
 class OperationListAdapter(
-        operations: List<Operation>,
-        private val onClickListener: OnClickListener
+    operations: List<Operation>,
+    private val onClickListener: OnClickListener
     ) : RecyclerView.Adapter<OperationListAdapter.OperationViewHolder>() {
     private var operationsList: MutableList<Operation> = operations.toMutableList()
 

@@ -13,7 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoryListBinding
-import com.example.moneytracker.service.model.Category
+import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.view.adapter.CategoryListAdapter
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.CategoryListViewModel

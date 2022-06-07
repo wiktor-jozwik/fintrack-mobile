@@ -1,8 +1,8 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.ApiResponse
-import com.example.moneytracker.service.repository.internal.UserRepository
+import com.example.moneytracker.service.model.mt.ApiResponse
+import com.example.moneytracker.service.repository.mt.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
 import javax.inject.Inject
