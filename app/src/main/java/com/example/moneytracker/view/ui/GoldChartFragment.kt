@@ -1,10 +1,12 @@
 package com.example.moneytracker.view.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,12 +16,14 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentGoldChartBinding
 import com.example.moneytracker.viewmodel.GoldChartViewModel
 import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -49,6 +53,7 @@ class GoldChartFragment : Fragment(R.layout.fragment_gold_chart) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+        chartLiveData = MutableLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -95,6 +100,12 @@ class GoldChartFragment : Fragment(R.layout.fragment_gold_chart) {
 
     private fun drawChart(goldPrices: List<Entry>, xLabels: List<String>) {
         val lineChart = binding.lineChart
+
+        lineChart.marker = object : MarkerView(context, R.layout.gold_marker_layout) {
+            override fun refreshContent(e: Entry, highlight: Highlight) {
+                (findViewById<View>(R.id.tvContent) as TextView).text = "${e.y}"
+            }
+        }
 
         val goldPriceSet = LineDataSet(goldPrices, "Gold price (PLN/ounce)")
         goldPriceSet.lineWidth = 2f

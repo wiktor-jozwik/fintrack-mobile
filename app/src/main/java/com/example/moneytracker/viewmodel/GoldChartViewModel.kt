@@ -42,11 +42,8 @@ class GoldChartViewModel @Inject constructor(
             }
             Period.YEAR -> {
                 for (i in x downTo 1) {
-                    Log.d("MT", i.toString())
                     val dateFrom = currentDate.minusYears(i.toLong()).formatToIsoDateWithDashes()
-                    Log.d("MT", dateFrom)
                     val dateTo = currentDate.minusYears((i-1).toLong()).formatToIsoDateWithDashes()
-                    Log.d("MT", dateTo)
                     goldPrices += nbpRepository.getGoldPricesInRange(dateFrom, dateTo)
                 }
             }
