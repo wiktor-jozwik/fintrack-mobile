@@ -19,6 +19,9 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
     @Inject
     lateinit var categoriesSplitChartFragment: CategoriesSplitChartFragment
 
+    @Inject
+    lateinit var goldChartFragment: GoldChartFragment
+
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
 
@@ -49,6 +52,14 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
         binding.buttonShowCategoriesSplitChart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, categoriesSplitChartFragment)
+                commit()
+            }
+        }
+
+
+        binding.buttonShowGoldChart.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, goldChartFragment)
                 commit()
             }
         }

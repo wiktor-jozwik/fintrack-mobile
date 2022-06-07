@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioGroup
+        android:id="@+id/radioGroupPeriod"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radioButtonThreeMonth"
+            style="@style/ChartRadioButton"
+            android:text="3M" />
+
+        <RadioButton
+            android:id="@+id/radioButtonSixMonth"
+            style="@style/ChartRadioButton"
+            android:text="6M" />
+
+        <RadioButton
+            android:id="@+id/radioButtonOneYear"
+            style="@style/ChartRadioButton"
+            android:text="1Y" />
+
+        <RadioButton
+            android:id="@+id/radioButtonThreeYears"
+            style="@style/ChartRadioButton"
+            android:text="3Y" />
+
+        <RadioButton
+            android:id="@+id/radioButtonFiveYears"
+            style="@style/ChartRadioButton"
+            android:text="5Y" />
+    </RadioGroup>
+
+    <ProgressBar
+        android:id="@+id/lineChartProgressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:translationZ="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupPeriod" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/radioGroupPeriod" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

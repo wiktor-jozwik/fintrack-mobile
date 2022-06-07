@@ -2,8 +2,7 @@ package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.repository.nbp.NbpApi
-import com.example.moneytracker.utils.FormatToIsoDateWithDashes
-import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
+import com.example.moneytracker.utils.formatToIsoDateWithDashes
 import retrofit2.Response
 import java.time.LocalDate
 import java.util.*
@@ -35,7 +34,7 @@ class CurrencyRepository @Inject constructor(
         }
 
         val currencyAtDay =
-            nbpApi.api.getCurrencyAtDay(currency, notWeekendDate.FormatToIsoDateWithDashes())
+            nbpApi.api.getCurrencyAtDay(currency, notWeekendDate.formatToIsoDateWithDashes())
 
         return currencyAtDay.rates.first().mid
     }
