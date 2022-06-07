@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoriesSplitChartBinding
 import com.example.moneytracker.viewmodel.CategoriesSplitChartViewModel
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.BarData
@@ -59,7 +60,7 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
     private fun drawChart(xLabels: List<String>, bars: List<BarEntry>) {
         val barChart = binding.barChart
 
-        val categoriesSet = BarDataSet(bars, "Categories");
+        val categoriesSet = BarDataSet(bars, "PLN");
         categoriesSet.color = ContextCompat.getColor(requireContext(), R.color.main_red)
         categoriesSet.valueTextSize = 12f;
         categoriesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)
@@ -74,7 +75,13 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
         barChart.setDrawValueAboveBar(true)
         barChart.setDrawGridBackground(false)
 
-        barChart.legend.isEnabled = false
+        val legend = barChart.legend
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.textSize = 15f
+        legend.textColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val xAxis = barChart.xAxis
         xAxis.setDrawGridLines(false)
