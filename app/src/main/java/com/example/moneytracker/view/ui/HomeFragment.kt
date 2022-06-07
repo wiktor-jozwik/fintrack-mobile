@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentHomeBinding
 import com.example.moneytracker.service.model.mt.ApiResponse
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.HomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -75,7 +76,7 @@ class HomeFragment @Inject constructor(
                 }
                 switchToLogin()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message, 200)
             }
         }
 

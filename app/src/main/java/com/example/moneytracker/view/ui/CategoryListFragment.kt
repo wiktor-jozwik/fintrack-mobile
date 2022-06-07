@@ -15,6 +15,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoryListBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.view.adapter.CategoryListAdapter
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.CategoryListViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -67,7 +68,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
                 )
                 binding.recyclerViewCategoryItems.adapter!!.notifyDataSetChanged()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message, 200)
             }
         }
 
@@ -77,7 +78,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
                 val adapter = binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
                 adapter.deleteCategory(res.id)
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message, 200)
             }
         }
 

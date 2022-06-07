@@ -18,6 +18,7 @@ import com.example.moneytracker.databinding.FragmentAddOperationBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddOperationViewModel
@@ -78,7 +79,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                 addFragment()
                 clearFields()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message, 200)
             }
         }
 
@@ -131,7 +132,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                     )
                     binding.inputCurrency.adapter = currenciesAdapter
                 } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    makeErrorToast(requireContext(), e.message, 200)
                 }
             }
 
@@ -148,7 +149,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                     )
                     binding.inputCategory.adapter = categoriesAdapter
                 } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                    makeErrorToast(requireContext(), e.message, 200)
                 }
             }
             categoryLiveData.value = addOperationViewModel.getAllCategories()

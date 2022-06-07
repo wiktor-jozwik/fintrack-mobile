@@ -7,7 +7,6 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +15,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserLoginBinding
 import com.example.moneytracker.service.model.mt.JwtResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.LoginUserViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -73,7 +73,7 @@ class LoginUserFragment @Inject constructor(
                 switchToHome()
                 clearFields()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message)
             }
         }
 

@@ -9,5 +9,3 @@ class Constants {
         const val NBP_GOLD_ENDPOINT = "cenyzlota"
     }
 }
-
-//http://api.nbp.pl/api/exchangerates/rates/C/USD/2022-05-16/?format=json

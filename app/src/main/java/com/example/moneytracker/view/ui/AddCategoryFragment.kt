@@ -15,6 +15,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentAddCategoryBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.AddCategoryViewModel
@@ -67,7 +68,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
                 binding.radioButtonOutcome.isChecked = true
                 binding.radioButtonIncome.isChecked = false
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message, 200)
             }
         }
 

@@ -15,6 +15,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserRegisterBinding
 import com.example.moneytracker.service.model.mt.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.RegisterUserViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,7 +65,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
                 switchToLogin()
                 clearFields()
             } catch (e: Exception) {
-                Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()
+                makeErrorToast(requireContext(), e.message)
             }
         }
 
