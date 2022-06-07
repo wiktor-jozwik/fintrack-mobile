@@ -23,7 +23,20 @@ class PeriodOperationsChartViewModel @Inject constructor(
     private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
 
-    suspend fun getLastXMonthsOperations(x: Int): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
+    suspend fun getChartData(
+        x: Int = 6,
+        allTime: Boolean = false
+    ): Triple<List<BarEntry>, List<BarEntry>, Boolean> {
+        if (allTime) {
+            val allTimeOperations = getAllTimeOperations()
+            return Triple(allTimeOperations.first, allTimeOperations.second, allTime)
+        }
+        val monthOperations = getLastXMonthsOperations(x)
+
+        return Triple(monthOperations.first, monthOperations.second, allTime)
+    }
+
+    private suspend fun getLastXMonthsOperations(x: Int): Pair<List<BarEntry>, List<BarEntry>> {
         val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
             MutableLiveData()
 
@@ -43,20 +56,19 @@ class PeriodOperationsChartViewModel @Inject constructor(
             }
         }
 
-        incomesAndOutcomesYearlyResponse.value =
-            groupMonthlyOperations(operations, monthsRequired.sortedBy { it })
+        return groupMonthlyOperations(operations, monthsRequired.sortedBy { it })
 
-        return incomesAndOutcomesYearlyResponse
+//        return incomesAndOutcomesYearlyResponse
     }
 
-    suspend fun getAllTimeOperations(): MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> {
+    private suspend fun getAllTimeOperations(): Pair<List<BarEntry>, List<BarEntry>> {
         val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
             MutableLiveData()
 
         val operations = operationRepository.getAllOperations()
-        incomesAndOutcomesYearlyResponse.value = groupYearlyOperations(operations)
+        return groupYearlyOperations(operations)
 
-        return incomesAndOutcomesYearlyResponse
+//        return incomesAndOutcomesYearlyResponse
     }
 
     private suspend fun groupMonthlyOperations(

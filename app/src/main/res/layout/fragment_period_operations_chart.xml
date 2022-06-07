@@ -17,13 +17,11 @@
         <RadioButton
             android:id="@+id/radioButtonThreeMonth"
             style="@style/ChartRadioButton"
-            android:checked="true"
             android:text="3 Month" />
 
         <RadioButton
             android:id="@+id/radioButtonSixMonth"
             style="@style/ChartRadioButton"
-
             android:text="6 Month" />
 
         <RadioButton

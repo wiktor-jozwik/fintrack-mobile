@@ -2,15 +2,18 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentPeriodOperationsChartBinding
+import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.viewmodel.PeriodOperationsChartViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -21,6 +24,7 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import retrofit2.Response
 import java.util.*
 
 
@@ -45,6 +49,11 @@ class PeriodOperationsChartFragment : Fragment() {
 
     private val periodOperationsChartViewModel: PeriodOperationsChartViewModel by viewModels()
 
+    private var chartLiveData: MutableLiveData<Triple<List<BarEntry>, List<BarEntry>, Boolean>> =
+        MutableLiveData()
+
+    private var chartShown: Boolean = false
+
     private var _binding: FragmentPeriodOperationsChartBinding? = null
     private val binding get() = _binding!!
 
@@ -60,17 +69,33 @@ class PeriodOperationsChartFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+        chartLiveData = MutableLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setXMonthChart(6)
-        binding.radioButtonSixMonth.isChecked = true
+        chartLiveData.observe(viewLifecycleOwner) {
+            binding.barChartProgressBar.visibility = View.INVISIBLE
+            val xLabels = if (it.third) {
+                getYearsXLabelsFromOperations(it.first)
+            } else {
+                getMonthXLabels(it.first.size)
+            }
+            drawChart(Pair(it.first, it.second), xLabels.size, xLabels)
+        }
+
+        if (!chartShown) {
+            setXMonthChart(6)
+            binding.radioButtonSixMonth.isChecked = true
+        }
+
+        binding.barChart.setNoDataText("")
 
         binding.radioGroupPeriod.setOnCheckedChangeListener { _, switchId ->
             binding.barChart.clear()
             binding.barChartProgressBar.visibility = View.VISIBLE
+            chartShown = true
 
             when (switchId) {
                 binding.radioButtonThreeMonth.id -> setXMonthChart(3)
@@ -83,25 +108,13 @@ class PeriodOperationsChartFragment : Fragment() {
 
     private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            binding.barChart.setNoDataText("")
-            periodOperationsChartViewModel.getLastXMonthsOperations(size)
-                .observe(viewLifecycleOwner) {
-                    binding.barChartProgressBar.visibility = View.INVISIBLE
-                    val xLabels = getMonthXLabels(size)
-
-                    drawChart(it, size, xLabels)
-                }
+            chartLiveData.value = periodOperationsChartViewModel.getChartData(size)
         }
     }
 
     private fun setAllTimeChart() {
         viewLifecycleOwner.lifecycleScope.launch {
-            periodOperationsChartViewModel.getAllTimeOperations().observe(viewLifecycleOwner) {
-                binding.barChartProgressBar.visibility = View.INVISIBLE
-                val xLabels = getYearsXLabelsFromOperations(it.first)
-
-                drawChart(it, xLabels.size, xLabels)
-            }
+            chartLiveData.value = periodOperationsChartViewModel.getChartData(allTime = true)
         }
     }
 
