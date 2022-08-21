@@ -1,7 +1,7 @@
 package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.Operation
-import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateInput
+import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
 import retrofit2.Response
 import java.time.LocalDate
 import javax.inject.Inject

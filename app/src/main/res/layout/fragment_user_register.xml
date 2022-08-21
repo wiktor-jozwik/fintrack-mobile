@@ -72,6 +72,32 @@
         </com.google.android.material.textfield.TextInputEditText>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:id="@+id/textDefaultCurrency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="60dp"
+        android:text="Select default currency"
+        app:layout_constraintEnd_toStartOf="@+id/inputDefaultCurrency"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputPasswordConfirmationContainer" />
+
+    <Spinner
+        android:id="@+id/inputDefaultCurrency"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/white"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@id/textDefaultCurrency"
+        app:layout_constraintTop_toBottomOf="@+id/inputPasswordConfirmationContainer" />
+
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonRegister"
         style="@style/FullWidthButton"

@@ -10,7 +10,7 @@ fun <T> responseErrorHandler(res: Response<T>): T {
     } else {
         val errMsg = res.errorBody()?.string()?.let {
             Log.d("MT", it.toString())
-            JSONObject(it).getString("error")
+            JSONObject(it).getString("message")
         } ?: run {
             res.code().toString()
         }

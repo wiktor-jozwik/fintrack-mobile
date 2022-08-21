@@ -1,18 +1,20 @@
 package com.example.moneytracker.view.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserRegisterBinding
+import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
@@ -32,6 +34,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
     lateinit var loginUserFragment: LoginUserFragment
 
     private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
 
     private var _binding: FragmentUserRegisterBinding? = null
     private val binding get() = _binding!!
@@ -69,6 +72,8 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
             }
         }
 
+        fulfillCurrencySpinner()
+
         emailTextChangeListener()
         passwordTextChangeListener()
 
@@ -84,12 +89,38 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
         }
     }
 
+    private fun fulfillCurrencySpinner() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            currencyLiveData.observe(viewLifecycleOwner) {
+                try {
+                    val res = responseErrorHandler(it)
+                    val currenciesNames = res.map { currency -> currency.name }
+                    val currenciesAdapter = ArrayAdapter(
+                        activity as Context,
+                        android.R.layout.simple_spinner_item,
+                        currenciesNames
+                    )
+                    binding.inputDefaultCurrency.adapter = currenciesAdapter
+                } catch (e: Exception) {
+                    makeErrorToast(requireContext(), e.message, 200)
+                }
+            }
+
+            currencyLiveData.value = registerUserViewModel.getSupportedCurrencies()
+        }
+    }
+
     private fun submitForm() {
-        if (validateEmail() == null && validatePassword() == null) {
+        if (validateEmail() == null && validatePassword() == null && validateCurrencyPresence()) {
             validForm()
         } else {
             invalidForm()
         }
+    }
+
+    private fun validateCurrencyPresence(): Boolean {
+        return binding.inputDefaultCurrency.selectedItem != null && binding.inputDefaultCurrency.selectedItem.toString()
+            .isNotEmpty()
     }
 
     private fun validForm() {
@@ -97,7 +128,8 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
             registerUserLiveData.value = registerUserViewModel.registerUser(
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
-                binding.inputPasswordConfirmationText.text.toString()
+                binding.inputPasswordConfirmationText.text.toString(),
+                binding.inputDefaultCurrency.selectedItem.toString()
             )
         }
     }

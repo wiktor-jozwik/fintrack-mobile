@@ -136,7 +136,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                 }
             }
 
-            currencyLiveData.value = addOperationViewModel.getAllCurrencies()
+            currencyLiveData.value = addOperationViewModel.getUsersCurrencies()
 
             categoryLiveData.observe(viewLifecycleOwner) {
                 try {

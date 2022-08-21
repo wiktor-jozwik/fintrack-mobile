@@ -1,49 +1,51 @@
 package com.example.moneytracker.service.repository.mt
 
-import com.example.moneytracker.service.model.mt.inputs.category.CategoryCreateInput
-import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateInput
-import com.example.moneytracker.service.model.mt.inputs.userlogin.UserLoginInput
-import com.example.moneytracker.service.model.mt.inputs.userregister.UserRegisterInput
 import com.example.moneytracker.service.model.mt.*
-import com.example.moneytracker.service.utils.Constants.Companion.MONEY_TRACKER_API_ENDPOINT
+import com.example.moneytracker.service.model.mt.inputs.CategoryCreateInput
+import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
+import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
+import com.example.moneytracker.service.model.mt.inputs.UserRegisterInput
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
 
 interface MoneyTrackerApiInterface {
-    @GET("${MONEY_TRACKER_API_ENDPOINT}/operations")
+    @GET("operations")
     suspend fun getAllOperations(): List<Operation>
 
-    @GET("${MONEY_TRACKER_API_ENDPOINT}/operations")
+    @GET("operations")
     suspend fun getAllOperationsInRange(
         @Query("start_date") startDate: LocalDate,
         @Query("end_date") endDate: LocalDate
     ): List<Operation>
 
-    @GET("${MONEY_TRACKER_API_ENDPOINT}/categories")
+    @GET("categories")
     suspend fun getAllCategories(): Response<List<Category>>
 
-    @GET("${MONEY_TRACKER_API_ENDPOINT}/currencies")
+    @GET("users_currencies")
+    suspend fun getUsersCurrencies(): Response<List<Currency>>
+
+    @GET("currencies")
     suspend fun getAllCurrencies(): Response<List<Currency>>
 
-    @POST("${MONEY_TRACKER_API_ENDPOINT}/operations")
+    @POST("operations")
     suspend fun saveOperation(@Body operation: OperationCreateInput): Response<Operation>
 
-    @DELETE("${MONEY_TRACKER_API_ENDPOINT}/operations/{id}")
+    @DELETE("operations/{id}")
     suspend fun deleteOperation(@Path("id") operationId: Int): Operation
 
-    @POST("${MONEY_TRACKER_API_ENDPOINT}/categories")
+    @POST("categories")
     suspend fun saveCategory(@Body category: CategoryCreateInput): Response<Category>
 
-    @DELETE("${MONEY_TRACKER_API_ENDPOINT}/categories/{id}")
+    @DELETE("categories/{id}")
     suspend fun deleteCategory(@Path("id") categoryId: Int): Response<Category>
 
-    @POST("register")
+    @POST("auth/register")
     suspend fun registerUser(@Body user: UserRegisterInput): Response<User>
 
-    @POST("login")
+    @POST("auth/login")
     suspend fun loginUser(@Body user: UserLoginInput): Response<JwtResponse>
 
-    @DELETE("logout")
-    suspend fun logoutUser(): Response<ApiResponse>
+//    @DELETE("logout")
+//    suspend fun logoutUser(): Response<ApiResponse>
 }

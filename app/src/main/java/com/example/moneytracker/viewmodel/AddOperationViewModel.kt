@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
-import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateForm
-import com.example.moneytracker.service.model.mt.inputs.operation.OperationCreateInput
+import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
 import com.example.moneytracker.service.repository.mt.CategoryRepository
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
@@ -30,20 +29,18 @@ class AddOperationViewModel @Inject constructor(
     ): Response<Operation> {
         val operationCreateInput =
             OperationCreateInput(
-                OperationCreateForm(
-                    name,
-                    moneyAmount,
-                    date.toString(),
-                    categoryName,
-                    currencyName
-                )
+                name,
+                moneyAmount,
+                date.toString(),
+                categoryName,
+                currencyName
             )
 
         return operationRepository.addNewOperation(operationCreateInput)
     }
 
-    suspend fun getAllCurrencies(): Response<List<Currency>> {
-        return currencyRepository.getAllCurrencies()
+    suspend fun getUsersCurrencies(): Response<List<Currency>> {
+        return currencyRepository.getUsersCurrencies()
     }
 
     suspend fun getAllCategories(): Response<List<Category>> {

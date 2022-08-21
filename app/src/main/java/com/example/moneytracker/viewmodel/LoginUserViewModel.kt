@@ -2,8 +2,7 @@ package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.JwtResponse
-import com.example.moneytracker.service.model.mt.inputs.userlogin.UserLoginForm
-import com.example.moneytracker.service.model.mt.inputs.userlogin.UserLoginInput
+import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
 import com.example.moneytracker.service.repository.mt.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import retrofit2.Response
@@ -15,7 +14,7 @@ class LoginUserViewModel @Inject constructor(
 ) : ViewModel() {
 
     suspend fun loginUser(email: String, password: String): Response<JwtResponse> {
-        val userLoginInput = UserLoginInput(UserLoginForm(email, password))
+        val userLoginInput = UserLoginInput(email, password)
 
         return userRepository.loginUser(userLoginInput)
     }

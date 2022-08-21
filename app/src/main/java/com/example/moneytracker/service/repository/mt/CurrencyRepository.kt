@@ -14,7 +14,10 @@ class CurrencyRepository @Inject constructor(
 ) {
     private val defaultCurrencyName = "PLN"
 
-    suspend fun getAllCurrencies(): Response<List<Currency>> =
+    suspend fun getUsersCurrencies(): Response<List<Currency>> =
+        moneyTrackerApi.api.getUsersCurrencies()
+
+    suspend fun getSupportedCurrencies(): Response<List<Currency>> =
         moneyTrackerApi.api.getAllCurrencies()
 
     suspend fun getPriceOfCurrencyAtDay(currency: String, date: LocalDate): Double {

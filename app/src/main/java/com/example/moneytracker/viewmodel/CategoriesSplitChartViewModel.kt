@@ -1,5 +1,6 @@
 package com.example.moneytracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
@@ -25,6 +26,8 @@ class CategoriesSplitChartViewModel @Inject constructor(
         val categoriesBars = mutableListOf<BarEntry>()
 
         val operations = operationRepository.getAllOperations()
+
+        Log.d("MT", operations.toString())
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME

@@ -1,11 +1,9 @@
-package com.example.moneytracker.service.model.mt.inputs.category
+package com.example.moneytracker.service.model.mt.inputs
 
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.google.gson.annotations.SerializedName
 
-data class CategoryCreateForm(
-    @SerializedName("name")
+data class CategoryCreateInput(
     val name: String,
-    @SerializedName("operation_type")
     val type: CategoryType
 )

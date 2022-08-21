@@ -1,7 +1,7 @@
 package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.Category
-import com.example.moneytracker.service.model.mt.inputs.category.CategoryCreateInput
+import com.example.moneytracker.service.model.mt.inputs.CategoryCreateInput
 import retrofit2.Response
 import javax.inject.Inject
 
