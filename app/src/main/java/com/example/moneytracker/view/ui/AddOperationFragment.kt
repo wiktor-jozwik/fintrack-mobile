@@ -97,7 +97,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     private fun setDatePickerListener() {
         val calendar = Calendar.getInstance()
-        val today = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(calendar.time)
+        val today = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(calendar.time)
 
         binding.apply {
             textDate.text = today
@@ -226,7 +226,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     private fun validForm() {
         val date = LocalDate.parse(
             "${binding.textDate.text}",
-            DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            DateTimeFormatter.ofPattern("yyyy-MM-dd")
         )
 
         viewLifecycleOwner.lifecycleScope.launch {

@@ -74,4 +74,12 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideDatePickerFragment() = DatePickerFragment()
+
+    @Singleton
+    @Provides
+    fun provideCategoryStartDatePickerFragment() = CategoryStartDatePickerFragment()
+
+    @Singleton
+    @Provides
+    fun provideCategoryEndDatePickerFragment() = CategoryEndDatePickerFragment()
 }

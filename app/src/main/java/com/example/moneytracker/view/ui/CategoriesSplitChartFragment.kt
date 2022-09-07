@@ -2,12 +2,14 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentCategoriesSplitChartBinding
@@ -21,11 +23,22 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split_chart) {
     private val categoriesSplitChartViewModel: CategoriesSplitChartViewModel by viewModels()
+
+    @Inject
+    lateinit var categoryStartDatePickerFragment: CategoryStartDatePickerFragment
+
+    @Inject
+    lateinit var categoryEndDatePickerFragment: CategoryEndDatePickerFragment
+
+    private var chartLiveData: MutableLiveData<Pair<List<String>, List<BarEntry>>> =
+        MutableLiveData()
 
     private var _binding: FragmentCategoriesSplitChartBinding? = null
     private val binding get() = _binding!!
@@ -43,17 +56,39 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null;
+        chartLiveData = MutableLiveData()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleOwner.lifecycleScope.launch {
             binding.barChart.setNoDataText("")
-            categoriesSplitChartViewModel.getSplitOperationByCategories()
-                .observe(viewLifecycleOwner) {
-                    binding.barChartProgressBar.visibility = View.INVISIBLE
-                    drawChart(it.first, it.second)
-                }
+            chartLiveData.observe(viewLifecycleOwner) {
+                binding.barChartProgressBar.visibility = View.INVISIBLE
+                drawChart(it.first, it.second)
+            }
+        }
+
+        setDatePickersListener()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            chartLiveData.value =
+                categoriesSplitChartViewModel.getSplitOperationByCategories(null, null)
+        }
+
+        binding.buttonApply.setOnClickListener {
+            refreshChart()
+        }
+    }
+
+    private fun refreshChart() {
+        val startDate = binding.buttonDatePickerStart.text
+        val endDate = binding.buttonDatePickerEnd.text
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            chartLiveData.value = categoriesSplitChartViewModel.getSplitOperationByCategories(
+                LocalDate.parse(startDate), LocalDate.parse(endDate)
+            )
         }
     }
 
@@ -109,5 +144,45 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
         barChart.setVisibleXRangeMaximum(8f)
         barChart.invalidate()
         barChart.animateY(600)
+    }
+
+    private fun setDatePickersListener() {
+        binding.apply {
+            buttonDatePickerStart.setOnClickListener {
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val date = bundle.getString("CATEGORY_START_DATE")
+                        buttonDatePickerStart.text = date.toString()
+                    }
+                }
+
+                categoryStartDatePickerFragment.show(
+                    supportFragmentManager,
+                    "categoryStartDatePickerFragment"
+                )
+            }
+
+            buttonDatePickerEnd.setOnClickListener {
+                val supportFragmentManager = requireActivity().supportFragmentManager
+                supportFragmentManager.setFragmentResultListener(
+                    "REQUEST_KEY",
+                    viewLifecycleOwner
+                ) { resultKey, bundle ->
+                    if (resultKey == "REQUEST_KEY") {
+                        val date = bundle.getString("CATEGORY_END_DATE")
+                        buttonDatePickerEnd.text = date.toString()
+                    }
+                }
+
+                categoryEndDatePickerFragment.show(
+                    supportFragmentManager,
+                    "categoryEndDatePickerFragment"
+                )
+            }
+        }
     }
 }

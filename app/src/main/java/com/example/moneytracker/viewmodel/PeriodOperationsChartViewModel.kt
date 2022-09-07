@@ -37,9 +37,6 @@ class PeriodOperationsChartViewModel @Inject constructor(
     }
 
     private suspend fun getLastXMonthsOperations(x: Int): Pair<List<BarEntry>, List<BarEntry>> {
-        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
-            MutableLiveData()
-
         val fromDate = LocalDate.now(ZoneId.systemDefault()).minusMonths((x - 1).toLong())
             .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());

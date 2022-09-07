@@ -3,11 +3,13 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -16,15 +18,17 @@ class CategoriesSplitChartViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
     private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
-    suspend fun getSplitOperationByCategories(): MutableLiveData<Pair<List<String>, List<BarEntry>>> {
-        val outcomesCategoriesSplit: MutableLiveData<Pair<List<String>, List<BarEntry>>> =
-            MutableLiveData()
-
+    suspend fun getSplitOperationByCategories(startDate: LocalDate?, endDate: LocalDate?): Pair<List<String>, List<BarEntry>> {
         var categoriesNames = mutableListOf<String>()
         val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
 
-        val operations = operationRepository.getAllOperations()
+        val operations: List<Operation> = if (startDate != null && endDate != null) {
+            operationRepository.getAllOperationsInRanges(startDate, endDate)
+        } else {
+            operationRepository.getAllOperations()
+        }
+
 
         val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
@@ -61,8 +65,8 @@ class CategoriesSplitChartViewModel @Inject constructor(
             categoriesBars.add(BarEntry(index.toFloat(), value.toFloat()))
         }
 
-        outcomesCategoriesSplit.value = Pair(sortedCategories.first, categoriesBars)
+        Pair(sortedCategories.first, categoriesBars)
 
-        return outcomesCategoriesSplit
+        return Pair(sortedCategories.first, categoriesBars)
     }
 }
