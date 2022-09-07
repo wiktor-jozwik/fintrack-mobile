@@ -22,31 +22,31 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         val endDate = LocalDate.parse("${year}-12-31")
         val yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate)
 
-        val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomeAndOutcome(yearlyOperations)
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+
+        val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomesAndOutcomes(defaultCurrencyName, yearlyOperations)
         val balanceDecimal = totalIncomeDecimal - totalOutcomeDecimal
 
         return Triple(
-            currencyCalculator.convertToFloatAndRound(totalIncomeDecimal),
-            currencyCalculator.convertToFloatAndRound(totalOutcomeDecimal),
-            currencyCalculator.convertToFloatAndRound(balanceDecimal)
+            currencyCalculator.roundMoney(totalIncomeDecimal),
+            currencyCalculator.roundMoney(totalOutcomeDecimal),
+            currencyCalculator.roundMoney(balanceDecimal)
         )
     }
 
-    private suspend fun calculateIncomeAndOutcome(operations: List<Operation>): Pair<Long, Long> {
-        var totalIncomeDecimal: Long = 0
-        var totalOutcomeDecimal: Long = 0
+    private suspend fun calculateIncomesAndOutcomes(defaultCurrencyName: String, operations: List<Operation>): Pair<Double, Double> {
+        var incomes = 0.0
+        var outcomes = 0.0
 
         operations.forEach {
-            val currencyPrice =
-                currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
-
-            val moneyDecimal = currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
+            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
 
             when (it.category.type) {
-                CategoryType.INCOME -> totalIncomeDecimal += moneyDecimal
-                CategoryType.OUTCOME -> totalOutcomeDecimal += moneyDecimal
+                CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency
+                CategoryType.OUTCOME -> outcomes += moneyAmountInDefaultCurrency
             }
         }
-        return Pair(totalIncomeDecimal, totalOutcomeDecimal)
+
+        return Pair(incomes, outcomes)
     }
 }

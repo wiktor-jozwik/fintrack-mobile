@@ -15,8 +15,8 @@ interface MoneyTrackerApiInterface {
 
     @GET("operations")
     suspend fun getAllOperationsInRange(
-        @Query("start_date") startDate: LocalDate,
-        @Query("end_date") endDate: LocalDate
+        @Query("startDate") startDate: LocalDate,
+        @Query("endDate") endDate: LocalDate
     ): List<Operation>
 
     @GET("categories")
@@ -24,6 +24,9 @@ interface MoneyTrackerApiInterface {
 
     @GET("users_currencies")
     suspend fun getUsersCurrencies(): Response<List<Currency>>
+
+    @GET("users_currencies/default")
+    suspend fun getUserDefaultCurrency(): Response<Currency>
 
     @GET("currencies")
     suspend fun getAllCurrencies(): Response<List<Currency>>

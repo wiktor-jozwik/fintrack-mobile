@@ -94,34 +94,23 @@ class PeriodOperationsChartViewModel @Inject constructor(
             it.date.year
         }.entries.sortedBy { it.key }
 
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 
         yearlyOperations.forEach { (date, operations) ->
-            var incomesDecimal: Long = 0
-            var outcomesDecimal: Long = 0
-            operations.forEach {
-                val currencyPrice =
-                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
-
-                val moneyDecimal =
-                    currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
-
-                when (it.category.type) {
-                    CategoryType.INCOME -> incomesDecimal += moneyDecimal
-                    CategoryType.OUTCOME -> outcomesDecimal += moneyDecimal
-                }
-            }
+            val (incomes, outcomes) = calculateIncomesAndOutcomes(defaultCurrencyName, operations)
             incomesBars.add(
                 BarEntry(
                     date.toFloat(),
-                    currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                    incomes.toFloat()
                 )
             )
             outcomesBars.add(
                 BarEntry(
                     date.toFloat(),
-                    currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                    outcomes.toFloat()
                 )
             )
         }
@@ -130,6 +119,8 @@ class PeriodOperationsChartViewModel @Inject constructor(
     }
 
     private suspend fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 
@@ -137,35 +128,22 @@ class PeriodOperationsChartViewModel @Inject constructor(
         var indexToInsert = 0
 
         monthOperations.forEach { (month, operations) ->
-            var incomesDecimal: Long = 0
-            var outcomesDecimal: Long = 0
 
-            operations.forEach {
-                val currencyPrice =
-                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
-
-                val moneyDecimal =
-                    currencyCalculator.calculateMoneyAsDecimal(it.moneyAmount, currencyPrice)
-
-                when (it.category.type) {
-                    CategoryType.INCOME -> incomesDecimal += moneyDecimal
-                    CategoryType.OUTCOME -> outcomesDecimal += moneyDecimal
-                }
-            }
+            val (incomes, outcomes) = calculateIncomesAndOutcomes(defaultCurrencyName, operations)
 
             if (outcomesBars.size > currentMonth) {
                 incomesBars.add(
                     indexToInsert,
                     BarEntry(
                         month.toFloat(),
-                        currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                        incomes.toFloat()
                     )
                 )
                 outcomesBars.add(
                     indexToInsert,
                     BarEntry(
                         month.toFloat(),
-                        currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                        outcomes.toFloat()
                     )
                 )
                 indexToInsert++
@@ -173,18 +151,34 @@ class PeriodOperationsChartViewModel @Inject constructor(
                 incomesBars.add(
                     BarEntry(
                         month.toFloat(),
-                        currencyCalculator.convertToFloatAndRound(incomesDecimal).toFloat()
+                        incomes.toFloat()
                     )
                 )
                 outcomesBars.add(
                     BarEntry(
                         month.toFloat(),
-                        currencyCalculator.convertToFloatAndRound(outcomesDecimal).toFloat()
+                        outcomes.toFloat()
                     )
                 )
             }
         }
 
         return Pair(incomesBars, outcomesBars)
+    }
+
+    private suspend fun calculateIncomesAndOutcomes(defaultCurrencyName: String, operations: List<Operation>): Pair<Double, Double> {
+        var incomes = 0.0
+        var outcomes = 0.0
+
+        operations.forEach {
+            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
+
+            when (it.category.type) {
+                CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency
+                CategoryType.OUTCOME -> outcomes += moneyAmountInDefaultCurrency
+            }
+        }
+
+        return Pair(incomes, outcomes)
     }
 }

@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
@@ -27,7 +26,7 @@ class CategoriesSplitChartViewModel @Inject constructor(
 
         val operations = operationRepository.getAllOperations()
 
-        Log.d("MT", operations.toString())
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME
@@ -36,18 +35,13 @@ class CategoriesSplitChartViewModel @Inject constructor(
         }
 
         categoriesOutcomeGrouped.forEach { (category, operations) ->
-            var outcomeDecimal: Long = 0
+            var outcome = 0.0
             operations.forEach {
-                val currencyPrice =
-                    currencyRepository.getPriceOfCurrencyAtDay(it.currency.name, it.date)
-
-                outcomeDecimal += currencyCalculator.calculateMoneyAsDecimal(
-                    it.moneyAmount,
-                    currencyPrice
-                )
+                outcome += currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
             }
+
             categoriesNames.add(category.name)
-            categoriesValues.add(currencyCalculator.convertToFloatAndRound(outcomeDecimal))
+            categoriesValues.add(currencyCalculator.roundMoney(outcome))
         }
 
         val maxCharsOfCategory = 10

@@ -1,5 +1,6 @@
 package com.example.moneytracker.modules
 
+import com.example.moneytracker.service.repository.exchangerate.ExchangerateApi
 import com.example.moneytracker.service.repository.mt.*
 import com.example.moneytracker.service.repository.nbp.NbpApi
 import com.example.moneytracker.service.repository.nbp.NbpRepository
@@ -32,9 +33,9 @@ object RepositoryModule {
     @Provides
     fun provideCurrencyRepository(
         moneyTrackerApi: MoneyTrackerApi,
-        nbpApi: NbpApi,
+        exchangerateApi: ExchangerateApi,
     ) =
-        CurrencyRepository(moneyTrackerApi, nbpApi)
+        CurrencyRepository(moneyTrackerApi, exchangerateApi)
 
     @Singleton
     @Provides

@@ -60,7 +60,7 @@ class CategoriesSplitChartFragment : Fragment(R.layout.fragment_categories_split
     private fun drawChart(xLabels: List<String>, bars: List<BarEntry>) {
         val barChart = binding.barChart
 
-        val categoriesSet = BarDataSet(bars, "PLN");
+        val categoriesSet = BarDataSet(bars, "Money");
         categoriesSet.color = ContextCompat.getColor(requireContext(), R.color.main_red)
         categoriesSet.valueTextSize = 12f;
         categoriesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)

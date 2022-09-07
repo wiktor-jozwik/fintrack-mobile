@@ -70,21 +70,16 @@ class YearlyOperationsSummaryFragment : Fragment() {
                 )
             )
             binding.textBalanceValue.text = "$balance PLN"
-            if (balance > 0) {
-                binding.textBalanceValue.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.main_green
-                    )
-                )
-            } else if (balance < 0) {
-                binding.textBalanceValue.setTextColor(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.main_red
-                    )
-                )
+            var balanceColor = R.color.main_green
+            if (balance < 0) {
+                balanceColor = R.color.main_red
             }
+            binding.textBalanceValue.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    balanceColor
+                )
+            )
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
