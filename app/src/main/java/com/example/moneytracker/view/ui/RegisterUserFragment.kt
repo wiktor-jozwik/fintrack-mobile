@@ -148,6 +148,9 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
         binding.inputEmailText.setText("")
         binding.inputPasswordText.setText("")
         binding.inputPasswordConfirmationText.setText("")
+        binding.inputFirstNameText.setText("")
+        binding.inputLastNameText.setText("")
+        binding.inputPhoneNumberText.setText("")
         clearHelpers()
     }
 
