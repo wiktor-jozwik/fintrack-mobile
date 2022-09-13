@@ -129,7 +129,10 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
                 binding.inputPasswordConfirmationText.text.toString(),
-                binding.inputDefaultCurrency.selectedItem.toString()
+                binding.inputDefaultCurrency.selectedItem.toString(),
+                binding.inputFirstNameText.text.toString(),
+                binding.inputLastNameText.text.toString(),
+                binding.inputPhoneNumberText.text.toString(),
             )
         }
     }

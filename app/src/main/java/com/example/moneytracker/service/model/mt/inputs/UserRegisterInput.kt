@@ -5,4 +5,7 @@ data class UserRegisterInput(
     val password: String,
     val passwordConfirmation: String,
     val defaultCurrencyName: String,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val phoneNumber: String? = null,
 )

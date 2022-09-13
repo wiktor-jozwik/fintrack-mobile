@@ -24,10 +24,21 @@ class RegisterUserViewModel @Inject constructor(
         email: String,
         password: String,
         passwordConfirmation: String,
-        defaultCurrencyName: String
+        defaultCurrencyName: String,
+        firstName: String?,
+        lastName: String?,
+        phoneNumber: String?
     ): Response<User> {
         val userRegisterInput =
-            UserRegisterInput(email, password, passwordConfirmation, defaultCurrencyName)
+            UserRegisterInput(
+                email,
+                password,
+                passwordConfirmation,
+                defaultCurrencyName,
+                firstName,
+                lastName,
+                phoneNumber
+            )
 
         return userRepository.registerUser(userRegisterInput)
     }
