@@ -1,10 +1,7 @@
 package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.*
-import com.example.moneytracker.service.model.mt.inputs.CategoryCreateInput
-import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
-import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
-import com.example.moneytracker.service.model.mt.inputs.UserRegisterInput
+import com.example.moneytracker.service.model.mt.inputs.*
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
@@ -27,6 +24,9 @@ interface MoneyTrackerApiInterface {
 
     @GET("users_currencies/default")
     suspend fun getUserDefaultCurrency(): Response<Currency>
+
+    @POST("users_currencies")
+    suspend fun saveCurrency(@Body currency: CurrencyCreateInput): Response<Currency>
 
     @GET("currencies")
     suspend fun getAllCurrencies(): Response<List<Currency>>

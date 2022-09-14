@@ -18,6 +18,9 @@ class AddFragment : Fragment(R.layout.fragment_add) {
     @Inject
     lateinit var addCategoryFragment: AddCategoryFragment
 
+    @Inject
+    lateinit var addCurrencyFragment: AddCurrencyFragment
+
     private var _binding: FragmentAddBinding? = null
     private val binding get() = _binding!!
 
@@ -48,6 +51,13 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         binding.buttonShowAddCategory.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, addCategoryFragment)
+                commit()
+            }
+        }
+
+        binding.buttonShowAddCurrency.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, addCurrencyFragment)
                 commit()
             }
         }
