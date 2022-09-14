@@ -49,7 +49,11 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideOperationCategoryListFragment() = CategoryListFragment()
+    fun provideCategoryListFragment() = CategoryListFragment()
+
+    @Singleton
+    @Provides
+    fun provideCurrencyListFragment() = CurrencyListFragment()
 
     @Singleton
     @Provides

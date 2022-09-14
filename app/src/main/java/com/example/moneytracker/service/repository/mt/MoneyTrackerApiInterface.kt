@@ -20,13 +20,16 @@ interface MoneyTrackerApiInterface {
     suspend fun getAllCategories(): Response<List<Category>>
 
     @GET("users_currencies")
-    suspend fun getUsersCurrencies(): Response<List<Currency>>
+    suspend fun getUserCurrencies(): Response<List<Currency>>
 
     @GET("users_currencies/default")
     suspend fun getUserDefaultCurrency(): Response<Currency>
 
     @POST("users_currencies")
-    suspend fun saveCurrency(@Body currency: CurrencyCreateInput): Response<Currency>
+    suspend fun saveUserCurrency(@Body currency: CurrencyCreateInput): Response<Currency>
+
+    @DELETE("users_currencies/{id}")
+    suspend fun deleteUserCurrency(@Path("id") userCurrencyId: Int): Response<Currency>
 
     @GET("currencies")
     suspend fun getAllCurrencies(): Response<List<Currency>>

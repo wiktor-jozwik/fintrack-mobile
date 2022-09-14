@@ -1,8 +1,6 @@
 package com.example.moneytracker.service.repository.mt
 
-import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
-import com.example.moneytracker.service.model.mt.inputs.CategoryCreateInput
 import com.example.moneytracker.service.model.mt.inputs.CurrencyCreateInput
 import com.example.moneytracker.service.repository.exchangerate.ExchangerateApi
 import com.example.moneytracker.utils.formatToIsoDateWithDashes
@@ -15,7 +13,7 @@ class CurrencyRepository @Inject constructor(
     private val exchangerateApi: ExchangerateApi
 ) {
     suspend fun getUsersCurrencies(): Response<List<Currency>> =
-        moneyTrackerApi.api.getUsersCurrencies()
+        moneyTrackerApi.api.getUserCurrencies()
 
     suspend fun getSupportedCurrencies(): Response<List<Currency>> =
         moneyTrackerApi.api.getAllCurrencies()
@@ -23,8 +21,11 @@ class CurrencyRepository @Inject constructor(
     suspend fun getUserDefaultCurrency(): Response<Currency> =
         moneyTrackerApi.api.getUserDefaultCurrency()
 
+    suspend fun deleteUserCurrency(userCurrencyId: Int): Response<Currency> =
+        moneyTrackerApi.api.deleteUserCurrency(userCurrencyId)
+
     suspend fun addNewCurrency(currency: CurrencyCreateInput): Response<Currency> =
-        moneyTrackerApi.api.saveCurrency(currency)
+        moneyTrackerApi.api.saveUserCurrency(currency)
 
     suspend fun convertCurrency(from: String, to: String, moneyAmount: Double, date: LocalDate): Double {
         val convertedValue =

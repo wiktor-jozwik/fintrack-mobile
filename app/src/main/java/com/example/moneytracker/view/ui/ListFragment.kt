@@ -18,6 +18,9 @@ class ListFragment : Fragment(R.layout.fragment_list) {
     @Inject
     lateinit var categoryListFragment: CategoryListFragment
 
+    @Inject
+    lateinit var currencyListFragment: CurrencyListFragment
+
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
@@ -48,6 +51,13 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         binding.buttonShowCategories.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, categoryListFragment)
+                commit()
+            }
+        }
+
+        binding.buttonShowCurrencies.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, currencyListFragment)
                 commit()
             }
         }
