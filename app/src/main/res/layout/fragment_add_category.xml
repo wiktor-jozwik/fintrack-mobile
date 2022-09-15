@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/textTitle"
         style="@style/TextTitle"
-        android:text="Add new category"
+        android:text="Save category"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,6 +19,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="120dp" />
+
+    <TextView
+        android:id="@+id/id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputNameContainer"

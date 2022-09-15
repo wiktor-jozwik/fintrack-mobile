@@ -20,8 +20,10 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         val year = LocalDate.now().year
         val startDate = LocalDate.parse("${year}-01-01")
         val endDate = LocalDate.parse("${year}-12-31")
-        val yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate)
-
+        var yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate).body()
+        if (yearlyOperations?.isNullOrEmpty() == true) {
+            yearlyOperations = listOf()
+        }
         val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
         val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomesAndOutcomes(defaultCurrencyName, yearlyOperations)

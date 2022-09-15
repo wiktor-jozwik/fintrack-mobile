@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
@@ -23,10 +22,14 @@ class CategoriesSplitChartViewModel @Inject constructor(
         val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
 
-        val operations: List<Operation> = if (startDate != null && endDate != null) {
-            operationRepository.getAllOperationsInRanges(startDate, endDate)
+        var operations: List<Operation>? = if (startDate != null && endDate != null) {
+            operationRepository.getAllOperationsInRanges(startDate, endDate).body()
         } else {
-            operationRepository.getAllOperations()
+            operationRepository.getAllOperations().body()
+        }
+
+        if (operations?.isNullOrEmpty() == true) {
+            operations = listOf()
         }
 
 

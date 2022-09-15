@@ -19,4 +19,10 @@ class AddCategoryViewModel @Inject constructor(
 
         return categoryRepository.addNewCategory(categoryCreateInput)
     }
+
+    suspend fun editCategory(id: Int, name: String, type: CategoryType): Response<Category> {
+        val categoryCreateInput = CategoryCreateInput(name, type)
+
+        return categoryRepository.editCategory(id, categoryCreateInput)
+    }
 }

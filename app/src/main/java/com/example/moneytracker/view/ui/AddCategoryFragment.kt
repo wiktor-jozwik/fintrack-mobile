@@ -3,10 +3,10 @@ package com.example.moneytracker.view.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -32,7 +32,10 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     @Inject
     lateinit var addFragment: AddFragment
 
-    private var addCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
+    @Inject
+    lateinit var categoryListFragment: CategoryListFragment
+
+    private var saveCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
 
     private var _binding: FragmentAddCategoryBinding? = null
     private val binding get() = _binding!!
@@ -49,24 +52,27 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        addCategoryLiveData = MutableLiveData()
+        saveCategoryLiveData = MutableLiveData()
     }
 
     override fun onResume() {
         super.onResume()
+        fillEditInformation()
         clearHelpers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addCategoryLiveData.observe(viewLifecycleOwner) {
+        saveCategoryLiveData.observe(viewLifecycleOwner) {
             try {
                 responseErrorHandler(it)
-                switchToAdd()
+                if (binding.id.text.isNullOrBlank()) {
+                    switchToAdd()
+                } else {
+                    switchToCategoryList()
+                }
                 clearFields()
-                binding.radioButtonOutcome.isChecked = true
-                binding.radioButtonIncome.isChecked = false
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
@@ -77,6 +83,23 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         binding.buttonSave.setOnClickListener {
             submitForm()
         }
+    }
+
+    private fun fillEditInformation() {
+        val categoryType = arguments?.getString("categoryType")
+
+        if (arguments != null && !categoryType.isNullOrBlank()) {
+            val categoryId = arguments?.getString("categoryId")
+            val categoryName = arguments?.getString("categoryName")
+
+            binding.inputNameText.setText(categoryName)
+            binding.id.text = categoryId
+            when (enumValueOf<CategoryType>(categoryType)) {
+                CategoryType.INCOME -> binding.radioButtonIncome.isChecked = true
+                CategoryType.OUTCOME -> binding.radioButtonOutcome.isChecked = true
+            }
+        }
+        arguments = null
     }
 
     private fun submitForm() {
@@ -98,11 +121,22 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
     }
 
     private fun validForm(operationCategoryType: CategoryType) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            addCategoryLiveData.value = addCategoryViewModel.addNewCategory(
-                binding.inputNameText.text.toString().removeSpaces(),
-                operationCategoryType
-            )
+        val id = binding.id.text
+        if (!id.isNullOrBlank()) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                saveCategoryLiveData.value = addCategoryViewModel.editCategory(
+                    Integer.parseInt(id.toString()),
+                    binding.inputNameText.text.toString().removeSpaces(),
+                    operationCategoryType
+                )
+            }
+        } else {
+            viewLifecycleOwner.lifecycleScope.launch {
+                saveCategoryLiveData.value = addCategoryViewModel.addNewCategory(
+                    binding.inputNameText.text.toString().removeSpaces(),
+                    operationCategoryType
+                )
+            }
         }
     }
 
@@ -113,8 +147,18 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         }
     }
 
+    private fun switchToCategoryList() {
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.homeFrameLayoutFragment, categoryListFragment)
+            commit()
+        }
+    }
+
     private fun clearFields() {
         binding.inputNameText.setText("")
+        binding.id.text = null
+        binding.radioButtonOutcome.isChecked = true
+        binding.radioButtonIncome.isChecked = false
         clearHelpers()
     }
 

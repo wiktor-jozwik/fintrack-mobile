@@ -8,13 +8,13 @@ import java.time.LocalDate
 
 interface MoneyTrackerApiInterface {
     @GET("operations")
-    suspend fun getAllOperations(): List<Operation>
+    suspend fun getAllOperations(): Response<List<Operation>>
 
     @GET("operations")
     suspend fun getAllOperationsInRange(
         @Query("startDate") startDate: LocalDate,
         @Query("endDate") endDate: LocalDate
-    ): List<Operation>
+    ): Response<List<Operation>>
 
     @GET("categories")
     suspend fun getAllCategories(): Response<List<Category>>
@@ -37,11 +37,17 @@ interface MoneyTrackerApiInterface {
     @POST("operations")
     suspend fun saveOperation(@Body operation: OperationCreateInput): Response<Operation>
 
+    @PATCH("operations/{id}")
+    suspend fun editOperation(@Path("id") operationId: Int, @Body operation: OperationCreateInput): Response<Operation>
+
     @DELETE("operations/{id}")
-    suspend fun deleteOperation(@Path("id") operationId: Int): Operation
+    suspend fun deleteOperation(@Path("id") operationId: Int): Response<Operation>
 
     @POST("categories")
     suspend fun saveCategory(@Body category: CategoryCreateInput): Response<Category>
+
+    @PATCH("categories/{id}")
+    suspend fun editCategory(@Path("id") categoryId: Int, @Body category: CategoryCreateInput): Response<Category>
 
     @DELETE("categories/{id}")
     suspend fun deleteCategory(@Path("id") categoryId: Int): Response<Category>

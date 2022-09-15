@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/textTitle"
         style="@style/TextTitle"
-        android:text="Add new currency"
+        android:text="Save currency"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

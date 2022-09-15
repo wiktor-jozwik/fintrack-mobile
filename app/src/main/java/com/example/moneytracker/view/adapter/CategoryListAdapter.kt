@@ -11,16 +11,23 @@ import com.example.moneytracker.service.model.mt.CategoryType
 
 class CategoryListAdapter(
     categories: List<Category>,
-    private val onClickListener: OnClickListener
+    private val deleteOnClickListener: DeleteOnClickListener,
+    private val editOnClickListener: EditOnClickListener
 ) : RecyclerView.Adapter<CategoryListAdapter.OperationCategoryViewHolder>() {
     private var categoriesList: MutableList<Category> = categories.toMutableList()
 
     inner class OperationCategoryViewHolder(val binding: CategoryBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    class OnClickListener(val clickListener: (position: Int) -> Unit) {
+    class DeleteOnClickListener(val clickListener: (position: Int) -> Unit) {
         fun onClick(position: Int) {
             clickListener(position)
+        }
+    }
+
+    class EditOnClickListener(val clickListener: (category: Category) -> Unit) {
+        fun onClick(category: Category) {
+            clickListener(category)
         }
     }
 
@@ -52,7 +59,10 @@ class CategoryListAdapter(
             textName.text = currentCategory.name
             imageType.setColorFilter(ContextCompat.getColor(imageType.context, color))
             buttonDelete.setOnClickListener {
-                onClickListener.onClick(currentCategory.id)
+                deleteOnClickListener.onClick(currentCategory.id)
+            }
+            buttonEdit.setOnClickListener {
+                editOnClickListener.onClick(currentCategory)
             }
         }
     }

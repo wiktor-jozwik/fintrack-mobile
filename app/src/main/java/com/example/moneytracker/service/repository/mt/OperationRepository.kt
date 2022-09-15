@@ -9,18 +9,21 @@ import javax.inject.Inject
 class OperationRepository @Inject constructor(
     private val moneyTrackerApi: MoneyTrackerApi,
 ) {
-    suspend fun getAllOperations(): List<Operation> =
-        moneyTrackerApi.api.getAllOperations().sortedByDescending { it.date }
+    suspend fun getAllOperations(): Response<List<Operation>> =
+        moneyTrackerApi.api.getAllOperations()
 
     suspend fun getAllOperationsInRanges(
         startDate: LocalDate,
         endDate: LocalDate
-    ): List<Operation> =
+    ): Response<List<Operation>> =
         moneyTrackerApi.api.getAllOperationsInRange(startDate, endDate)
 
     suspend fun addNewOperation(operationCreateInput: OperationCreateInput): Response<Operation> =
         moneyTrackerApi.api.saveOperation(operationCreateInput)
 
-    suspend fun deleteOperation(operationId: Int): Operation =
+    suspend fun editOperation(id: Int, operation: OperationCreateInput): Response<Operation> =
+        moneyTrackerApi.api.editOperation(id, operation)
+
+    suspend fun deleteOperation(operationId: Int): Response<Operation> =
         moneyTrackerApi.api.deleteOperation(operationId)
 }

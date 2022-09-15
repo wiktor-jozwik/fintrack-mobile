@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.OperatationBinding
+import com.example.moneytracker.databinding.OperationBinding
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
 import java.time.format.DateTimeFormatter
@@ -13,16 +13,23 @@ import java.time.format.DateTimeFormatter
 
 class OperationListAdapter(
     operations: List<Operation>,
-    private val onClickListener: OnClickListener
+    private val deleteOnClickListener: OperationListAdapter.DeleteOnClickListener,
+    private val editOnClickListener: OperationListAdapter.EditOnClickListener
 ) : RecyclerView.Adapter<OperationListAdapter.OperationViewHolder>() {
     private var operationsList: MutableList<Operation> = operations.toMutableList()
 
-    inner class OperationViewHolder(val binding: OperatationBinding) :
+    inner class OperationViewHolder(val binding: OperationBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    class OnClickListener(val clickListener: (position: Int) -> Unit) {
+    class DeleteOnClickListener(val clickListener: (position: Int) -> Unit) {
         fun onClick(position: Int) {
             clickListener(position)
+        }
+    }
+
+    class EditOnClickListener(val clickListener: (operation: Operation) -> Unit) {
+        fun onClick(operation: Operation) {
+            clickListener(operation)
         }
     }
 
@@ -41,7 +48,7 @@ class OperationListAdapter(
         parent: ViewGroup,
         viewType: Int,
     ): OperationViewHolder {
-        val binding = OperatationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = OperationBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return OperationViewHolder(binding)
     }
 
@@ -55,7 +62,10 @@ class OperationListAdapter(
             textDate.text =
                 currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             buttonDelete.setOnClickListener {
-                onClickListener.onClick(currentOperation.id)
+                deleteOnClickListener.onClick(currentOperation.id)
+            }
+            buttonEdit.setOnClickListener {
+                editOnClickListener.onClick(currentOperation)
             }
 
             when (currentOperation.category.type) {

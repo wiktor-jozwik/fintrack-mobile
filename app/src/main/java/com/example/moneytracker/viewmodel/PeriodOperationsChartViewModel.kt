@@ -41,7 +41,10 @@ class PeriodOperationsChartViewModel @Inject constructor(
             .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());
 
-        val operations = operationRepository.getAllOperationsInRanges(fromDate, toDate);
+        var operations = operationRepository.getAllOperationsInRanges(fromDate, toDate).body();
+        if (operations.isNullOrEmpty()) {
+            operations = listOf()
+        }
 
         val monthsRequired = mutableListOf<Int>()
         var monthToInsert = fromDate.monthValue
@@ -62,10 +65,11 @@ class PeriodOperationsChartViewModel @Inject constructor(
         val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
             MutableLiveData()
 
-        val operations = operationRepository.getAllOperations()
-        return groupYearlyOperations(operations)
-
-//        return incomesAndOutcomesYearlyResponse
+        var operations = operationRepository.getAllOperations().body()
+        if (operations.isNullOrEmpty()) {
+            operations = listOf()
+        }
+        return groupYearlyOperations(operations.sortedByDescending { it.date })
     }
 
     private suspend fun groupMonthlyOperations(

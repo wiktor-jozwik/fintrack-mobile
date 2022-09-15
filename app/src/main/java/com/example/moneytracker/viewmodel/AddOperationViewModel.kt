@@ -39,6 +39,26 @@ class AddOperationViewModel @Inject constructor(
         return operationRepository.addNewOperation(operationCreateInput)
     }
 
+    suspend fun editOperation(
+        id: Int,
+        name: String,
+        moneyAmount: Double,
+        date: LocalDate,
+        categoryName: String,
+        currencyName: String
+    ): Response<Operation> {
+        val operationCreateInput =
+            OperationCreateInput(
+                name,
+                moneyAmount,
+                date.toString(),
+                categoryName,
+                currencyName
+            )
+
+        return operationRepository.editOperation(id, operationCreateInput)
+    }
+
     suspend fun getUsersCurrencies(): Response<List<Currency>> {
         return currencyRepository.getUsersCurrencies()
     }
