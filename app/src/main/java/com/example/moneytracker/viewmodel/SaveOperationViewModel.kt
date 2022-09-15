@@ -14,7 +14,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class AddOperationViewModel @Inject constructor(
+class SaveOperationViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val categoryRepository: CategoryRepository,
     private val currencyRepository: CurrencyRepository

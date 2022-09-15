@@ -21,10 +21,10 @@ class YearlyOperationsSummaryFragment : Fragment() {
     private val yearlyOperationsSummaryViewModel: YearlyOperationsSummaryViewModel by viewModels()
 
     @Inject
-    lateinit var addOperationFragment: AddOperationFragment
+    lateinit var saveOperationFragment: SaveOperationFragment
 
     @Inject
-    lateinit var addCategoryFragment: AddCategoryFragment
+    lateinit var saveCategoryFragment: SaveCategoryFragment
 
     private var yearlyOperationsLiveData: MutableLiveData<Triple<Double, Double, Double>> =
         MutableLiveData()

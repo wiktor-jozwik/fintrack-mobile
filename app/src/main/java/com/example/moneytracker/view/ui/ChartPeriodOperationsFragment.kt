@@ -2,7 +2,6 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentPeriodOperationsChartBinding
-import com.example.moneytracker.service.model.mt.Category
-import com.example.moneytracker.viewmodel.PeriodOperationsChartViewModel
+import com.example.moneytracker.databinding.FragmentChartPeriodOperationsBinding
+import com.example.moneytracker.viewmodel.ChartPeriodOperationsViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -24,12 +22,11 @@ import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.util.*
 
 
 @AndroidEntryPoint
-class PeriodOperationsChartFragment : Fragment() {
+class ChartPeriodOperationsFragment : Fragment() {
     private var monthLabels: List<String> =
         listOf(
             "Jan",
@@ -47,14 +44,14 @@ class PeriodOperationsChartFragment : Fragment() {
         )
 
 
-    private val periodOperationsChartViewModel: PeriodOperationsChartViewModel by viewModels()
+    private val chartPeriodOperationsViewModel: ChartPeriodOperationsViewModel by viewModels()
 
     private var chartLiveData: MutableLiveData<Triple<List<BarEntry>, List<BarEntry>, Boolean>> =
         MutableLiveData()
 
     private var chartShown: Boolean = false
 
-    private var _binding: FragmentPeriodOperationsChartBinding? = null
+    private var _binding: FragmentChartPeriodOperationsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -62,7 +59,7 @@ class PeriodOperationsChartFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPeriodOperationsChartBinding.inflate(inflater, container, false)
+        _binding = FragmentChartPeriodOperationsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -108,13 +105,13 @@ class PeriodOperationsChartFragment : Fragment() {
 
     private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = periodOperationsChartViewModel.getChartData(size)
+            chartLiveData.value = chartPeriodOperationsViewModel.getChartData(size)
         }
     }
 
     private fun setAllTimeChart() {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = periodOperationsChartViewModel.getChartData(allTime = true)
+            chartLiveData.value = chartPeriodOperationsViewModel.getChartData(allTime = true)
         }
     }
 

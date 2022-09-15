@@ -8,7 +8,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoryListViewModel @Inject constructor(
+class ListCategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository
 ) : ViewModel() {
     suspend fun getAllCategories(): Response<List<Category>> {

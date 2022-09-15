@@ -12,29 +12,27 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentAddCurrencyBinding
+import com.example.moneytracker.databinding.FragmentSaveCurrencyBinding
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.AddCurrencyViewModel
+import com.example.moneytracker.viewmodel.SaveCurrencyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import retrofit2.Response
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddCurrencyFragment : Fragment(R.layout.fragment_add_currency) {
-    private val addCurrencyViewModel: AddCurrencyViewModel by viewModels()
+class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
+    private val saveCurrencyViewModel: SaveCurrencyViewModel by viewModels()
 
     @Inject
-    lateinit var addFragment: AddFragment
+    lateinit var saveFragment: SaveFragment
 
     private var addCurrencyLiveData: MutableLiveData<Response<Currency>> = MutableLiveData()
     private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
 
-    private var _binding: FragmentAddCurrencyBinding? = null
+    private var _binding: FragmentSaveCurrencyBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -42,7 +40,7 @@ class AddCurrencyFragment : Fragment(R.layout.fragment_add_currency) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddCurrencyBinding.inflate(inflater, container, false)
+        _binding = FragmentSaveCurrencyBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -89,13 +87,13 @@ class AddCurrencyFragment : Fragment(R.layout.fragment_add_currency) {
                 }
             }
 
-            currencyLiveData.value = addCurrencyViewModel.getSupportedCurrencies()
+            currencyLiveData.value = saveCurrencyViewModel.getSupportedCurrencies()
         }
     }
 
     private fun submitForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            addCurrencyLiveData.value = addCurrencyViewModel.addNewCurrency(
+            addCurrencyLiveData.value = saveCurrencyViewModel.addNewCurrency(
                 binding.inputCurrency.selectedItem.toString(),
             )
         }
@@ -103,7 +101,7 @@ class AddCurrencyFragment : Fragment(R.layout.fragment_add_currency) {
 
     private fun switchToAdd() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, addFragment)
+            replace(R.id.homeFrameLayoutFragment, saveFragment)
             commit()
         }
     }

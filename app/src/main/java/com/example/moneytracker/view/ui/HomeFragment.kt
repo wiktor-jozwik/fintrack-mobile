@@ -23,7 +23,7 @@ class HomeFragment @Inject constructor(
     lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
 
     @Inject
-    lateinit var addFragment: AddFragment
+    lateinit var saveFragment: SaveFragment
 
     @Inject
     lateinit var listFragment: ListFragment
@@ -32,7 +32,7 @@ class HomeFragment @Inject constructor(
     lateinit var chartFragment: ChartFragment
 
     @Inject
-    lateinit var loginUserFragment: LoginUserFragment
+    lateinit var userLoginFragment: UserLoginFragment
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -116,7 +116,7 @@ class HomeFragment @Inject constructor(
                 )
             )
             childFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, addFragment)
+                replace(R.id.homeFrameLayoutFragment, saveFragment)
                 commit()
             }
         }
@@ -164,7 +164,7 @@ class HomeFragment @Inject constructor(
 
     private fun switchToLogin() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, loginUserFragment)
+            replace(R.id.mainFrameLayoutFragment, userLoginFragment)
             commit()
         }
     }

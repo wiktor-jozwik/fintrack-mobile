@@ -14,13 +14,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ChartFragment : Fragment(R.layout.fragment_chart) {
     @Inject
-    lateinit var periodOperationsChartFragment: PeriodOperationsChartFragment
+    lateinit var chartPeriodOperationsFragment: ChartPeriodOperationsFragment
 
     @Inject
-    lateinit var categoriesSplitChartFragment: CategoriesSplitChartFragment
+    lateinit var chartCategoriesSplitFragment: ChartCategoriesSplitFragment
 
     @Inject
-    lateinit var goldChartFragment: GoldChartFragment
+    lateinit var chartGoldFragment: ChartGoldFragment
 
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
@@ -44,14 +44,14 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
 
         binding.buttonShowPeriodOperationsChart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, periodOperationsChartFragment)
+                replace(R.id.homeFrameLayoutFragment, chartPeriodOperationsFragment)
                 commit()
             }
         }
 
         binding.buttonShowCategoriesSplitChart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, categoriesSplitChartFragment)
+                replace(R.id.homeFrameLayoutFragment, chartCategoriesSplitFragment)
                 commit()
             }
         }
@@ -59,7 +59,7 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
 
         binding.buttonShowGoldChart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, goldChartFragment)
+                replace(R.id.homeFrameLayoutFragment, chartGoldFragment)
                 commit()
             }
         }

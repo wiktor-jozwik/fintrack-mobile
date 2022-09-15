@@ -6,22 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentAddBinding
+import com.example.moneytracker.databinding.FragmentSaveBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddFragment : Fragment(R.layout.fragment_add) {
+class SaveFragment : Fragment(R.layout.fragment_save) {
     @Inject
-    lateinit var addOperationFragment: AddOperationFragment
+    lateinit var saveOperationFragment: SaveOperationFragment
 
     @Inject
-    lateinit var addCategoryFragment: AddCategoryFragment
+    lateinit var saveCategoryFragment: SaveCategoryFragment
 
     @Inject
-    lateinit var addCurrencyFragment: AddCurrencyFragment
+    lateinit var saveCurrencyFragment: SaveCurrencyFragment
 
-    private var _binding: FragmentAddBinding? = null
+    private var _binding: FragmentSaveBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -29,7 +29,7 @@ class AddFragment : Fragment(R.layout.fragment_add) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddBinding.inflate(inflater, container, false)
+        _binding = FragmentSaveBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -43,21 +43,21 @@ class AddFragment : Fragment(R.layout.fragment_add) {
 
         binding.buttonShowAddOperation.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, addOperationFragment)
+                replace(R.id.homeFrameLayoutFragment, saveOperationFragment)
                 commit()
             }
         }
 
         binding.buttonShowAddCategory.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, addCategoryFragment)
+                replace(R.id.homeFrameLayoutFragment, saveCategoryFragment)
                 commit()
             }
         }
 
         binding.buttonShowAddCurrency.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, addCurrencyFragment)
+                replace(R.id.homeFrameLayoutFragment, saveCurrencyFragment)
                 commit()
             }
         }

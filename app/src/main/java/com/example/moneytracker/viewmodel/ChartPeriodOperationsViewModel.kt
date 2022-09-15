@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
@@ -17,7 +16,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class PeriodOperationsChartViewModel @Inject constructor(
+class ChartPeriodOperationsViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository,
     private val currencyCalculator: CurrencyCalculator
@@ -57,14 +56,9 @@ class PeriodOperationsChartViewModel @Inject constructor(
         }
 
         return groupMonthlyOperations(operations, monthsRequired.sortedBy { it })
-
-//        return incomesAndOutcomesYearlyResponse
     }
 
     private suspend fun getAllTimeOperations(): Pair<List<BarEntry>, List<BarEntry>> {
-        val incomesAndOutcomesYearlyResponse: MutableLiveData<Pair<List<BarEntry>, List<BarEntry>>> =
-            MutableLiveData()
-
         var operations = operationRepository.getAllOperations().body()
         if (operations.isNullOrEmpty()) {
             operations = listOf()
@@ -95,7 +89,8 @@ class PeriodOperationsChartViewModel @Inject constructor(
             it.date.year
         }.entries.sortedBy { it.key }
 
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val defaultCurrencyName: String =
+            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
@@ -120,7 +115,8 @@ class PeriodOperationsChartViewModel @Inject constructor(
     }
 
     private suspend fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val defaultCurrencyName: String =
+            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
@@ -167,12 +163,20 @@ class PeriodOperationsChartViewModel @Inject constructor(
         return Pair(incomesBars, outcomesBars)
     }
 
-    private suspend fun calculateIncomesAndOutcomes(defaultCurrencyName: String, operations: List<Operation>): Pair<Double, Double> {
+    private suspend fun calculateIncomesAndOutcomes(
+        defaultCurrencyName: String,
+        operations: List<Operation>
+    ): Pair<Double, Double> {
         var incomes = 0.0
         var outcomes = 0.0
 
         operations.forEach {
-            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
+            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(
+                it.currency.name,
+                defaultCurrencyName,
+                it.moneyAmount,
+                it.date
+            )
 
             when (it.category.type) {
                 CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency

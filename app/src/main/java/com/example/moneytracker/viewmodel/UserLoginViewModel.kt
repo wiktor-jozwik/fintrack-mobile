@@ -9,7 +9,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginUserViewModel @Inject constructor(
+class UserLoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 

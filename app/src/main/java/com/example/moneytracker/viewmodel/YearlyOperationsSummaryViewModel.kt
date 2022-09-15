@@ -20,13 +20,18 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         val year = LocalDate.now().year
         val startDate = LocalDate.parse("${year}-01-01")
         val endDate = LocalDate.parse("${year}-12-31")
-        var yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate).body()
+        var yearlyOperations =
+            operationRepository.getAllOperationsInRanges(startDate, endDate).body()
         if (yearlyOperations?.isNullOrEmpty() == true) {
             yearlyOperations = listOf()
         }
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val defaultCurrencyName: String =
+            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
-        val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomesAndOutcomes(defaultCurrencyName, yearlyOperations)
+        val (totalIncomeDecimal, totalOutcomeDecimal) = calculateIncomesAndOutcomes(
+            defaultCurrencyName,
+            yearlyOperations
+        )
         val balanceDecimal = totalIncomeDecimal - totalOutcomeDecimal
 
         return Triple(
@@ -36,12 +41,20 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         )
     }
 
-    private suspend fun calculateIncomesAndOutcomes(defaultCurrencyName: String, operations: List<Operation>): Pair<Double, Double> {
+    private suspend fun calculateIncomesAndOutcomes(
+        defaultCurrencyName: String,
+        operations: List<Operation>
+    ): Pair<Double, Double> {
         var incomes = 0.0
         var outcomes = 0.0
 
         operations.forEach {
-            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
+            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(
+                it.currency.name,
+                defaultCurrencyName,
+                it.moneyAmount,
+                it.date
+            )
 
             when (it.category.type) {
                 CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency

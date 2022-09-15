@@ -12,12 +12,15 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesSplitChartViewModel @Inject constructor(
+class ChartCategoriesSplitViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository,
     private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
-    suspend fun getSplitOperationByCategories(startDate: LocalDate?, endDate: LocalDate?): Pair<List<String>, List<BarEntry>> {
+    suspend fun getSplitOperationByCategories(
+        startDate: LocalDate?,
+        endDate: LocalDate?
+    ): Pair<List<String>, List<BarEntry>> {
         var categoriesNames = mutableListOf<String>()
         val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
@@ -33,7 +36,8 @@ class CategoriesSplitChartViewModel @Inject constructor(
         }
 
 
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val defaultCurrencyName: String =
+            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME
@@ -44,7 +48,12 @@ class CategoriesSplitChartViewModel @Inject constructor(
         categoriesOutcomeGrouped.forEach { (category, operations) ->
             var outcome = 0.0
             operations.forEach {
-                outcome += currencyRepository.convertCurrency(it.currency.name, defaultCurrencyName, it.moneyAmount, it.date)
+                outcome += currencyRepository.convertCurrency(
+                    it.currency.name,
+                    defaultCurrencyName,
+                    it.moneyAmount,
+                    it.date
+                )
             }
 
             categoriesNames.add(category.name)

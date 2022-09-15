@@ -13,15 +13,15 @@ import javax.inject.Singleton
 object FragmentModule {
     @Singleton
     @Provides
-    fun provideLoginFragment(
+    fun provideUserLoginFragment(
         sharedPreferences: SharedPreferences,
-        registerUserFragment: RegisterUserFragment
+        userRegisterFragment: UserRegisterFragment
     ) =
-        LoginUserFragment(sharedPreferences, registerUserFragment)
+        UserLoginFragment(sharedPreferences, userRegisterFragment)
 
     @Singleton
     @Provides
-    fun provideRegisterUserFragment() = RegisterUserFragment()
+    fun provideUserRegisterFragment() = UserRegisterFragment()
 
     @Singleton
     @Provides
@@ -33,27 +33,27 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideAddOperationFragment() = AddOperationFragment()
+    fun provideSaveOperationFragment() = SaveOperationFragment()
 
     @Singleton
     @Provides
-    fun provideAddCategoryFragment() = AddCategoryFragment()
+    fun provideSaveCategoryFragment() = SaveCategoryFragment()
 
     @Singleton
     @Provides
-    fun provideAddCurrencyFragment() = AddCurrencyFragment()
+    fun provideSaveCurrencyFragment() = SaveCurrencyFragment()
 
     @Singleton
     @Provides
-    fun provideOperationListFragment() = OperationListFragment()
+    fun provideListOperationFragment() = ListOperationFragment()
 
     @Singleton
     @Provides
-    fun provideCategoryListFragment() = CategoryListFragment()
+    fun provideListCategoryFragment() = ListCategoryFragment()
 
     @Singleton
     @Provides
-    fun provideCurrencyListFragment() = CurrencyListFragment()
+    fun provideListCurrencyFragment() = ListCurrencyFragment()
 
     @Singleton
     @Provides
@@ -61,15 +61,15 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun providePeriodOperationsChartFragment() = PeriodOperationsChartFragment()
+    fun provideChartPeriodOperationsFragment() = ChartPeriodOperationsFragment()
 
     @Singleton
     @Provides
-    fun provideCategoriesSplitChartFragment() = CategoriesSplitChartFragment()
+    fun provideChartCategoriesSplitFragment() = ChartCategoriesSplitFragment()
 
     @Singleton
     @Provides
-    fun provideGoldChartFragment() = GoldChartFragment()
+    fun provideChartGoldFragment() = ChartGoldFragment()
 
     @Singleton
     @Provides
@@ -77,7 +77,7 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideAddFragment() = AddFragment()
+    fun provideAddFragment() = SaveFragment()
 
     @Singleton
     @Provides

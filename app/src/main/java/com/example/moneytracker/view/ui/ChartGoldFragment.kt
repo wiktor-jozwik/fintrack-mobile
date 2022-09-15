@@ -1,8 +1,6 @@
 package com.example.moneytracker.view.ui
 
-import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentGoldChartBinding
-import com.example.moneytracker.viewmodel.GoldChartViewModel
+import com.example.moneytracker.databinding.FragmentChartGoldBinding
+import com.example.moneytracker.viewmodel.ChartGoldViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
@@ -29,15 +27,15 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class GoldChartFragment : Fragment(R.layout.fragment_gold_chart) {
-    private val goldChartViewModel: GoldChartViewModel by viewModels()
+class ChartGoldFragment : Fragment(R.layout.fragment_chart_gold) {
+    private val chartGoldViewModel: ChartGoldViewModel by viewModels()
 
     private var chartLiveData: MutableLiveData<Pair<List<Entry>, List<String>>> =
         MutableLiveData()
 
     private var chartShown: Boolean = false
 
-    private var _binding: FragmentGoldChartBinding? = null
+    private var _binding: FragmentChartGoldBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -46,7 +44,7 @@ class GoldChartFragment : Fragment(R.layout.fragment_gold_chart) {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentGoldChartBinding.inflate(inflater, container, false)
+        _binding = FragmentChartGoldBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -88,13 +86,15 @@ class GoldChartFragment : Fragment(R.layout.fragment_gold_chart) {
 
     private fun setXMonthChart(x: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = goldChartViewModel.getHistoricalGoldPrice(x, GoldChartViewModel.Period.MONTH)
+            chartLiveData.value =
+                chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.MONTH)
         }
     }
 
     private fun setXYearChart(x: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = goldChartViewModel.getHistoricalGoldPrice(x, GoldChartViewModel.Period.YEAR)
+            chartLiveData.value =
+                chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.YEAR)
         }
     }
 

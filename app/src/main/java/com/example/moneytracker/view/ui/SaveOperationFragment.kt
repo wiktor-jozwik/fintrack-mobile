@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,14 +14,14 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentAddOperationBinding
+import com.example.moneytracker.databinding.FragmentSaveOperationBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.AddOperationViewModel
+import com.example.moneytracker.viewmodel.SaveOperationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -35,14 +34,14 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
-    private val addOperationViewModel: AddOperationViewModel by viewModels()
+class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
+    private val saveOperationViewModel: SaveOperationViewModel by viewModels()
 
     @Inject
-    lateinit var addFragment: AddFragment
+    lateinit var saveFragment: SaveFragment
 
     @Inject
-    lateinit var operationListFragment: OperationListFragment
+    lateinit var listOperationFragment: ListOperationFragment
 
     @Inject
     lateinit var datePickerFragment: DatePickerFragment
@@ -54,7 +53,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
     private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
     private var categoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
 
-    private var _binding: FragmentAddOperationBinding? = null
+    private var _binding: FragmentSaveOperationBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -62,7 +61,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddOperationBinding.inflate(inflater, container, false)
+        _binding = FragmentSaveOperationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -110,7 +109,6 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     private fun fillEditInformation() {
         if (arguments != null) {
-            Log.d("MT", arguments.toString())
             val operationId = arguments?.getString("operationId")
             val operationName = arguments?.getString("operationName")
             val operationDate = arguments?.getString("operationDate")
@@ -172,7 +170,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                 }
             }
 
-            currencyLiveData.value = addOperationViewModel.getUsersCurrencies()
+            currencyLiveData.value = saveOperationViewModel.getUsersCurrencies()
 
             categoryLiveData.observe(viewLifecycleOwner) {
                 try {
@@ -190,7 +188,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
-            categoryLiveData.value = addOperationViewModel.getAllCategories()
+            categoryLiveData.value = saveOperationViewModel.getAllCategories()
         }
     }
 
@@ -280,7 +278,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveOperationLiveData.value = addOperationViewModel.editOperation(
+                saveOperationLiveData.value = saveOperationViewModel.editOperation(
                     Integer.parseInt(id.toString()),
                     binding.inputNameText.text.toString(),
                     binding.inputMoneyAmountText.text.toString().toDouble(),
@@ -291,7 +289,7 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
             }
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveOperationLiveData.value = addOperationViewModel.addNewOperation(
+                saveOperationLiveData.value = saveOperationViewModel.addNewOperation(
                     binding.inputNameText.text.toString(),
                     binding.inputMoneyAmountText.text.toString().toDouble(),
                     date,
@@ -306,20 +304,19 @@ class AddOperationFragment : Fragment(R.layout.fragment_add_operation) {
 
     private fun switchToAdd() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, addFragment)
+            replace(R.id.homeFrameLayoutFragment, saveFragment)
             commit()
         }
     }
 
     private fun switchToOperationList() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, operationListFragment)
+            replace(R.id.homeFrameLayoutFragment, listOperationFragment)
             commit()
         }
     }
 
     private fun clearFields() {
-        Log.d("MT", "clearFields")
         binding.id.text = null
         binding.inputNameText.setText("")
         binding.inputMoneyAmountText.setText("")

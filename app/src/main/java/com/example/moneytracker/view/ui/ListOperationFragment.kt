@@ -11,15 +11,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentOperationListBinding
-import com.example.moneytracker.service.model.mt.Category
+import com.example.moneytracker.databinding.FragmentListOperationBinding
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.utils.formatToIsoDateWithDashes
-import com.example.moneytracker.view.adapter.CategoryListAdapter
 import com.example.moneytracker.view.adapter.OperationListAdapter
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.OperationListViewModel
+import com.example.moneytracker.viewmodel.ListOperationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,17 +25,18 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
-    private val operationListViewModel: OperationListViewModel by viewModels()
+class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
+    private val listOperationViewModel: ListOperationViewModel by viewModels()
 
     @Inject
-    lateinit var addOperationFragment: AddOperationFragment
+    lateinit var saveOperationFragment: SaveOperationFragment
 
-    private var listOperationLiveData: MutableLiveData<Response<List<Operation>>> = MutableLiveData()
+    private var listOperationLiveData: MutableLiveData<Response<List<Operation>>> =
+        MutableLiveData()
     private var deleteOperationLiveData: MutableLiveData<Response<Operation>> = MutableLiveData()
 
 
-    private var _binding: FragmentOperationListBinding? = null
+    private var _binding: FragmentListOperationBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -45,7 +44,7 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentOperationListBinding.inflate(inflater, container, false)
+        _binding = FragmentListOperationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -98,7 +97,7 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            listOperationLiveData.value = operationListViewModel.getAllOperations()
+            listOperationLiveData.value = listOperationViewModel.getAllOperations()
         }
 
         binding.recyclerViewOperationItems.adapter = OperationListAdapter(
@@ -115,7 +114,8 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
             .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    deleteOperationLiveData.value = operationListViewModel.deleteOperation(operationId)
+                    deleteOperationLiveData.value =
+                        listOperationViewModel.deleteOperation(operationId)
                 }
             }
             .setNegativeButton("No") { dialog, _ ->
@@ -134,8 +134,8 @@ class OperationListFragment : Fragment(R.layout.fragment_operation_list) {
         bundle.putString("operationMoneyAmount", operation.moneyAmount.toString())
 
         parentFragmentManager.beginTransaction().apply {
-            addOperationFragment.arguments = bundle
-            replace(R.id.homeFrameLayoutFragment, addOperationFragment)
+            saveOperationFragment.arguments = bundle
+            replace(R.id.homeFrameLayoutFragment, saveOperationFragment)
             commit()
         }
     }

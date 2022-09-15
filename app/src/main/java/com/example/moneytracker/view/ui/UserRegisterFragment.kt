@@ -19,7 +19,7 @@ import com.example.moneytracker.service.model.mt.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.RegisterUserViewModel
+import com.example.moneytracker.viewmodel.UserRegisterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -27,11 +27,11 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
-    private val registerUserViewModel: RegisterUserViewModel by viewModels()
+class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
+    private val userRegisterViewModel: UserRegisterViewModel by viewModels()
 
     @Inject
-    lateinit var loginUserFragment: LoginUserFragment
+    lateinit var userLoginFragment: UserLoginFragment
 
     private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
     private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
@@ -79,7 +79,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
 
         binding.loginLink.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, loginUserFragment)
+                replace(R.id.mainFrameLayoutFragment, userLoginFragment)
                 commit()
             }
         }
@@ -106,7 +106,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
                 }
             }
 
-            currencyLiveData.value = registerUserViewModel.getSupportedCurrencies()
+            currencyLiveData.value = userRegisterViewModel.getSupportedCurrencies()
         }
     }
 
@@ -125,7 +125,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            registerUserLiveData.value = registerUserViewModel.registerUser(
+            registerUserLiveData.value = userRegisterViewModel.registerUser(
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
                 binding.inputPasswordConfirmationText.text.toString(),
@@ -139,7 +139,7 @@ class RegisterUserFragment : Fragment(R.layout.fragment_user_register) {
 
     private fun switchToLogin() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, loginUserFragment)
+            replace(R.id.mainFrameLayoutFragment, userLoginFragment)
             commit()
         }
     }

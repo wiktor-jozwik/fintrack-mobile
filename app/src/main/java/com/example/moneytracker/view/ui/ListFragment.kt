@@ -13,13 +13,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class ListFragment : Fragment(R.layout.fragment_list) {
     @Inject
-    lateinit var operationListFragment: OperationListFragment
+    lateinit var listOperationFragment: ListOperationFragment
 
     @Inject
-    lateinit var categoryListFragment: CategoryListFragment
+    lateinit var listCategoryFragment: ListCategoryFragment
 
     @Inject
-    lateinit var currencyListFragment: CurrencyListFragment
+    lateinit var listCurrencyFragment: ListCurrencyFragment
 
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
@@ -43,21 +43,21 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
         binding.buttonShowOperations.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, operationListFragment)
+                replace(R.id.homeFrameLayoutFragment, listOperationFragment)
                 commit()
             }
         }
 
         binding.buttonShowCategories.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, categoryListFragment)
+                replace(R.id.homeFrameLayoutFragment, listCategoryFragment)
                 commit()
             }
         }
 
         binding.buttonShowCurrencies.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, currencyListFragment)
+                replace(R.id.homeFrameLayoutFragment, listCurrencyFragment)
                 commit()
             }
         }

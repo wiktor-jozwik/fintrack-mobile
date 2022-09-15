@@ -4,7 +4,6 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.example.moneytracker.service.model.mt.JwtResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.LoginUserViewModel
+import com.example.moneytracker.viewmodel.UserLoginViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,11 +25,11 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginUserFragment @Inject constructor(
+class UserLoginFragment @Inject constructor(
     private val sharedPreferences: SharedPreferences,
-    private val registerUserFragment: RegisterUserFragment
+    private val userRegisterFragment: UserRegisterFragment
 ) : Fragment(R.layout.fragment_user_login) {
-    private val loginUserViewModel: LoginUserViewModel by viewModels()
+    private val userLoginViewModel: UserLoginViewModel by viewModels()
 
     @Inject
     lateinit var homeFragment: HomeFragment
@@ -66,7 +65,6 @@ class LoginUserFragment @Inject constructor(
         loginUserLiveData.observe(viewLifecycleOwner) {
             try {
                 val res = responseErrorHandler(it)
-                Log.d("MT", res.toString())
                 with(sharedPreferences.edit()) {
                     putString("JWT_AUTH_TOKEN", res.jwtToken)
                     apply()
@@ -84,7 +82,7 @@ class LoginUserFragment @Inject constructor(
 
         binding.registerLink.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, registerUserFragment)
+                replace(R.id.mainFrameLayoutFragment, userRegisterFragment)
                 commit()
             }
         }
@@ -147,7 +145,7 @@ class LoginUserFragment @Inject constructor(
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            loginUserLiveData.value = loginUserViewModel.loginUser(
+            loginUserLiveData.value = userLoginViewModel.loginUser(
                 binding.inputEmailText.text.toString(),
                 binding.inputPasswordText.text.toString(),
             )

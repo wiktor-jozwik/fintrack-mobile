@@ -11,7 +11,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterUserViewModel @Inject constructor(
+class UserRegisterViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {

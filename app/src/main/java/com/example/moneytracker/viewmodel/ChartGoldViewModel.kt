@@ -1,6 +1,5 @@
 package com.example.moneytracker.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.nbp.NbpGoldPrice
 import com.example.moneytracker.service.repository.nbp.NbpRepository
@@ -13,15 +12,19 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class GoldChartViewModel @Inject constructor(
+class ChartGoldViewModel @Inject constructor(
     private val nbpRepository: NbpRepository,
 ) : ViewModel() {
     enum class Period {
         MONTH,
         YEAR
     }
+
     private val OUNCE_WEIGHT = 31.1034768
-    suspend fun getHistoricalGoldPrice(x: Int, monthOrYear: Period): Pair<List<Entry>, List<String>> {
+    suspend fun getHistoricalGoldPrice(
+        x: Int,
+        monthOrYear: Period
+    ): Pair<List<Entry>, List<String>> {
         val goldPrices = mutableListOf<NbpGoldPrice>()
         val goldEntries = mutableListOf<Entry>()
         val xLabels = mutableListOf<String>()
@@ -43,7 +46,8 @@ class GoldChartViewModel @Inject constructor(
             Period.YEAR -> {
                 for (i in x downTo 1) {
                     val dateFrom = currentDate.minusYears(i.toLong()).formatToIsoDateWithDashes()
-                    val dateTo = currentDate.minusYears((i-1).toLong()).formatToIsoDateWithDashes()
+                    val dateTo =
+                        currentDate.minusYears((i - 1).toLong()).formatToIsoDateWithDashes()
                     goldPrices += nbpRepository.getGoldPricesInRange(dateFrom, dateTo)
                 }
             }

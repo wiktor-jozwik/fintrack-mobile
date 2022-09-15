@@ -10,7 +10,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class AddCategoryViewModel @Inject constructor(
+class SaveCategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
 

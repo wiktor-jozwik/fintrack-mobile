@@ -2,7 +2,6 @@ package com.example.moneytracker.view.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.ActivityMainBinding
@@ -12,7 +11,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     @Inject
-    lateinit var loginUserFragment: LoginUserFragment
+    lateinit var userLoginFragment: UserLoginFragment
 
     @Inject
     lateinit var homeFragment: HomeFragment
@@ -41,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             supportFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, loginUserFragment)
+                replace(R.id.mainFrameLayoutFragment, userLoginFragment)
                 commit()
             }
         }

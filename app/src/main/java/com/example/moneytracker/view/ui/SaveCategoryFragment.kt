@@ -3,7 +3,6 @@ package com.example.moneytracker.view.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,13 +11,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentAddCategoryBinding
+import com.example.moneytracker.databinding.FragmentSaveCategoryBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.AddCategoryViewModel
+import com.example.moneytracker.viewmodel.SaveCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -26,18 +25,18 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
-    private val addCategoryViewModel: AddCategoryViewModel by viewModels()
+class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
+    private val saveCategoryViewModel: SaveCategoryViewModel by viewModels()
 
     @Inject
-    lateinit var addFragment: AddFragment
+    lateinit var saveFragment: SaveFragment
 
     @Inject
-    lateinit var categoryListFragment: CategoryListFragment
+    lateinit var listCategoryFragment: ListCategoryFragment
 
     private var saveCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
 
-    private var _binding: FragmentAddCategoryBinding? = null
+    private var _binding: FragmentSaveCategoryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -45,7 +44,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddCategoryBinding.inflate(inflater, container, false)
+        _binding = FragmentSaveCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -124,7 +123,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         val id = binding.id.text
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveCategoryLiveData.value = addCategoryViewModel.editCategory(
+                saveCategoryLiveData.value = saveCategoryViewModel.editCategory(
                     Integer.parseInt(id.toString()),
                     binding.inputNameText.text.toString().removeSpaces(),
                     operationCategoryType
@@ -132,7 +131,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
             }
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveCategoryLiveData.value = addCategoryViewModel.addNewCategory(
+                saveCategoryLiveData.value = saveCategoryViewModel.addNewCategory(
                     binding.inputNameText.text.toString().removeSpaces(),
                     operationCategoryType
                 )
@@ -142,14 +141,14 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
 
     private fun switchToAdd() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, addFragment)
+            replace(R.id.homeFrameLayoutFragment, saveFragment)
             commit()
         }
     }
 
     private fun switchToCategoryList() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, categoryListFragment)
+            replace(R.id.homeFrameLayoutFragment, listCategoryFragment)
             commit()
         }
     }

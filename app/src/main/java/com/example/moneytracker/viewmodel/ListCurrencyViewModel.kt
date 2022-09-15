@@ -8,7 +8,7 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class CurrencyListViewModel @Inject constructor(
+class ListCurrencyViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository
 ) : ViewModel() {
 

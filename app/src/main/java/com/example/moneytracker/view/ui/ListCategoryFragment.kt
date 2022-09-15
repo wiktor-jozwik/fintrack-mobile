@@ -11,12 +11,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentCategoryListBinding
+import com.example.moneytracker.databinding.FragmentListCategoryBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.view.adapter.CategoryListAdapter
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.CategoryListViewModel
+import com.example.moneytracker.viewmodel.ListCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -24,16 +24,16 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
-    private val categoryListViewModel: CategoryListViewModel by viewModels()
+class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
+    private val listCategoryViewModel: ListCategoryViewModel by viewModels()
 
     @Inject
-    lateinit var addCategoryFragment: AddCategoryFragment
+    lateinit var saveCategoryFragment: SaveCategoryFragment
 
     private var listCategoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
     private var deleteCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
 
-    private var _binding: FragmentCategoryListBinding? = null
+    private var _binding: FragmentListCategoryBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -41,7 +41,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentCategoryListBinding.inflate(inflater, container, false)
+        _binding = FragmentListCategoryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -94,7 +94,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            listCategoryLiveData.value = categoryListViewModel.getAllCategories()
+            listCategoryLiveData.value = listCategoryViewModel.getAllCategories()
         }
 
         binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
@@ -111,7 +111,7 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
             .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    deleteCategoryLiveData.value = categoryListViewModel.deleteCategory(categoryId)
+                    deleteCategoryLiveData.value = listCategoryViewModel.deleteCategory(categoryId)
                 }
             }
             .setNegativeButton("No") { dialog, _ ->
@@ -127,8 +127,8 @@ class CategoryListFragment : Fragment(R.layout.fragment_category_list) {
         bundle.putString("categoryType", category.type.toString())
 
         parentFragmentManager.beginTransaction().apply {
-            addCategoryFragment.arguments = bundle
-            replace(R.id.homeFrameLayoutFragment, addCategoryFragment)
+            saveCategoryFragment.arguments = bundle
+            replace(R.id.homeFrameLayoutFragment, saveCategoryFragment)
             commit()
         }
     }
