@@ -148,6 +148,7 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
 
         barChart.data = data
         barChart.setVisibleXRangeMaximum(8f)
+        barChart.extraBottomOffset = 2f
         barChart.invalidate()
         barChart.animateY(600)
     }

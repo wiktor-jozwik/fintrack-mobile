@@ -73,6 +73,10 @@ object FragmentModule {
 
     @Singleton
     @Provides
+    fun provideChartCurrencyFragment() = ChartCurrencyFragment()
+
+    @Singleton
+    @Provides
     fun provideListFragment() = ListFragment()
 
     @Singleton

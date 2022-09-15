@@ -22,6 +22,9 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
     @Inject
     lateinit var chartGoldFragment: ChartGoldFragment
 
+    @Inject
+    lateinit var chartCurrencyFragment: ChartCurrencyFragment
+
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
 
@@ -60,6 +63,13 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
         binding.buttonShowGoldChart.setOnClickListener {
             parentFragmentManager.beginTransaction().apply {
                 replace(R.id.homeFrameLayoutFragment, chartGoldFragment)
+                commit()
+            }
+        }
+
+        binding.buttonShowCurrencyChart.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, chartCurrencyFragment)
                 commit()
             }
         }

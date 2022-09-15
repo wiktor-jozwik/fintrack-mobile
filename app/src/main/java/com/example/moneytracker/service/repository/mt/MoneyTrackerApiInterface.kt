@@ -25,6 +25,9 @@ interface MoneyTrackerApiInterface {
     @GET("users_currencies/default")
     suspend fun getUserDefaultCurrency(): Response<Currency>
 
+    @GET("users_currencies/without_default")
+    suspend fun getSupportedCurrenciesWithoutDefault(): Response<List<Currency>>
+
     @POST("users_currencies")
     suspend fun saveUserCurrency(@Body currency: CurrencyCreateInput): Response<Currency>
 
@@ -38,7 +41,10 @@ interface MoneyTrackerApiInterface {
     suspend fun saveOperation(@Body operation: OperationCreateInput): Response<Operation>
 
     @PATCH("operations/{id}")
-    suspend fun editOperation(@Path("id") operationId: Int, @Body operation: OperationCreateInput): Response<Operation>
+    suspend fun editOperation(
+        @Path("id") operationId: Int,
+        @Body operation: OperationCreateInput
+    ): Response<Operation>
 
     @DELETE("operations/{id}")
     suspend fun deleteOperation(@Path("id") operationId: Int): Response<Operation>
@@ -47,7 +53,10 @@ interface MoneyTrackerApiInterface {
     suspend fun saveCategory(@Body category: CategoryCreateInput): Response<Category>
 
     @PATCH("categories/{id}")
-    suspend fun editCategory(@Path("id") categoryId: Int, @Body category: CategoryCreateInput): Response<Category>
+    suspend fun editCategory(
+        @Path("id") categoryId: Int,
+        @Body category: CategoryCreateInput
+    ): Response<Category>
 
     @DELETE("categories/{id}")
     suspend fun deleteCategory(@Path("id") categoryId: Int): Response<Category>

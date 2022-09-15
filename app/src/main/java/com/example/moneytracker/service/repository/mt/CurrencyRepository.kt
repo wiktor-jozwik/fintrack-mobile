@@ -18,6 +18,9 @@ class CurrencyRepository @Inject constructor(
     suspend fun getSupportedCurrencies(): Response<List<Currency>> =
         moneyTrackerApi.api.getAllCurrencies()
 
+    suspend fun getSupportedCurrenciesWithoutDefault(): Response<List<Currency>> =
+        moneyTrackerApi.api.getSupportedCurrenciesWithoutDefault()
+
     suspend fun getUserDefaultCurrency(): Response<Currency> =
         moneyTrackerApi.api.getUserDefaultCurrency()
 

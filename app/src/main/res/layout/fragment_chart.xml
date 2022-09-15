@@ -48,4 +48,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonShowCategoriesSplitChart" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buttonShowCurrencyChart"
+        style="@style/FullWidthButton"
+        android:layout_marginTop="30dp"
+        android:text="Currencies"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/buttonShowGoldChart" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
