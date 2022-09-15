@@ -12,6 +12,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartCategoriesSplitBinding
+import com.example.moneytracker.view.ui.utils.isValidDate
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.ChartCategoriesSplitViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -83,6 +85,11 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
     private fun refreshChart() {
         val startDate = binding.buttonDatePickerStart.text
         val endDate = binding.buttonDatePickerEnd.text
+
+        if (!isValidDate(startDate.toString()) || !isValidDate(endDate.toString())) {
+            makeErrorToast(requireContext(), "Specify both start date and end date", 200)
+            return
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             chartLiveData.value = chartCategoriesSplitViewModel.getSplitOperationByCategories(
