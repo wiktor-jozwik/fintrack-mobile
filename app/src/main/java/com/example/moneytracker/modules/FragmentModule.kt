@@ -15,7 +15,7 @@ object FragmentModule {
     @Provides
     fun provideUserLoginFragment(
         sharedPreferences: SharedPreferences,
-        userRegisterFragment: UserRegisterFragment
+        userRegisterFragment: UserRegisterFragment,
     ) =
         UserLoginFragment(sharedPreferences, userRegisterFragment)
 
@@ -94,4 +94,8 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideCategoryEndDatePickerFragment() = CategoryEndDatePickerFragment()
+
+    @Singleton
+    @Provides
+    fun provideResendEmailConfirmationFragment() = ResendEmailConfirmationFragment()
 }

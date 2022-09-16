@@ -67,6 +67,9 @@ interface MoneyTrackerApiInterface {
     @POST("auth/login")
     suspend fun loginUser(@Body user: UserLoginInput): Response<JwtResponse>
 
+    @POST("users/resend_activation_email")
+    suspend fun resendEmail(@Body resendEmailConfirmationInput: ResendEmailConfirmationInput): Response<StringResponse>
+
 //    @DELETE("logout")
 //    suspend fun logoutUser(): Response<ApiResponse>
 }

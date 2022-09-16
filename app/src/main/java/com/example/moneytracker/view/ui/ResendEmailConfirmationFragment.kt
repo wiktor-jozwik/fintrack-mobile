@@ -1,6 +1,5 @@
 package com.example.moneytracker.view.ui
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,12 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentUserLoginBinding
-import com.example.moneytracker.service.model.mt.JwtResponse
+import com.example.moneytracker.databinding.FragmentResendEmailConfirmationBinding
+import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.UserLoginViewModel
+import com.example.moneytracker.viewmodel.ResendEmailConfirmationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -25,21 +24,16 @@ import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserLoginFragment @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
-    private val userRegisterFragment: UserRegisterFragment,
-) : Fragment(R.layout.fragment_user_login) {
-    private val userLoginViewModel: UserLoginViewModel by viewModels()
+class ResendEmailConfirmationFragment(
+) : Fragment(R.layout.fragment_resend_email_confirmation) {
+    private val resendEmailConfirmationViewModel: ResendEmailConfirmationViewModel by viewModels()
 
     @Inject
-    lateinit var homeFragment: HomeFragment
+    lateinit var loginFragment: UserLoginFragment
 
-    @Inject
-    lateinit var resendEmailConfirmationFragment: ResendEmailConfirmationFragment
+    private var resendEmailConfirmationLiveData: MutableLiveData<Response<StringResponse>> = MutableLiveData()
 
-    private var loginUserLiveData: MutableLiveData<Response<JwtResponse>> = MutableLiveData()
-
-    private var _binding: FragmentUserLoginBinding? = null
+    private var _binding: FragmentResendEmailConfirmationBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -47,14 +41,14 @@ class UserLoginFragment @Inject constructor(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentUserLoginBinding.inflate(inflater, container, false)
+        _binding = FragmentResendEmailConfirmationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        loginUserLiveData = MutableLiveData()
+        resendEmailConfirmationLiveData = MutableLiveData()
     }
 
     override fun onResume() {
@@ -65,15 +59,11 @@ class UserLoginFragment @Inject constructor(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loginUserLiveData.observe(viewLifecycleOwner) {
+        resendEmailConfirmationLiveData.observe(viewLifecycleOwner) {
             try {
                 val res = responseErrorHandler(it)
-                with(sharedPreferences.edit()) {
-                    putString("JWT_AUTH_TOKEN", res.jwtToken)
-                    apply()
-                }
 
-                switchToHome()
+                switchToLogin()
                 clearFields()
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message)
@@ -81,29 +71,14 @@ class UserLoginFragment @Inject constructor(
         }
 
         emailTextChangeListener()
-        passwordTextChangeListener()
 
-        binding.registerLink.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, userRegisterFragment)
-                commit()
-            }
-        }
-
-        binding.resendEmailLink.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, resendEmailConfirmationFragment)
-                commit()
-            }
-        }
-
-        binding.buttonLogin.setOnClickListener {
+        binding.buttonResend.setOnClickListener {
             submitForm()
         }
     }
 
     private fun submitForm() {
-        if (validateEmail() == null && validatePassword() == null) {
+        if (validateEmail() == null) {
             validForm()
         } else {
             invalidForm()
@@ -132,60 +107,34 @@ class UserLoginFragment @Inject constructor(
         return null
     }
 
-    private fun passwordTextChangeListener() {
-        binding.inputPasswordText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-            override fun afterTextChanged(p0: Editable?) {
-                binding.inputPasswordContainer.helperText = validatePassword()
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-        })
-    }
-
-    private fun validatePassword(): String? {
-        val password = binding.inputPasswordText.text.toString()
-        if (password.isEmpty()) {
-            return "Please provide password."
-        }
-        return null
-    }
-
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            loginUserLiveData.value = userLoginViewModel.loginUser(
+            resendEmailConfirmationLiveData.value = resendEmailConfirmationViewModel.resendEmail(
                 binding.inputEmailText.text.toString(),
-                binding.inputPasswordText.text.toString(),
             )
         }
     }
 
-    private fun switchToHome() {
+    private fun switchToLogin() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, homeFragment)
+            replace(R.id.mainFrameLayoutFragment, loginFragment)
             commit()
         }
     }
 
     private fun clearFields() {
         binding.inputEmailText.setText("")
-        binding.inputPasswordText.setText("")
         clearHelpers()
     }
 
     private fun clearHelpers() {
         binding.inputEmailContainer.helperText = ""
-        binding.inputPasswordContainer.helperText = ""
     }
 
     private fun invalidForm() {
         val emailText = validateEmail()
-        val passwordText = validatePassword()
 
         binding.inputEmailContainer.helperText = emailText
-        binding.inputPasswordContainer.helperText = passwordText
 
         MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")

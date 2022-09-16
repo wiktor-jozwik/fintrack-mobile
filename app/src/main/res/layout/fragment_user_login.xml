@@ -82,4 +82,12 @@
         app:layout_constraintStart_toEndOf="@id/registerText"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin" />
 
+    <TextView
+        android:id="@+id/resendEmailLink"
+        style="@style/LoginRegisterLink"
+        android:text="Resend confirmation email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/registerLink" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,9 @@
 package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.JwtResponse
+import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.service.model.mt.User
+import com.example.moneytracker.service.model.mt.inputs.ResendEmailConfirmationInput
 import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
 import com.example.moneytracker.service.model.mt.inputs.UserRegisterInput
 import retrofit2.Response
@@ -15,4 +17,7 @@ class UserRepository @Inject constructor(
 
     suspend fun loginUser(userLoginInput: UserLoginInput): Response<JwtResponse> =
         moneyTrackerApi.api.loginUser(userLoginInput)
+
+    suspend fun resendEmail(resendEmailConfirmationInput: ResendEmailConfirmationInput): Response<StringResponse> =
+        moneyTrackerApi.api.resendEmail(resendEmailConfirmationInput)
 }
