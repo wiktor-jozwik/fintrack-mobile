@@ -31,7 +31,7 @@ class ChartCategoriesSplitViewModel @Inject constructor(
             operationRepository.getAllOperations().body()
         }
 
-        if (operations?.isNullOrEmpty() == true) {
+        if (operations.isNullOrEmpty()) {
             operations = listOf()
         }
 

@@ -3,6 +3,7 @@ package com.example.moneytracker.service.repository.mt
 import com.example.moneytracker.service.model.mt.JwtResponse
 import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.service.model.mt.User
+import com.example.moneytracker.service.model.mt.UserProfileData
 import com.example.moneytracker.service.model.mt.inputs.ResendEmailConfirmationInput
 import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
 import com.example.moneytracker.service.model.mt.inputs.UserRegisterInput
@@ -20,4 +21,7 @@ class UserRepository @Inject constructor(
 
     suspend fun resendEmail(resendEmailConfirmationInput: ResendEmailConfirmationInput): Response<StringResponse> =
         moneyTrackerApi.api.resendEmail(resendEmailConfirmationInput)
+
+    suspend fun getProfileData(): Response<UserProfileData> =
+        moneyTrackerApi.api.getProfileData()
 }

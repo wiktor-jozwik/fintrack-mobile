@@ -5,7 +5,9 @@ import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
+import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
+import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -19,7 +21,7 @@ import javax.inject.Inject
 class ChartPeriodOperationsViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val currencyRepository: CurrencyRepository,
-    private val currencyCalculator: CurrencyCalculator
+    private val expenseCalculator: ExpenseCalculator
 ) : ViewModel() {
 
     suspend fun getChartData(
@@ -40,10 +42,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
             .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());
 
-        var operations = operationRepository.getAllOperationsInRanges(fromDate, toDate).body();
-        if (operations.isNullOrEmpty()) {
-            operations = listOf()
-        }
+        val operations = responseErrorHandler(operationRepository.getAllOperationsInRanges(fromDate, toDate))
 
         val monthsRequired = mutableListOf<Int>()
         var monthToInsert = fromDate.monthValue
@@ -59,10 +58,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
     }
 
     private suspend fun getAllTimeOperations(): Pair<List<BarEntry>, List<BarEntry>> {
-        var operations = operationRepository.getAllOperations().body()
-        if (operations.isNullOrEmpty()) {
-            operations = listOf()
-        }
+        val operations = responseErrorHandler(operationRepository.getAllOperations())
         return groupYearlyOperations(operations.sortedByDescending { it.date })
     }
 
@@ -89,14 +85,11 @@ class ChartPeriodOperationsViewModel @Inject constructor(
             it.date.year
         }.entries.sortedBy { it.key }
 
-        val defaultCurrencyName: String =
-            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
-
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 
         yearlyOperations.forEach { (date, operations) ->
-            val (incomes, outcomes) = calculateIncomesAndOutcomes(defaultCurrencyName, operations)
+            val (incomes, outcomes) = expenseCalculator.calculate(operations)
             incomesBars.add(
                 BarEntry(
                     date.toFloat(),
@@ -126,7 +119,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
 
         monthOperations.forEach { (month, operations) ->
 
-            val (incomes, outcomes) = calculateIncomesAndOutcomes(defaultCurrencyName, operations)
+            val (incomes, outcomes) = expenseCalculator.calculate(operations)
 
             if (outcomesBars.size > currentMonth) {
                 incomesBars.add(
@@ -161,29 +154,5 @@ class ChartPeriodOperationsViewModel @Inject constructor(
         }
 
         return Pair(incomesBars, outcomesBars)
-    }
-
-    private suspend fun calculateIncomesAndOutcomes(
-        defaultCurrencyName: String,
-        operations: List<Operation>
-    ): Pair<Double, Double> {
-        var incomes = 0.0
-        var outcomes = 0.0
-
-        operations.forEach {
-            val moneyAmountInDefaultCurrency = currencyRepository.convertCurrency(
-                it.currency.name,
-                defaultCurrencyName,
-                it.moneyAmount,
-                it.date
-            )
-
-            when (it.category.type) {
-                CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency
-                CategoryType.OUTCOME -> outcomes += moneyAmountInDefaultCurrency
-            }
-        }
-
-        return Pair(incomes, outcomes)
     }
 }

@@ -32,6 +32,9 @@ class HomeFragment @Inject constructor(
     lateinit var chartFragment: ChartFragment
 
     @Inject
+    lateinit var userProfileFragment: UserProfileFragment
+
+    @Inject
     lateinit var userLoginFragment: UserLoginFragment
 
     private var _binding: FragmentHomeBinding? = null
@@ -134,6 +137,20 @@ class HomeFragment @Inject constructor(
                 commit()
             }
         }
+
+        binding.buttonProfile.setOnClickListener {
+            setButtonsWhite()
+            binding.buttonProfile.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.primary
+                )
+            )
+            childFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, userProfileFragment)
+                commit()
+            }
+        }
 //        with(sharedPreferences.edit()) {
 //            putString("JWT_AUTH_TOKEN", "")
 //            apply()
@@ -175,5 +192,6 @@ class HomeFragment @Inject constructor(
         binding.buttonList.setColorFilter(color)
         binding.buttonAdd.setColorFilter(color)
         binding.buttonChart.setColorFilter(color)
+        binding.buttonProfile.setColorFilter(color)
     }
 }

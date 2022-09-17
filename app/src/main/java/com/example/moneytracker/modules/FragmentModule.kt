@@ -25,6 +25,10 @@ object FragmentModule {
 
     @Singleton
     @Provides
+    fun provideUserProfileFragment() = UserProfileFragment()
+
+    @Singleton
+    @Provides
     fun provideHomeFragment(sharedPreferences: SharedPreferences) = HomeFragment(sharedPreferences)
 
     @Singleton
