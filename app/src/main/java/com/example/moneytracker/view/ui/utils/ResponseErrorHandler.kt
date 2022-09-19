@@ -13,6 +13,11 @@ fun <T> responseErrorHandler(res: Response<T>): T {
         } ?: run {
             res.code().toString()
         }
+        Log.d("MT", "Error message: $errMsg")
+//
+//        if (errMsg == "Unauthorized") {
+//            Log.d("MT", "Should delete JWT")
+//        }
 
         throw Exception(errMsg)
     }

@@ -18,7 +18,6 @@ import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.User
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.UserRegisterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,7 +33,7 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
     lateinit var userLoginFragment: UserLoginFragment
 
     private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
-    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
 
     private var _binding: FragmentUserRegisterBinding? = null
     private val binding get() = _binding!!
@@ -63,13 +62,8 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
         super.onViewCreated(view, savedInstanceState)
 
         registerUserLiveData.observe(viewLifecycleOwner) {
-            try {
-                responseErrorHandler(it)
-                switchToLogin()
-                clearFields()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message)
-            }
+            switchToLogin()
+            clearFields()
         }
 
         fulfillCurrencySpinner()
@@ -92,21 +86,20 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
     private fun fulfillCurrencySpinner() {
         viewLifecycleOwner.lifecycleScope.launch {
             currencyLiveData.observe(viewLifecycleOwner) {
-                try {
-                    val res = responseErrorHandler(it)
-                    val currenciesNames = res.map { currency -> currency.name }
-                    val currenciesAdapter = ArrayAdapter(
-                        activity as Context,
-                        android.R.layout.simple_spinner_item,
-                        currenciesNames
-                    )
-                    binding.inputDefaultCurrency.adapter = currenciesAdapter
-                } catch (e: Exception) {
-                    makeErrorToast(requireContext(), e.message, 200)
-                }
+                val currenciesNames = it.map { currency -> currency.name }
+                val currenciesAdapter = ArrayAdapter(
+                    activity as Context,
+                    android.R.layout.simple_spinner_item,
+                    currenciesNames
+                )
+                binding.inputDefaultCurrency.adapter = currenciesAdapter
             }
 
-            currencyLiveData.value = userRegisterViewModel.getSupportedCurrencies()
+            try {
+                currencyLiveData.value = userRegisterViewModel.getSupportedCurrencies()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
@@ -125,15 +118,19 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            registerUserLiveData.value = userRegisterViewModel.registerUser(
-                binding.inputEmailText.text.toString(),
-                binding.inputPasswordText.text.toString(),
-                binding.inputPasswordConfirmationText.text.toString(),
-                binding.inputDefaultCurrency.selectedItem.toString(),
-                binding.inputFirstNameText.text.toString(),
-                binding.inputLastNameText.text.toString(),
-                binding.inputPhoneNumberText.text.toString(),
-            )
+            try {
+                registerUserLiveData.value = userRegisterViewModel.registerUser(
+                    binding.inputEmailText.text.toString(),
+                    binding.inputPasswordText.text.toString(),
+                    binding.inputPasswordConfirmationText.text.toString(),
+                    binding.inputDefaultCurrency.selectedItem.toString(),
+                    binding.inputFirstNameText.text.toString(),
+                    binding.inputLastNameText.text.toString(),
+                    binding.inputPhoneNumberText.text.toString(),
+                )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

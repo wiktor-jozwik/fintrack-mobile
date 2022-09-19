@@ -13,8 +13,7 @@ class ExpenseCalculator @Inject constructor(
 ) {
 
     suspend fun calculate(operations: List<Operation>): Pair<Double, Double> {
-        val defaultCurrencyName: String =
-            responseErrorHandler(currencyRepository.getUserDefaultCurrency()).name
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().name
 
         val (totalIncome, totalOutcome) = calculateIncomesAndOutcomes(
             defaultCurrencyName,

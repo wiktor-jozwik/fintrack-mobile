@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentSummaryBinding
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.YearlyOperationsSummaryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -83,8 +84,13 @@ class YearlyOperationsSummaryFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            yearlyOperationsLiveData.value =
-                yearlyOperationsSummaryViewModel.calculateYearlyIncomeAndOutcome()
+            try {
+                yearlyOperationsLiveData.value =
+                    yearlyOperationsSummaryViewModel.calculateYearlyIncomeAndOutcome()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
+
         }
     }
 }

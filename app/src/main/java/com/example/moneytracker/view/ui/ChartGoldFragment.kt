@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartGoldBinding
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.ChartGoldViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.MarkerView
@@ -86,15 +87,23 @@ class ChartGoldFragment : Fragment(R.layout.fragment_chart_gold) {
 
     private fun setXMonthChart(x: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value =
-                chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.MONTH)
+            try {
+                chartLiveData.value =
+                    chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.MONTH)
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
     private fun setXYearChart(x: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value =
-                chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.YEAR)
+            try {
+                chartLiveData.value =
+                    chartGoldViewModel.getHistoricalGoldPrice(x, ChartGoldViewModel.Period.YEAR)
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

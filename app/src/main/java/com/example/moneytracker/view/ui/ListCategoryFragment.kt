@@ -15,12 +15,10 @@ import com.example.moneytracker.databinding.FragmentListCategoryBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.view.adapter.CategoryListAdapter
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.ListCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,8 +28,8 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
     @Inject
     lateinit var saveCategoryFragment: SaveCategoryFragment
 
-    private var listCategoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
-    private var deleteCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
+    private var listCategoryLiveData: MutableLiveData<List<Category>> = MutableLiveData()
+    private var deleteCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
 
     private var _binding: FragmentListCategoryBinding? = null
     private val binding get() = _binding!!
@@ -70,31 +68,25 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
 
         listCategoryLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
-                    res,
-                    deleteLambda,
-                    editLambda
-                )
-                binding.recyclerViewCategoryItems.adapter!!.notifyDataSetChanged()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
+                it,
+                deleteLambda,
+                editLambda
+            )
+            binding.recyclerViewCategoryItems.adapter!!.notifyDataSetChanged()
         }
 
         deleteCategoryLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                val adapter = binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
-                adapter.deleteCategory(res.id)
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            val adapter = binding.recyclerViewCategoryItems.adapter as CategoryListAdapter
+            adapter.deleteCategory(it.id)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            listCategoryLiveData.value = listCategoryViewModel.getAllCategories()
+            try {
+                listCategoryLiveData.value = listCategoryViewModel.getAllCategories()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
 
         binding.recyclerViewCategoryItems.adapter = CategoryListAdapter(
@@ -111,7 +103,12 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
             .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    deleteCategoryLiveData.value = listCategoryViewModel.deleteCategory(categoryId)
+                    try {
+                        deleteCategoryLiveData.value =
+                            listCategoryViewModel.deleteCategory(categoryId)
+                    } catch (e: Exception) {
+                        makeErrorToast(requireContext(), e.message, 200)
+                    }
                 }
             }
             .setNegativeButton("No") { dialog, _ ->

@@ -73,8 +73,12 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
         setDatePickersListener()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value =
-                chartCategoriesSplitViewModel.getSplitOperationByCategories(null, null)
+            try {
+                chartLiveData.value =
+                    chartCategoriesSplitViewModel.getSplitOperationByCategories(null, null)
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
 
         binding.buttonApply.setOnClickListener {
@@ -92,9 +96,13 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = chartCategoriesSplitViewModel.getSplitOperationByCategories(
-                LocalDate.parse(startDate), LocalDate.parse(endDate)
-            )
+            try {
+                chartLiveData.value = chartCategoriesSplitViewModel.getSplitOperationByCategories(
+                    LocalDate.parse(startDate), LocalDate.parse(endDate)
+                )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

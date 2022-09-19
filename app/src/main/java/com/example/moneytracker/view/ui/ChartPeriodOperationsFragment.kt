@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartPeriodOperationsBinding
+import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.ChartPeriodOperationsViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
@@ -105,13 +106,21 @@ class ChartPeriodOperationsFragment : Fragment() {
 
     private fun setXMonthChart(size: Int) {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = chartPeriodOperationsViewModel.getChartData(size)
+            try {
+                chartLiveData.value = chartPeriodOperationsViewModel.getChartData(size)
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
     private fun setAllTimeChart() {
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value = chartPeriodOperationsViewModel.getChartData(allTime = true)
+            try {
+                chartLiveData.value = chartPeriodOperationsViewModel.getChartData(allTime = true)
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

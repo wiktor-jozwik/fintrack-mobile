@@ -1,4 +1,3 @@
-
 package com.example.moneytracker.view.ui
 
 import android.content.Context
@@ -15,11 +14,9 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentSaveCurrencyBinding
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.SaveCurrencyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -29,8 +26,8 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
     @Inject
     lateinit var saveFragment: SaveFragment
 
-    private var addCurrencyLiveData: MutableLiveData<Response<Currency>> = MutableLiveData()
-    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
+    private var addCurrencyLiveData: MutableLiveData<Currency> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
 
     private var _binding: FragmentSaveCurrencyBinding? = null
     private val binding get() = _binding!!
@@ -54,16 +51,10 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
         super.onViewCreated(view, savedInstanceState)
 
         addCurrencyLiveData.observe(viewLifecycleOwner) {
-            try {
-                responseErrorHandler(it)
-                switchToAdd()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            switchToAdd()
         }
 
         fulfillCurrencySpinner()
-
 
         binding.buttonSave.setOnClickListener {
             submitForm()
@@ -73,29 +64,32 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
     private fun fulfillCurrencySpinner() {
         viewLifecycleOwner.lifecycleScope.launch {
             currencyLiveData.observe(viewLifecycleOwner) {
-                try {
-                    val res = responseErrorHandler(it)
-                    val currenciesNames = res.map { currency -> currency.name }
-                    val currenciesAdapter = ArrayAdapter(
-                        activity as Context,
-                        android.R.layout.simple_spinner_item,
-                        currenciesNames
-                    )
-                    binding.inputCurrency.adapter = currenciesAdapter
-                } catch (e: Exception) {
-                    makeErrorToast(requireContext(), e.message, 200)
-                }
+                val currenciesNames = it.map { currency -> currency.name }
+                val currenciesAdapter = ArrayAdapter(
+                    activity as Context,
+                    android.R.layout.simple_spinner_item,
+                    currenciesNames
+                )
+                binding.inputCurrency.adapter = currenciesAdapter
             }
 
-            currencyLiveData.value = saveCurrencyViewModel.getSupportedCurrencies()
+            try {
+                currencyLiveData.value = saveCurrencyViewModel.getSupportedCurrencies()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
     private fun submitForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            addCurrencyLiveData.value = saveCurrencyViewModel.addNewCurrency(
-                binding.inputCurrency.selectedItem.toString(),
-            )
+            try {
+                addCurrencyLiveData.value = saveCurrencyViewModel.addNewCurrency(
+                    binding.inputCurrency.selectedItem.toString(),
+                )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

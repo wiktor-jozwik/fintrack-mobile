@@ -16,12 +16,10 @@ import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.SaveCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -34,7 +32,7 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
     @Inject
     lateinit var listCategoryFragment: ListCategoryFragment
 
-    private var saveCategoryLiveData: MutableLiveData<Response<Category>> = MutableLiveData()
+    private var saveCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
 
     private var _binding: FragmentSaveCategoryBinding? = null
     private val binding get() = _binding!!
@@ -64,17 +62,12 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         super.onViewCreated(view, savedInstanceState)
 
         saveCategoryLiveData.observe(viewLifecycleOwner) {
-            try {
-                responseErrorHandler(it)
-                if (binding.id.text.isNullOrBlank()) {
-                    switchToAdd()
-                } else {
-                    switchToCategoryList()
-                }
-                clearFields()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
+            if (binding.id.text.isNullOrBlank()) {
+                switchToAdd()
+            } else {
+                switchToCategoryList()
             }
+            clearFields()
         }
 
         categoryNameTextChangeListener()
@@ -123,18 +116,26 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         val id = binding.id.text
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveCategoryLiveData.value = saveCategoryViewModel.editCategory(
-                    Integer.parseInt(id.toString()),
-                    binding.inputNameText.text.toString().removeSpaces(),
-                    operationCategoryType
-                )
+                try {
+                    saveCategoryLiveData.value = saveCategoryViewModel.editCategory(
+                        Integer.parseInt(id.toString()),
+                        binding.inputNameText.text.toString().removeSpaces(),
+                        operationCategoryType
+                    )
+                } catch (e: Exception) {
+                    makeErrorToast(requireContext(), e.message, 200)
+                }
             }
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveCategoryLiveData.value = saveCategoryViewModel.addNewCategory(
-                    binding.inputNameText.text.toString().removeSpaces(),
-                    operationCategoryType
-                )
+                try {
+                    saveCategoryLiveData.value = saveCategoryViewModel.addNewCategory(
+                        binding.inputNameText.text.toString().removeSpaces(),
+                        operationCategoryType
+                    )
+                } catch (e: Exception) {
+                    makeErrorToast(requireContext(), e.message, 200)
+                }
             }
         }
     }

@@ -26,7 +26,7 @@ class SaveOperationViewModel @Inject constructor(
         date: LocalDate,
         categoryName: String,
         currencyName: String
-    ): Response<Operation> {
+    ): Operation {
         val operationCreateInput =
             OperationCreateInput(
                 name,
@@ -46,7 +46,7 @@ class SaveOperationViewModel @Inject constructor(
         date: LocalDate,
         categoryName: String,
         currencyName: String
-    ): Response<Operation> {
+    ): Operation {
         val operationCreateInput =
             OperationCreateInput(
                 name,
@@ -59,11 +59,9 @@ class SaveOperationViewModel @Inject constructor(
         return operationRepository.editOperation(id, operationCreateInput)
     }
 
-    suspend fun getUsersCurrencies(): Response<List<Currency>> {
-        return currencyRepository.getUsersCurrencies()
-    }
+    suspend fun getUsersCurrencies(): List<Currency> =
+        currencyRepository.getUsersCurrencies()
 
-    suspend fun getAllCategories(): Response<List<Category>> {
-        return categoryRepository.getAllCategories()
-    }
+    suspend fun getAllCategories(): List<Category> =
+        categoryRepository.getAllCategories()
 }

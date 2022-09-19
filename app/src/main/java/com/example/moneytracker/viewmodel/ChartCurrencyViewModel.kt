@@ -9,7 +9,6 @@ import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.utils.formatToIsoDateWithDashes
 import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Response
 import java.time.LocalDate
 import java.util.*
 import javax.inject.Inject
@@ -25,9 +24,9 @@ class ChartCurrencyViewModel @Inject constructor(
         YEAR
     }
 
-    suspend fun getSupportedCurrencies(): Response<List<Currency>> {
-        return currencyRepository.getSupportedCurrenciesWithoutDefault()
-    }
+    suspend fun getSupportedCurrencies(): List<Currency> =
+        currencyRepository.getSupportedCurrenciesWithoutDefault()
+
 
     suspend fun getHistoricalCurrencyPrice(
         chosenCurrency: String,
@@ -38,8 +37,7 @@ class ChartCurrencyViewModel @Inject constructor(
         val currencyEntries = mutableListOf<Entry>()
         val xLabels = mutableListOf<String>()
 
-        val baseCurrency: String =
-            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val baseCurrency: String = currencyRepository.getUserDefaultCurrency().name
 
         val calendar = Calendar.getInstance();
         val year = calendar.get(Calendar.YEAR)
@@ -53,24 +51,28 @@ class ChartCurrencyViewModel @Inject constructor(
                 val dateFrom = currentDate.minusMonths(x.toLong()).formatToIsoDateWithDashes()
                 val dateTo = currentDate.formatToIsoDateWithDashes()
 
-                currencyPrices += getCurrencyPrices(exchangerateRepository.getCurrencyRates(
-                    dateFrom,
-                    dateTo,
-                    baseCurrency,
-                    chosenCurrency
-                ))
+                currencyPrices += getCurrencyPrices(
+                    exchangerateRepository.getCurrencyRates(
+                        dateFrom,
+                        dateTo,
+                        baseCurrency,
+                        chosenCurrency
+                    )
+                )
             }
             Period.YEAR -> {
                 for (i in x downTo 1) {
                     val dateFrom = currentDate.minusYears(i.toLong()).formatToIsoDateWithDashes()
                     val dateTo =
                         currentDate.minusYears((i - 1).toLong()).formatToIsoDateWithDashes()
-                    currencyPrices += getCurrencyPrices(exchangerateRepository.getCurrencyRates(
-                        dateFrom,
-                        dateTo,
-                        baseCurrency,
-                        chosenCurrency
-                    ))
+                    currencyPrices += getCurrencyPrices(
+                        exchangerateRepository.getCurrencyRates(
+                            dateFrom,
+                            dateTo,
+                            baseCurrency,
+                            chosenCurrency
+                        )
+                    )
                 }
             }
         }

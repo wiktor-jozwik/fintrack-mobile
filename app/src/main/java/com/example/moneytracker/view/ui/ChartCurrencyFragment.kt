@@ -17,7 +17,6 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartCurrencyBinding
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.ChartCurrencyViewModel
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.MarkerView
@@ -30,7 +29,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 
 @AndroidEntryPoint
@@ -40,7 +38,7 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
     private var chartLiveData: MutableLiveData<Pair<List<Entry>, List<String>>> =
         MutableLiveData()
 
-    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
 
     private var chartShown: Boolean = false
 
@@ -81,26 +79,27 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
     private fun fulfillCurrencySpinner() {
         viewLifecycleOwner.lifecycleScope.launch {
             currencyLiveData.observe(viewLifecycleOwner) {
-                try {
-                    val res = responseErrorHandler(it)
-                    val currenciesNames = res.map { currency -> currency.name }
-                    val currenciesAdapter = ArrayAdapter(
-                        activity as Context,
-                        android.R.layout.simple_spinner_item,
-                        currenciesNames
-                    )
-                    binding.inputCurrency.adapter = currenciesAdapter
-                    if (!chartShown) {
-                        setXYearChart(1)
-                        binding.radioButtonOneYear.isChecked = true
-                    }
-                    bindChartChange()
-                } catch (e: Exception) {
-                    makeErrorToast(requireContext(), e.message, 200)
+                val currenciesNames = it.map { currency -> currency.name }
+                val currenciesAdapter = ArrayAdapter(
+                    activity as Context,
+                    android.R.layout.simple_spinner_item,
+                    currenciesNames
+                )
+                binding.inputCurrency.adapter = currenciesAdapter
+                if (!chartShown) {
+                    setXYearChart(1)
+                    binding.radioButtonOneYear.isChecked = true
                 }
+                bindChartChange()
             }
+        }
 
-            currencyLiveData.value = chartCurrencyViewModel.getSupportedCurrencies()
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                currencyLiveData.value = chartCurrencyViewModel.getSupportedCurrencies()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
@@ -147,12 +146,16 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
         val chosenCurrency = binding.inputCurrency.selectedItem.toString()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value =
-                chartCurrencyViewModel.getHistoricalCurrencyPrice(
-                    chosenCurrency,
-                    x,
-                    ChartCurrencyViewModel.Period.MONTH
-                )
+            try {
+                chartLiveData.value =
+                    chartCurrencyViewModel.getHistoricalCurrencyPrice(
+                        chosenCurrency,
+                        x,
+                        ChartCurrencyViewModel.Period.MONTH
+                    )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
@@ -160,12 +163,16 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
         val chosenCurrency = binding.inputCurrency.selectedItem.toString()
 
         viewLifecycleOwner.lifecycleScope.launch {
-            chartLiveData.value =
-                chartCurrencyViewModel.getHistoricalCurrencyPrice(
-                    chosenCurrency,
-                    x,
-                    ChartCurrencyViewModel.Period.YEAR
-                )
+            try {
+                chartLiveData.value =
+                    chartCurrencyViewModel.getHistoricalCurrencyPrice(
+                        chosenCurrency,
+                        x,
+                        ChartCurrencyViewModel.Period.YEAR
+                    )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

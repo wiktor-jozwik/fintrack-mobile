@@ -1,12 +1,8 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
-import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
-import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +16,6 @@ import javax.inject.Inject
 @HiltViewModel
 class ChartPeriodOperationsViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
-    private val currencyRepository: CurrencyRepository,
     private val expenseCalculator: ExpenseCalculator
 ) : ViewModel() {
 
@@ -42,7 +37,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
             .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());
 
-        val operations = responseErrorHandler(operationRepository.getAllOperationsInRanges(fromDate, toDate))
+        val operations = operationRepository.getAllOperationsInRanges(fromDate, toDate)
 
         val monthsRequired = mutableListOf<Int>()
         var monthToInsert = fromDate.monthValue
@@ -58,7 +53,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
     }
 
     private suspend fun getAllTimeOperations(): Pair<List<BarEntry>, List<BarEntry>> {
-        val operations = responseErrorHandler(operationRepository.getAllOperations())
+        val operations = operationRepository.getAllOperations()
         return groupYearlyOperations(operations.sortedByDescending { it.date })
     }
 
@@ -108,9 +103,6 @@ class ChartPeriodOperationsViewModel @Inject constructor(
     }
 
     private suspend fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
-        val defaultCurrencyName: String =
-            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
-
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 

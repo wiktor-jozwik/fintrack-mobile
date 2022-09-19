@@ -15,19 +15,17 @@ import com.example.moneytracker.databinding.FragmentListCurrencyBinding
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.view.adapter.CurrencyListAdapter
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.ListCurrencyViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 @AndroidEntryPoint
 class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
     private val listCurrencyViewModel: ListCurrencyViewModel by viewModels()
 
-    private var listCurrencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
-    private var deleteCurrencyLiveData: MutableLiveData<Response<Currency>> = MutableLiveData()
+    private var listCurrencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
+    private var deleteCurrencyLiveData: MutableLiveData<Currency> = MutableLiveData()
 
     private var _binding: FragmentListCurrencyBinding? = null
     private val binding get() = _binding!!
@@ -59,30 +57,24 @@ class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
         }
 
         listCurrencyLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                binding.recyclerViewCurrencyItems.adapter = CurrencyListAdapter(
-                    res,
-                    deleteLambda
-                )
-                binding.recyclerViewCurrencyItems.adapter!!.notifyDataSetChanged()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            binding.recyclerViewCurrencyItems.adapter = CurrencyListAdapter(
+                it,
+                deleteLambda
+            )
+            binding.recyclerViewCurrencyItems.adapter!!.notifyDataSetChanged()
         }
 
         deleteCurrencyLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                val adapter = binding.recyclerViewCurrencyItems.adapter as CurrencyListAdapter
-                adapter.deleteUserCurrency(res.id)
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            val adapter = binding.recyclerViewCurrencyItems.adapter as CurrencyListAdapter
+            adapter.deleteUserCurrency(it.id)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            listCurrencyLiveData.value = listCurrencyViewModel.getUsersCurrencies()
+            try {
+                listCurrencyLiveData.value = listCurrencyViewModel.getUsersCurrencies()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
 
         binding.recyclerViewCurrencyItems.adapter = CurrencyListAdapter(
@@ -98,8 +90,12 @@ class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
             .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    deleteCurrencyLiveData.value =
-                        listCurrencyViewModel.deleteUserCurrency(userCurrencyId)
+                    try {
+                        deleteCurrencyLiveData.value =
+                            listCurrencyViewModel.deleteUserCurrency(userCurrencyId)
+                    } catch (e: Exception) {
+                        makeErrorToast(requireContext(), e.message, 200)
+                    }
                 }
             }
             .setNegativeButton("No") { dialog, _ ->

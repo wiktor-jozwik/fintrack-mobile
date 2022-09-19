@@ -25,19 +25,13 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
 
-        var operations: List<Operation>? = if (startDate != null && endDate != null) {
-            operationRepository.getAllOperationsInRanges(startDate, endDate).body()
+        val operations: List<Operation> = if (startDate != null && endDate != null) {
+            operationRepository.getAllOperationsInRanges(startDate, endDate)
         } else {
-            operationRepository.getAllOperations().body()
+            operationRepository.getAllOperations()
         }
 
-        if (operations.isNullOrEmpty()) {
-            operations = listOf()
-        }
-
-
-        val defaultCurrencyName: String =
-            currencyRepository.getUserDefaultCurrency().body()?.name ?: "PLN"
+        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().name
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME

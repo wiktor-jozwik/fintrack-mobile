@@ -16,12 +16,10 @@ import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.utils.formatToIsoDateWithDashes
 import com.example.moneytracker.view.adapter.OperationListAdapter
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.ListOperationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,10 +29,8 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
     @Inject
     lateinit var saveOperationFragment: SaveOperationFragment
 
-    private var listOperationLiveData: MutableLiveData<Response<List<Operation>>> =
-        MutableLiveData()
-    private var deleteOperationLiveData: MutableLiveData<Response<Operation>> = MutableLiveData()
-
+    private var listOperationLiveData: MutableLiveData<List<Operation>> = MutableLiveData()
+    private var deleteOperationLiveData: MutableLiveData<Operation> = MutableLiveData()
 
     private var _binding: FragmentListOperationBinding? = null
     private val binding get() = _binding!!
@@ -60,10 +56,7 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
         super.onViewCreated(view, savedInstanceState)
 
         val deleteLambda = OperationListAdapter.DeleteOnClickListener { operationId ->
-            deleteOperation(
-                operationId,
-                binding.recyclerViewOperationItems.adapter as OperationListAdapter
-            )
+            deleteOperation(operationId)
         }
 
         val editLambda = OperationListAdapter.EditOnClickListener { operation ->
@@ -73,31 +66,25 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
         }
 
         listOperationLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                binding.recyclerViewOperationItems.adapter = OperationListAdapter(
-                    res.sortedByDescending { operation -> operation.date },
-                    deleteLambda,
-                    editLambda
-                )
-                binding.recyclerViewOperationItems.adapter!!.notifyDataSetChanged()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            binding.recyclerViewOperationItems.adapter = OperationListAdapter(
+                it.sortedByDescending { operation -> operation.date },
+                deleteLambda,
+                editLambda
+            )
+            binding.recyclerViewOperationItems.adapter!!.notifyDataSetChanged()
         }
 
         deleteOperationLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                val adapter = binding.recyclerViewOperationItems.adapter as OperationListAdapter
-                adapter.deleteOperation(res.id)
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            val adapter = binding.recyclerViewOperationItems.adapter as OperationListAdapter
+            adapter.deleteOperation(it.id)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            listOperationLiveData.value = listOperationViewModel.getAllOperations()
+            try {
+                listOperationLiveData.value = listOperationViewModel.getAllOperations()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
 
         binding.recyclerViewOperationItems.adapter = OperationListAdapter(
@@ -108,14 +95,18 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
         binding.recyclerViewOperationItems.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun deleteOperation(operationId: Int, adapter: OperationListAdapter) {
+    private fun deleteOperation(operationId: Int) {
         MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setCancelable(false)
             .setMessage("Are you sure?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
-                    deleteOperationLiveData.value =
-                        listOperationViewModel.deleteOperation(operationId)
+                    try {
+                        deleteOperationLiveData.value =
+                            listOperationViewModel.deleteOperation(operationId)
+                    } catch (e: Exception) {
+                        makeErrorToast(requireContext(), e.message, 200)
+                    }
                 }
             }
             .setNegativeButton("No") { dialog, _ ->

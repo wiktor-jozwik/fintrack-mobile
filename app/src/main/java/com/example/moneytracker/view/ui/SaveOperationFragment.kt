@@ -20,12 +20,10 @@ import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.SaveOperationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -49,9 +47,9 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     private var editCurrencyName: String? = null
     private var editCategoryName: String? = null
 
-    private var saveOperationLiveData: MutableLiveData<Response<Operation>> = MutableLiveData()
-    private var currencyLiveData: MutableLiveData<Response<List<Currency>>> = MutableLiveData()
-    private var categoryLiveData: MutableLiveData<Response<List<Category>>> = MutableLiveData()
+    private var saveOperationLiveData: MutableLiveData<Operation> = MutableLiveData()
+    private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
+    private var categoryLiveData: MutableLiveData<List<Category>> = MutableLiveData()
 
     private var _binding: FragmentSaveOperationBinding? = null
     private val binding get() = _binding!!
@@ -82,17 +80,12 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveOperationLiveData.observe(viewLifecycleOwner) {
-            try {
-                responseErrorHandler(it)
-                if (binding.id.text.isNullOrBlank()) {
-                    switchToAdd()
-                } else {
-                    switchToOperationList()
-                }
-                clearFields()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
+            if (binding.id.text.isNullOrBlank()) {
+                switchToAdd()
+            } else {
+                switchToOperationList()
             }
+            clearFields()
         }
 
         fulfillSpinners()
@@ -152,43 +145,42 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     }
 
     private fun fulfillSpinners() {
+        currencyLiveData.observe(viewLifecycleOwner) {
+            val currenciesNames = it.map { currency -> currency.name }
+            val currenciesAdapter = ArrayAdapter(
+                activity as Context,
+                android.R.layout.simple_spinner_item,
+                currenciesNames
+            )
+            binding.inputCurrency.adapter = currenciesAdapter
+            selectValueForSpinner(binding.inputCurrency, editCurrencyName);
+            editCurrencyName = null
+        }
+
+        categoryLiveData.observe(viewLifecycleOwner) {
+            val categoriesNames = it.map { category -> category.name }
+            val categoriesAdapter = ArrayAdapter(
+                activity as Context,
+                android.R.layout.simple_spinner_item,
+                categoriesNames
+            )
+            binding.inputCategory.adapter = categoriesAdapter
+            selectValueForSpinner(binding.inputCategory, editCategoryName);
+            editCategoryName = null
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
-            currencyLiveData.observe(viewLifecycleOwner) {
-                try {
-                    val res = responseErrorHandler(it)
-                    val currenciesNames = res.map { currency -> currency.name }
-                    val currenciesAdapter = ArrayAdapter(
-                        activity as Context,
-                        android.R.layout.simple_spinner_item,
-                        currenciesNames
-                    )
-                    binding.inputCurrency.adapter = currenciesAdapter
-                    selectValueForSpinner(binding.inputCurrency, editCurrencyName);
-                    editCurrencyName = null
-                } catch (e: Exception) {
-                    makeErrorToast(requireContext(), e.message, 200)
-                }
+            try {
+                currencyLiveData.value = saveOperationViewModel.getUsersCurrencies()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
             }
 
-            currencyLiveData.value = saveOperationViewModel.getUsersCurrencies()
-
-            categoryLiveData.observe(viewLifecycleOwner) {
-                try {
-                    val res = responseErrorHandler(it)
-                    val categoriesNames = res.map { category -> category.name }
-                    val categoriesAdapter = ArrayAdapter(
-                        activity as Context,
-                        android.R.layout.simple_spinner_item,
-                        categoriesNames
-                    )
-                    binding.inputCategory.adapter = categoriesAdapter
-                    selectValueForSpinner(binding.inputCategory, editCategoryName);
-                    editCategoryName = null
-                } catch (e: Exception) {
-                    makeErrorToast(requireContext(), e.message, 200)
-                }
+            try {
+                categoryLiveData.value = saveOperationViewModel.getAllCategories()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
             }
-            categoryLiveData.value = saveOperationViewModel.getAllCategories()
         }
     }
 
@@ -278,28 +270,34 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
 
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveOperationLiveData.value = saveOperationViewModel.editOperation(
-                    Integer.parseInt(id.toString()),
-                    binding.inputNameText.text.toString(),
-                    binding.inputMoneyAmountText.text.toString().toDouble(),
-                    date,
-                    binding.inputCategory.selectedItem.toString(),
-                    binding.inputCurrency.selectedItem.toString()
-                )
+                try {
+                    saveOperationLiveData.value = saveOperationViewModel.editOperation(
+                        Integer.parseInt(id.toString()),
+                        binding.inputNameText.text.toString(),
+                        binding.inputMoneyAmountText.text.toString().toDouble(),
+                        date,
+                        binding.inputCategory.selectedItem.toString(),
+                        binding.inputCurrency.selectedItem.toString()
+                    )
+                } catch (e: Exception) {
+                    makeErrorToast(requireContext(), e.message, 200)
+                }
             }
         } else {
             viewLifecycleOwner.lifecycleScope.launch {
-                saveOperationLiveData.value = saveOperationViewModel.addNewOperation(
-                    binding.inputNameText.text.toString(),
-                    binding.inputMoneyAmountText.text.toString().toDouble(),
-                    date,
-                    binding.inputCategory.selectedItem.toString(),
-                    binding.inputCurrency.selectedItem.toString()
-                )
+                try {
+                    saveOperationLiveData.value = saveOperationViewModel.addNewOperation(
+                        binding.inputNameText.text.toString(),
+                        binding.inputMoneyAmountText.text.toString().toDouble(),
+                        date,
+                        binding.inputCategory.selectedItem.toString(),
+                        binding.inputCurrency.selectedItem.toString()
+                    )
+                } catch (e: Exception) {
+                    makeErrorToast(requireContext(), e.message, 200)
+                }
             }
         }
-
-
     }
 
     private fun switchToAdd() {

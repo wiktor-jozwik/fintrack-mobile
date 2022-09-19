@@ -5,7 +5,6 @@ import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.inputs.CurrencyCreateInput
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -13,13 +12,9 @@ class SaveCurrencyViewModel @Inject constructor(
     private val currencyRepository: CurrencyRepository,
 ) : ViewModel() {
 
-    suspend fun addNewCurrency(name: String): Response<Currency> {
-        val categoryCreateInput = CurrencyCreateInput(name)
+    suspend fun addNewCurrency(name: String): Currency =
+        currencyRepository.addNewCurrency(CurrencyCreateInput(name))
 
-        return currencyRepository.addNewCurrency(categoryCreateInput)
-    }
-
-    suspend fun getSupportedCurrencies(): Response<List<Currency>> {
-        return currencyRepository.getSupportedCurrencies()
-    }
+    suspend fun getSupportedCurrencies(): List<Currency> =
+        currencyRepository.getSupportedCurrencies()
 }

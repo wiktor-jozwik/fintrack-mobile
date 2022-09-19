@@ -91,13 +91,21 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
 
     private fun fetchUserProfileData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            userProfileLiveData.value = userProfileViewModel.getProfileData()
+            try {
+                userProfileLiveData.value = userProfileViewModel.getProfileData()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
     private fun fetchOperations() {
         viewLifecycleOwner.lifecycleScope.launch {
-            expensesLiveData.value = userProfileViewModel.getTotalExpenses()
+            try {
+                expensesLiveData.value = userProfileViewModel.getTotalExpenses()
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 
