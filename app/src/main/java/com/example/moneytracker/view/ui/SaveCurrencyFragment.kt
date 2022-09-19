@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +25,7 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
     private val saveCurrencyViewModel: SaveCurrencyViewModel by viewModels()
 
     @Inject
-    lateinit var saveFragment: SaveFragment
+    lateinit var listCurrencyFragment: ListCurrencyFragment
 
     private var addCurrencyLiveData: MutableLiveData<Currency> = MutableLiveData()
     private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
@@ -51,7 +52,7 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
         super.onViewCreated(view, savedInstanceState)
 
         addCurrencyLiveData.observe(viewLifecycleOwner) {
-            switchToAdd()
+            switchToCurrencyList()
         }
 
         fulfillCurrencySpinner()
@@ -93,9 +94,9 @@ class SaveCurrencyFragment : Fragment(R.layout.fragment_save_currency) {
         }
     }
 
-    private fun switchToAdd() {
+    private fun switchToCurrencyList() {
         parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, saveFragment)
+            replace(R.id.homeFrameLayoutFragment, listCurrencyFragment)
             commit()
         }
     }

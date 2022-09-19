@@ -55,6 +55,13 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonPlus.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, saveOperationFragment)
+                commit()
+            }
+        }
+
         val deleteLambda = OperationListAdapter.DeleteOnClickListener { operationId ->
             deleteOperation(operationId)
         }

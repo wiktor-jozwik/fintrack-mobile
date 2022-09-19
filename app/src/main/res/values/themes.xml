@@ -55,6 +55,13 @@
         <item name="android:backgroundTint">@null</item>
     </style>
 
+    <style name="RecyclerViewStyle" parent="Theme.MoneyTracker">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:paddingBottom">85dp</item>
+    </style>
+
     <style name="LoginRegisterText" parent="Theme.MoneyTracker">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

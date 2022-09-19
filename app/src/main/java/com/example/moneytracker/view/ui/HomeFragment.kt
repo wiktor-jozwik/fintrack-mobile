@@ -23,9 +23,6 @@ class HomeFragment @Inject constructor(
     lateinit var yearlyOperationsSummaryFragment: YearlyOperationsSummaryFragment
 
     @Inject
-    lateinit var saveFragment: SaveFragment
-
-    @Inject
     lateinit var listFragment: ListFragment
 
     @Inject
@@ -110,20 +107,6 @@ class HomeFragment @Inject constructor(
             }
         }
 
-        binding.buttonAdd.setOnClickListener {
-            setButtonsWhite()
-            binding.buttonAdd.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.primary
-                )
-            )
-            childFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, saveFragment)
-                commit()
-            }
-        }
-
         binding.buttonChart.setOnClickListener {
             setButtonsWhite()
             binding.buttonChart.setColorFilter(
@@ -190,7 +173,6 @@ class HomeFragment @Inject constructor(
         val color = ContextCompat.getColor(requireContext(), R.color.white)
         binding.buttonHome.setColorFilter(color)
         binding.buttonList.setColorFilter(color)
-        binding.buttonAdd.setColorFilter(color)
         binding.buttonChart.setColorFilter(color)
         binding.buttonProfile.setColorFilter(color)
     }

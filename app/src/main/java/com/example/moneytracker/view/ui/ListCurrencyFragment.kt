@@ -19,10 +19,14 @@ import com.example.moneytracker.viewmodel.ListCurrencyViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
     private val listCurrencyViewModel: ListCurrencyViewModel by viewModels()
+
+    @Inject
+    lateinit var saveCurrencyFragment: SaveCurrencyFragment
 
     private var listCurrencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     private var deleteCurrencyLiveData: MutableLiveData<Currency> = MutableLiveData()
@@ -49,6 +53,13 @@ class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.buttonPlus.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, saveCurrencyFragment)
+                commit()
+            }
+        }
 
         val deleteLambda = CurrencyListAdapter.OnClickListener { userCurrencyId ->
             deleteUserCurrency(

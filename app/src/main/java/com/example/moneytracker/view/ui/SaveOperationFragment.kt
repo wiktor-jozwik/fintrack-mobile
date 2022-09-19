@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.ListFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -34,9 +35,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     private val saveOperationViewModel: SaveOperationViewModel by viewModels()
-
-    @Inject
-    lateinit var saveFragment: SaveFragment
 
     @Inject
     lateinit var listOperationFragment: ListOperationFragment
@@ -80,11 +78,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveOperationLiveData.observe(viewLifecycleOwner) {
-            if (binding.id.text.isNullOrBlank()) {
-                switchToAdd()
-            } else {
-                switchToOperationList()
-            }
+            switchToOperationList()
             clearFields()
         }
 
@@ -297,13 +291,6 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
-        }
-    }
-
-    private fun switchToAdd() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, saveFragment)
-            commit()
         }
     }
 

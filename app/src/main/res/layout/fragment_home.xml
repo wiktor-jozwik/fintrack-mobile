@@ -29,32 +29,11 @@
         android:contentDescription="Home screen"
         android:text="{home}"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonList"
+        app:layout_constraintEnd_toStartOf="@+id/buttonChart"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_main" />
 
-    <ImageView
-        android:id="@+id/buttonList"
-        style="@style/HomeNavigationItem"
-        android:contentDescription="List"
-        android:text="{list}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAdd"
-        app:layout_constraintStart_toEndOf="@+id/buttonHome"
-
-        app:srcCompat="@drawable/ic_operations_list" />
-
-    <ImageView
-        android:id="@+id/buttonAdd"
-        style="@style/HomeNavigationItem"
-        android:contentDescription="Add"
-        android:text="{add}"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonChart"
-        app:layout_constraintStart_toEndOf="@+id/buttonList"
-        app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
-        app:srcCompat="@drawable/ic_add" />
 
     <ImageView
         android:id="@+id/buttonChart"
@@ -62,10 +41,21 @@
         android:contentDescription="Show chart"
         android:text="{chart}"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonProfile"
-        app:layout_constraintStart_toEndOf="@+id/buttonAdd"
+        app:layout_constraintEnd_toStartOf="@+id/buttonList"
+        app:layout_constraintStart_toEndOf="@+id/buttonHome"
         app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_chart" />
+
+
+    <ImageView
+        android:id="@+id/buttonList"
+        style="@style/HomeNavigationItem"
+        android:contentDescription="List"
+        android:text="{list}"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonProfile"
+        app:layout_constraintStart_toEndOf="@+id/buttonChart"
+        app:srcCompat="@drawable/ic_operations_list" />
 
     <ImageView
         android:id="@+id/buttonProfile"
@@ -73,7 +63,7 @@
         android:contentDescription="Show profile"
         android:text="{profile}"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonChart"
+        app:layout_constraintStart_toEndOf="@+id/buttonList"
         app:layout_constraintEnd_toStartOf="@id/buttonLogout"
         app:layout_constraintTop_toBottomOf="@+id/homeFrameLayoutFragment"
         app:srcCompat="@drawable/ic_profile" />

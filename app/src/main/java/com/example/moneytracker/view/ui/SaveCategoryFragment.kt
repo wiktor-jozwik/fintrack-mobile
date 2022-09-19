@@ -27,9 +27,6 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
     private val saveCategoryViewModel: SaveCategoryViewModel by viewModels()
 
     @Inject
-    lateinit var saveFragment: SaveFragment
-
-    @Inject
     lateinit var listCategoryFragment: ListCategoryFragment
 
     private var saveCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
@@ -62,11 +59,7 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         super.onViewCreated(view, savedInstanceState)
 
         saveCategoryLiveData.observe(viewLifecycleOwner) {
-            if (binding.id.text.isNullOrBlank()) {
-                switchToAdd()
-            } else {
-                switchToCategoryList()
-            }
+            switchToCategoryList()
             clearFields()
         }
 
@@ -137,13 +130,6 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
-        }
-    }
-
-    private fun switchToAdd() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, saveFragment)
-            commit()
         }
     }
 

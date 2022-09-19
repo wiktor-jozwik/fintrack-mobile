@@ -85,10 +85,6 @@ object FragmentModule {
 
     @Singleton
     @Provides
-    fun provideAddFragment() = SaveFragment()
-
-    @Singleton
-    @Provides
     fun provideDatePickerFragment() = DatePickerFragment()
 
     @Singleton

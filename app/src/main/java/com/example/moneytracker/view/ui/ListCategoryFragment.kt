@@ -54,6 +54,13 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.buttonPlus.setOnClickListener {
+            parentFragmentManager.beginTransaction().apply {
+                replace(R.id.homeFrameLayoutFragment, saveCategoryFragment)
+                commit()
+            }
+        }
+
         val deleteLambda = CategoryListAdapter.DeleteOnClickListener { categoryId ->
             deleteCategory(
                 categoryId,
