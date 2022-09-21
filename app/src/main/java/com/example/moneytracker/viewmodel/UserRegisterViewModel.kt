@@ -19,7 +19,6 @@ class UserRegisterViewModel @Inject constructor(
     suspend fun getSupportedCurrencies(): List<Currency> =
         currencyRepository.getSupportedCurrencies()
 
-
     suspend fun registerUser(
         email: String,
         password: String,
@@ -28,7 +27,7 @@ class UserRegisterViewModel @Inject constructor(
         firstName: String?,
         lastName: String?,
         phoneNumber: String?
-    ): Response<User> {
+    ): User {
         val userRegisterInput =
             UserRegisterInput(
                 email,

@@ -32,7 +32,7 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
     @Inject
     lateinit var userLoginFragment: UserLoginFragment
 
-    private var registerUserLiveData: MutableLiveData<Response<User>> = MutableLiveData()
+    private var registerUserLiveData: MutableLiveData<User> = MutableLiveData()
     private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
 
     private var _binding: FragmentUserRegisterBinding? = null

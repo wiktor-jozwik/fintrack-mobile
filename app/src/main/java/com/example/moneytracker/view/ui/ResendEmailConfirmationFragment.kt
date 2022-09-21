@@ -15,12 +15,10 @@ import com.example.moneytracker.databinding.FragmentResendEmailConfirmationBindi
 import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.ResendEmailConfirmationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,7 +29,7 @@ class ResendEmailConfirmationFragment(
     @Inject
     lateinit var loginFragment: UserLoginFragment
 
-    private var resendEmailConfirmationLiveData: MutableLiveData<Response<StringResponse>> = MutableLiveData()
+    private var resendEmailConfirmationLiveData: MutableLiveData<StringResponse> = MutableLiveData()
 
     private var _binding: FragmentResendEmailConfirmationBinding? = null
     private val binding get() = _binding!!
@@ -60,14 +58,8 @@ class ResendEmailConfirmationFragment(
         super.onViewCreated(view, savedInstanceState)
 
         resendEmailConfirmationLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-
-                switchToLogin()
-                clearFields()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message)
-            }
+            switchToLogin()
+            clearFields()
         }
 
         emailTextChangeListener()
@@ -109,9 +101,14 @@ class ResendEmailConfirmationFragment(
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            resendEmailConfirmationLiveData.value = resendEmailConfirmationViewModel.resendEmail(
-                binding.inputEmailText.text.toString(),
-            )
+            try {
+                resendEmailConfirmationLiveData.value =
+                    resendEmailConfirmationViewModel.resendEmail(
+                        binding.inputEmailText.text.toString(),
+                    )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

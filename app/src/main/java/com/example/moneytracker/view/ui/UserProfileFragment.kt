@@ -13,17 +13,15 @@ import com.example.moneytracker.databinding.FragmentUserProfileBinding
 import com.example.moneytracker.service.model.mt.Expenses
 import com.example.moneytracker.service.model.mt.UserProfileData
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.UserProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 @AndroidEntryPoint
 class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
     private val userProfileViewModel: UserProfileViewModel by viewModels()
 
-    private var userProfileLiveData: MutableLiveData<Response<UserProfileData>> = MutableLiveData()
+    private var userProfileLiveData: MutableLiveData<UserProfileData> = MutableLiveData()
     private var expensesLiveData: MutableLiveData<Expenses> = MutableLiveData()
 
     private var _binding: FragmentUserProfileBinding? = null
@@ -48,33 +46,28 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         userProfileLiveData.observe(viewLifecycleOwner) {
-            try {
-                val userProfileData = responseErrorHandler(it)
-                var (email, firstName, lastName, phoneNumber) = userProfileData.user
+            var (email, firstName, lastName, phoneNumber) = it.user
 
-                email = getValidText(email)
-                firstName = getValidText(firstName)
-                lastName = getValidText(lastName)
-                phoneNumber = getValidText(phoneNumber)
-                email = getValidText(email)
+            email = getValidText(email)
+            firstName = getValidText(firstName)
+            lastName = getValidText(lastName)
+            phoneNumber = getValidText(phoneNumber)
+            email = getValidText(email)
 
-                binding.textFirstNameData.text = firstName
-                binding.textFirstNameProgressBar.visibility = View.INVISIBLE
+            binding.textFirstNameData.text = firstName
+            binding.textFirstNameProgressBar.visibility = View.INVISIBLE
 
-                binding.textLastNameData.text = lastName
-                binding.textLastNameProgressBar.visibility = View.INVISIBLE
+            binding.textLastNameData.text = lastName
+            binding.textLastNameProgressBar.visibility = View.INVISIBLE
 
-                binding.textPhoneNumberData.text = phoneNumber
-                binding.textPhoneNumberProgressBar.visibility = View.INVISIBLE
+            binding.textPhoneNumberData.text = phoneNumber
+            binding.textPhoneNumberProgressBar.visibility = View.INVISIBLE
 
-                binding.textEmailData.text = email
-                binding.textEmailProgressBar.visibility = View.INVISIBLE
+            binding.textEmailData.text = email
+            binding.textEmailProgressBar.visibility = View.INVISIBLE
 
-                binding.textDefaultCurrencyData.text = userProfileData.defaultCurrency.name
-                binding.textDefaultCurrencyProgressBar.visibility = View.INVISIBLE
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message, 200)
-            }
+            binding.textDefaultCurrencyData.text = it.defaultCurrency.name
+            binding.textDefaultCurrencyProgressBar.visibility = View.INVISIBLE
         }
 
         expensesLiveData.observe(viewLifecycleOwner) {

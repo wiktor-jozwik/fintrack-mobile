@@ -17,7 +17,7 @@ class UserProfileViewModel @Inject constructor(
     private val expenseCalculator: ExpenseCalculator
 ) : ViewModel() {
 
-    suspend fun getProfileData(): Response<UserProfileData> =
+    suspend fun getProfileData(): UserProfileData =
         userRepository.getProfileData()
 
 

@@ -16,12 +16,10 @@ import com.example.moneytracker.databinding.FragmentUserLoginBinding
 import com.example.moneytracker.service.model.mt.JwtResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import com.example.moneytracker.viewmodel.UserLoginViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +35,7 @@ class UserLoginFragment @Inject constructor(
     @Inject
     lateinit var resendEmailConfirmationFragment: ResendEmailConfirmationFragment
 
-    private var loginUserLiveData: MutableLiveData<Response<JwtResponse>> = MutableLiveData()
+    private var loginUserLiveData: MutableLiveData<JwtResponse> = MutableLiveData()
 
     private var _binding: FragmentUserLoginBinding? = null
     private val binding get() = _binding!!
@@ -66,19 +64,14 @@ class UserLoginFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
 
         loginUserLiveData.observe(viewLifecycleOwner) {
-            try {
-                val res = responseErrorHandler(it)
-                with(sharedPreferences.edit()) {
-                    putString("JWT_ACCESS_TOKEN", res.jwtAccessToken)
-                    putString("JWT_REFRESH_TOKEN", res.jwtRefreshToken)
-                    apply()
-                }
-
-                switchToHome()
-                clearFields()
-            } catch (e: Exception) {
-                makeErrorToast(requireContext(), e.message)
+            with(sharedPreferences.edit()) {
+                putString("JWT_ACCESS_TOKEN", it.jwtAccessToken)
+                putString("JWT_REFRESH_TOKEN", it.jwtRefreshToken)
+                apply()
             }
+
+            switchToHome()
+            clearFields()
         }
 
         emailTextChangeListener()
@@ -156,10 +149,14 @@ class UserLoginFragment @Inject constructor(
 
     private fun validForm() {
         viewLifecycleOwner.lifecycleScope.launch {
-            loginUserLiveData.value = userLoginViewModel.loginUser(
-                binding.inputEmailText.text.toString(),
-                binding.inputPasswordText.text.toString(),
-            )
+            try {
+                loginUserLiveData.value = userLoginViewModel.loginUser(
+                    binding.inputEmailText.text.toString(),
+                    binding.inputPasswordText.text.toString(),
+                )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
         }
     }
 

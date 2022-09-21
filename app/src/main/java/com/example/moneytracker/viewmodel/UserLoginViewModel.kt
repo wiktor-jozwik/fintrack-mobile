@@ -13,6 +13,6 @@ class UserLoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    suspend fun loginUser(email: String, password: String): Response<JwtResponse> =
+    suspend fun loginUser(email: String, password: String): JwtResponse =
         userRepository.loginUser(UserLoginInput(email, password))
 }

@@ -13,8 +13,6 @@ class ResendEmailConfirmationViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : ViewModel() {
 
-    suspend fun resendEmail(email: String): Response<StringResponse> {
-        val resendEmailConfirmationInput = ResendEmailConfirmationInput(email)
-        return userRepository.resendEmail(resendEmailConfirmationInput)
-    }
+    suspend fun resendEmail(email: String): StringResponse =
+        userRepository.resendEmail(ResendEmailConfirmationInput(email))
 }

@@ -13,7 +13,7 @@ fun <T> responseErrorHandler(res: Response<T>): T {
             res.code().toString()
         }
 
-        if (res.code() == 401) {
+        if (errMsg == "Unauthorized") {
             errMsg = "Unauthorized, please re-login"
         }
 
