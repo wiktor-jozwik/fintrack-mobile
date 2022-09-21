@@ -1,5 +1,7 @@
 package com.example.moneytracker.view.ui
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,13 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentSummaryBinding
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.YearlyOperationsSummaryViewModel
+import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,36 +58,16 @@ class YearlyOperationsSummaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.pieChart.setNoDataText("")
+        binding.textTitle.text = "${LocalDate.now().year} summary"
+
         yearlyOperationsLiveData.observe(viewLifecycleOwner) {
-            binding.textIncomesProgressBar.visibility = View.INVISIBLE
-            binding.textOutcomesProgressBar.visibility = View.INVISIBLE
             binding.textBalanceProgressBar.visibility = View.INVISIBLE
+            binding.pieChartProgressBar.visibility = View.INVISIBLE
             val (totalIncome, totalOutcome, balance) = it
-            binding.textIncomesValue.text = "$totalIncome PLN"
-            binding.textIncomesValue.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_green
-                )
-            )
-            binding.textOutcomesValue.text = "$totalOutcome PLN"
-            binding.textOutcomesValue.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.main_red
-                )
-            )
-            binding.textBalanceValue.text = "$balance PLN"
-            var balanceColor = R.color.main_green
-            if (balance < 0) {
-                balanceColor = R.color.main_red
-            }
-            binding.textBalanceValue.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    balanceColor
-                )
-            )
+
+            drawChart(totalIncome, totalOutcome)
+            setBalance(balance)
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -90,7 +77,70 @@ class YearlyOperationsSummaryFragment : Fragment() {
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
-
         }
+    }
+
+    private fun drawChart(totalIncome: Double, totalOutcome: Double) {
+        val pieChart = binding.pieChart
+
+        pieChart.description.isEnabled = false
+        pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
+        pieChart.dragDecelerationFrictionCoef = 0.95f
+
+        pieChart.setDrawCenterText(true)
+        pieChart.isRotationEnabled = false
+
+        pieChart.isDrawHoleEnabled = true
+        pieChart.setHoleColor(Color.TRANSPARENT)
+        pieChart.setTransparentCircleColor(Color.TRANSPARENT)
+        pieChart.holeRadius = 40f
+        pieChart.transparentCircleRadius = 30f
+
+        pieChart.legend.isEnabled = false
+
+        val pieEntries =
+            listOf(PieEntry(totalIncome.toFloat()), PieEntry(totalOutcome.toFloat()))
+
+        val pieDataSet = PieDataSet(pieEntries, "Expenses")
+        pieDataSet.setDrawIcons(false)
+
+        val colors = listOf(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.main_green
+            ),
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.main_red
+            )
+        )
+
+        pieDataSet.colors = colors
+
+        val pieData = PieData(pieDataSet)
+        pieData.setValueTextSize(16f)
+        pieData.setValueTypeface(Typeface.DEFAULT_BOLD)
+        pieData.setValueTextColor(Color.WHITE)
+
+        pieChart.data = pieData
+
+        pieChart.animateY(1100, Easing.EaseInOutQuad)
+        pieChart.invalidate()
+    }
+
+    private fun setBalance(balance: Double) {
+        binding.textBalanceValue.text = "$balance"
+        var balanceColor = R.color.main_green
+        if (balance < 0) {
+            balanceColor = R.color.main_red
+        } else if (balance == 0.0) {
+            balanceColor = R.color.text_hint
+        }
+        binding.textBalanceValue.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                balanceColor
+            )
+        )
     }
 }

@@ -26,12 +26,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-//        with(sharedPreferences.edit()) {
-//            putString("JWT_AUTH_TOKEN", "")
-//            apply()
-//        }
-
-        val token = sharedPreferences.getString("JWT_AUTH_TOKEN", "")
+        val token = sharedPreferences.getString("JWT_ACCESS_TOKEN", "")
 
         if (token != null && token.isNotEmpty()) {
             supportFragmentManager.beginTransaction().apply {

@@ -2,6 +2,7 @@ package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.repository.mt.OperationRepository
+import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -11,6 +12,7 @@ import javax.inject.Inject
 class YearlyOperationsSummaryViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
     private val expenseCalculator: ExpenseCalculator,
+    private val currencyCalculator: CurrencyCalculator
 ) : ViewModel() {
     suspend fun calculateYearlyIncomeAndOutcome(): Triple<Double, Double, Double> {
         val year = LocalDate.now().year
@@ -19,7 +21,7 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         val yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate)
 
         val (income, outcome) = expenseCalculator.calculate(yearlyOperations)
-        val balance = income - outcome
+        val balance = currencyCalculator.roundMoney(income - outcome)
 
         return Triple(
             income,

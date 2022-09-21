@@ -6,11 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".view.ui.MainActivity">
 
-
     <TextView
         android:id="@+id/textTitle"
         style="@style/TextTitle"
-        android:text="Track your money"
+        android:text="{year} summary"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,86 +22,36 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="120dp" />
 
-    <TextView
-        android:id="@+id/textSubtitleTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Current year summary"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineTitle" />
-
-    <TextView
-        android:id="@+id/textIncomes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Incomes"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSubtitleTitle" />
-
     <ProgressBar
-        android:id="@+id/textIncomesProgressBar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:translationX="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/textIncomesValue"
-        app:layout_constraintTop_toBottomOf="@+id/textIncomes" />
+        android:id="@+id/pieChartProgressBar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:translationZ="1dp"
+        app:layout_constraintBottom_toBottomOf="@id/pieChart"
+        app:layout_constraintEnd_toEndOf="@id/pieChart"
+        app:layout_constraintStart_toStartOf="@id/pieChart"
+        app:layout_constraintTop_toTopOf="@id/pieChart" />
 
-    <TextView
-        android:id="@+id/textIncomesValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="17sp"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="375dp"
+        android:layout_height="375dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/textBalance"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintStart_toEndOf="@id/textIncomesProgressBar"
-        app:layout_constraintTop_toBottomOf="@+id/textIncomes" />
-
-    <TextView
-        android:id="@+id/textOutcomes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
-        android:text="Outcomes"
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textIncomesValue" />
-
-    <ProgressBar
-        android:id="@+id/textOutcomesProgressBar"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:translationX="10dp"
-        app:layout_constraintEnd_toStartOf="@+id/textOutcomesValue"
-        app:layout_constraintTop_toBottomOf="@+id/textOutcomes" />
-
-    <TextView
-        android:id="@+id/textOutcomesValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="17sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textOutcomes" />
+        app:layout_constraintTop_toBottomOf="@id/guidelineTitle" />
 
     <TextView
         android:id="@+id/textBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="75dp"
+        android:layout_marginTop="40dp"
         android:text="Balance"
-        android:textSize="17sp"
+        android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textOutcomesValue" />
+        app:layout_constraintTop_toBottomOf="@+id/pieChart" />
 
     <ProgressBar
         android:id="@+id/textBalanceProgressBar"
