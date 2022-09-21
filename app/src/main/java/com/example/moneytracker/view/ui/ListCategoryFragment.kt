@@ -107,7 +107,7 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
     private fun deleteCategory(categoryId: Int) {
         MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setCancelable(false)
-            .setMessage("Are you sure?")
+            .setMessage("Are you sure you want to delete?")
             .setPositiveButton("Yes") { _, _ ->
                 viewLifecycleOwner.lifecycleScope.launch {
                     try {
