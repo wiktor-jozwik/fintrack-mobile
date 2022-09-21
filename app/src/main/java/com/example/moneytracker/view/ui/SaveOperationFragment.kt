@@ -19,6 +19,7 @@ import com.example.moneytracker.databinding.FragmentSaveOperationBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.view.ui.enums.SaveState
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.viewmodel.SaveOperationViewModel
@@ -49,6 +50,8 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     private var categoryLiveData: MutableLiveData<List<Category>> = MutableLiveData()
 
+    private var saveState: SaveState = SaveState.ADD
+
     private var _binding: FragmentSaveOperationBinding? = null
     private val binding get() = _binding!!
 
@@ -71,7 +74,23 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
 
     override fun onResume() {
         super.onResume()
-        fillEditInformation()
+        binding.textTitle.text = "Add operation"
+        binding.buttonSave.text = "Add"
+        when (saveState) {
+            SaveState.ADD -> {
+            }
+            SaveState.CLEAR -> {
+                clearFields()
+                saveState = SaveState.ADD
+            }
+            SaveState.EDIT -> {
+                binding.textTitle.text = "Edit operation"
+                binding.buttonSave.text = "Edit"
+                clearFields()
+                fillEditInformation()
+                saveState = SaveState.CLEAR
+            }
+        }
         clearHelpers()
     }
 
@@ -91,6 +110,11 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
 
         binding.buttonSave.setOnClickListener {
             submitForm()
+        }
+
+        val operationId = arguments?.getString("operationId")
+        if (!operationId.isNullOrBlank()) {
+            saveState = SaveState.EDIT
         }
     }
 
