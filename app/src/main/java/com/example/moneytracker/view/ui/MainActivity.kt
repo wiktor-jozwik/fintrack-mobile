@@ -2,6 +2,7 @@ package com.example.moneytracker.view.ui
 
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.ActivityMainBinding
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val token = sharedPreferences.getString("JWT_ACCESS_TOKEN", "")
+        val token = sharedPreferences.getString("JWT_REFRESH_TOKEN", "")
 
         if (token != null && token.isNotEmpty()) {
             supportFragmentManager.beginTransaction().apply {
