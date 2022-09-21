@@ -1,12 +1,10 @@
 package com.example.moneytracker.service.repository.mt
 
-import com.example.moneytracker.service.model.mt.JwtResponse
-import com.example.moneytracker.service.model.mt.StringResponse
-import com.example.moneytracker.service.model.mt.User
-import com.example.moneytracker.service.model.mt.UserProfileData
+import com.example.moneytracker.service.model.mt.*
 import com.example.moneytracker.service.model.mt.inputs.ResendEmailConfirmationInput
 import com.example.moneytracker.service.model.mt.inputs.UserLoginInput
 import com.example.moneytracker.service.model.mt.inputs.UserRegisterInput
+import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -18,6 +16,9 @@ class UserRepository @Inject constructor(
 
     suspend fun loginUser(userLoginInput: UserLoginInput): Response<JwtResponse> =
         moneyTrackerApi.api.loginUser(userLoginInput)
+
+    suspend fun logoutUser(): LogoutResponse =
+        responseErrorHandler(moneyTrackerApi.api.logoutUser())
 
     suspend fun resendEmail(resendEmailConfirmationInput: ResendEmailConfirmationInput): Response<StringResponse> =
         moneyTrackerApi.api.resendEmail(resendEmailConfirmationInput)

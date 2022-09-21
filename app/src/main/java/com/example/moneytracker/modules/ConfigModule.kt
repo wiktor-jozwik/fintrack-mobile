@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.moneytracker.service.repository.exchangerate.ExchangerateApi
 import com.example.moneytracker.service.repository.mt.MoneyTrackerApi
-import com.example.moneytracker.service.repository.mt.ServiceInterceptor
+import com.example.moneytracker.service.repository.mt.AuthInterceptor
 import com.example.moneytracker.service.repository.nbp.NbpApi
 import dagger.Module
 import dagger.Provides
@@ -19,17 +19,17 @@ object ConfigModule {
     @Singleton
     @Provides
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences("JWT_AUTH_TOKEN", Context.MODE_PRIVATE)
+        context.getSharedPreferences("", Context.MODE_PRIVATE)
 
     @Singleton
     @Provides
-    fun provideServiceInterceptor(sharedPreferences: SharedPreferences): ServiceInterceptor =
-        ServiceInterceptor(sharedPreferences)
+    fun provideServiceInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor =
+        AuthInterceptor(sharedPreferences)
 
     @Singleton
     @Provides
-    fun provideMoneyTrackerApi(serviceInterceptor: ServiceInterceptor): MoneyTrackerApi =
-        MoneyTrackerApi(serviceInterceptor)
+    fun provideMoneyTrackerApi(authInterceptor: AuthInterceptor): MoneyTrackerApi =
+        MoneyTrackerApi(authInterceptor)
 
     @Singleton
     @Provides

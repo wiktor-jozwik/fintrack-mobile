@@ -11,7 +11,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class MoneyTrackerApi @Inject constructor(
-    private val serviceInterceptor: ServiceInterceptor,
+    private val authInterceptor: AuthInterceptor,
 ) {
     val api: MoneyTrackerApiInterface by lazy {
         Retrofit.Builder()
@@ -30,7 +30,7 @@ class MoneyTrackerApi @Inject constructor(
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(OkHttpProfilerInterceptor())
-                    .addInterceptor(serviceInterceptor)
+                    .addInterceptor(authInterceptor)
                     .build()
             )
             .build()

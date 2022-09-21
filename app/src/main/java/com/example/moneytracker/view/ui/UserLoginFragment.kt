@@ -69,7 +69,8 @@ class UserLoginFragment @Inject constructor(
             try {
                 val res = responseErrorHandler(it)
                 with(sharedPreferences.edit()) {
-                    putString("JWT_AUTH_TOKEN", res.jwtToken)
+                    putString("JWT_ACCESS_TOKEN", res.jwtAccessToken)
+                    putString("JWT_REFRESH_TOKEN", res.jwtRefreshToken)
                     apply()
                 }
 
