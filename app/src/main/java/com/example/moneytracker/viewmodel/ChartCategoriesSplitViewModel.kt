@@ -6,6 +6,7 @@ import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
+import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDate
@@ -14,8 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ChartCategoriesSplitViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
-    private val currencyRepository: CurrencyRepository,
-    private val currencyCalculator: CurrencyCalculator
+    private val expenseCalculator: ExpenseCalculator,
 ) : ViewModel() {
     suspend fun getSplitOperationByCategories(
         startDate: LocalDate?,
@@ -31,8 +31,6 @@ class ChartCategoriesSplitViewModel @Inject constructor(
             operationRepository.getAllOperations()
         }
 
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().name
-
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME
         }.groupBy {
@@ -40,18 +38,9 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         }
 
         categoriesOutcomeGrouped.forEach { (category, operations) ->
-            var outcome = 0.0
-            operations.forEach {
-                outcome += currencyRepository.convertCurrency(
-                    it.currency.name,
-                    defaultCurrencyName,
-                    it.moneyAmount,
-                    it.date
-                )
-            }
-
+            val (_, outcomes) = expenseCalculator.calculate(operations)
             categoriesNames.add(category.name)
-            categoriesValues.add(currencyCalculator.roundMoney(outcome))
+            categoriesValues.add(outcomes)
         }
 
         val maxCharsOfCategory = 10
