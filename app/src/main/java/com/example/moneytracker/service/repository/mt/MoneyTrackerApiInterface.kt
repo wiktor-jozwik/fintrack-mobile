@@ -2,6 +2,8 @@ package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.*
 import com.example.moneytracker.service.model.mt.inputs.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
@@ -48,6 +50,13 @@ interface MoneyTrackerApiInterface {
 
     @DELETE("operations/{id}")
     suspend fun deleteOperation(@Path("id") operationId: Int): Response<Operation>
+
+    @Multipart
+    @POST("operations_import")
+    suspend fun importOperations(@Part file: MultipartBody.Part, @Part("csvImportWay") csvImportWay: RequestBody): Response<Void>
+
+    @GET("operations_import/supported_csv_ways")
+    suspend fun getSupportedCsvImportWays(): Response<List<String>>
 
     @POST("categories")
     suspend fun saveCategory(@Body category: CategoryCreateInput): Response<Category>

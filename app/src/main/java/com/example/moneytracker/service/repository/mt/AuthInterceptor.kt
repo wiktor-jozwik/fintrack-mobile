@@ -71,7 +71,7 @@ class AuthInterceptor @Inject constructor(
         val response = proceed(request)
         if (response.code() == 401) {
             with(sharedPreferences.edit()) {
-                putString("JWT_AUTH_TOKEN", "")
+                putString("JWT_ACCESS_TOKEN", "")
                 apply()
             }
         }

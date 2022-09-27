@@ -41,6 +41,9 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     lateinit var listOperationFragment: ListOperationFragment
 
     @Inject
+    lateinit var importOperationsFragment: ImportOperationsFragment
+
+    @Inject
     lateinit var datePickerFragment: DatePickerFragment
 
     private var editCurrencyName: String? = null
@@ -107,6 +110,10 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
 
         moneyAmountTextChangeListener()
         operationNameTextChangeListener()
+
+        binding.importOperationsLink.setOnClickListener {
+            switchToImportOperations()
+        }
 
         binding.buttonSave.setOnClickListener {
             submitForm()
@@ -315,6 +322,13 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
+        }
+    }
+
+    private fun switchToImportOperations() {
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.homeFrameLayoutFragment, importOperationsFragment)
+            commit()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.ui.utils
 
+import android.util.Log
 import org.json.JSONObject
 import retrofit2.Response
 
@@ -12,6 +13,8 @@ fun <T> responseErrorHandler(res: Response<T>): T {
         } ?: run {
             res.code().toString()
         }
+
+        Log.d("MT", errMsg)
 
         if (errMsg == "Unauthorized") {
             errMsg = "Unauthorized, please re-login"

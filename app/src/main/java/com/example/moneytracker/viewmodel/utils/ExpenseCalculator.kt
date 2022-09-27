@@ -4,7 +4,6 @@ import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Expenses
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
-import com.example.moneytracker.view.ui.utils.responseErrorHandler
 import javax.inject.Inject
 
 class ExpenseCalculator @Inject constructor(
@@ -34,7 +33,6 @@ class ExpenseCalculator @Inject constructor(
         var outcomes = 0.0
 
         operations.forEach {
-
             val moneyAmountInDefaultCurrency = if (it.currency.name == defaultCurrencyName) {
                 it.moneyAmount
             } else {

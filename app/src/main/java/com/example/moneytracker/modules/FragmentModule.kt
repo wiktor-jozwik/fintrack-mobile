@@ -98,4 +98,8 @@ object FragmentModule {
     @Singleton
     @Provides
     fun provideResendEmailConfirmationFragment() = ResendEmailConfirmationFragment()
+
+    @Singleton
+    @Provides
+    fun provideImportOperationsFragment() = ImportOperationsFragment()
 }

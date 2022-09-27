@@ -154,5 +154,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/inputCurrency" />
 
+        <TextView
+            android:id="@+id/importOperationsLink"
+            style="@style/LoginRegisterLink"
+            android:text="Or import operations from CSV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonSave" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
