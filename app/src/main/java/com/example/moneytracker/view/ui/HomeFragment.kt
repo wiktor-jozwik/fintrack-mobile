@@ -8,11 +8,9 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentHomeBinding
-import com.example.moneytracker.service.model.mt.LogoutResponse
 import com.example.moneytracker.viewmodel.HomeViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,8 +38,6 @@ class HomeFragment @Inject constructor(
     @Inject
     lateinit var userLoginFragment: UserLoginFragment
 
-    private var logoutUserLiveData: MutableLiveData<LogoutResponse> = MutableLiveData()
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -61,10 +57,6 @@ class HomeFragment @Inject constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        logoutUserLiveData.observe(viewLifecycleOwner) {
-            logout()
-        }
 
         childFragmentManager.beginTransaction().apply {
             setButtonsWhite()
@@ -141,9 +133,10 @@ class HomeFragment @Inject constructor(
                 .setPositiveButton("Yes") { _, _ ->
                     viewLifecycleOwner.lifecycleScope.launch {
                         try {
-                            logoutUserLiveData.value = homeViewModel.logout()
+                            homeViewModel.logout()
                         } catch (e: Exception) {
-                            switchToLogin()
+                        } finally {
+                            logout()
                         }
                     }
                 }
@@ -155,12 +148,16 @@ class HomeFragment @Inject constructor(
     }
 
     private fun logout() {
+        eraseTokens()
+        switchToLogin()
+    }
+
+    private fun eraseTokens() {
         with(sharedPreferences.edit()) {
             putString("JWT_ACCESS_TOKEN", "")
             putString("JWT_REFRESH_TOKEN", "")
             apply()
         }
-        switchToLogin()
     }
 
     private fun switchToLogin() {

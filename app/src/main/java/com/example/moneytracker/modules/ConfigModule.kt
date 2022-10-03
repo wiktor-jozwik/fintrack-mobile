@@ -23,7 +23,7 @@ object ConfigModule {
 
     @Singleton
     @Provides
-    fun provideServiceInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor =
+    fun provideAuthInterceptor(sharedPreferences: SharedPreferences): AuthInterceptor =
         AuthInterceptor(sharedPreferences)
 
     @Singleton
