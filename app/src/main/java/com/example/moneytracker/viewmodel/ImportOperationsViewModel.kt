@@ -1,6 +1,7 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.service.repository.mt.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MediaType
@@ -13,12 +14,12 @@ import javax.inject.Inject
 class ImportOperationsViewModel @Inject constructor(
     private val operationRepository: OperationRepository,
 ) : ViewModel() {
-    suspend fun importOperations(file: MultipartBody.Part, csvImportWayText: String) {
+    suspend fun importOperations(file: MultipartBody.Part, csvImportWayText: String): StringResponse {
         val csvImportWay: RequestBody = RequestBody.create(MediaType.parse("text/plain"), csvImportWayText)
 
-        operationRepository.importOperations(file, csvImportWay)
+        return operationRepository.importOperations(file, csvImportWay)
     }
 
-    suspend fun getSupportedCsvImportWays() =
+    suspend fun getSupportedCsvImportWays(): List<String> =
         operationRepository.getSupportedCsvImportWays()
 }

@@ -47,24 +47,35 @@
         app:layout_constraintStart_toEndOf="@id/textCsvWay"
         app:layout_constraintTop_toBottomOf="@+id/guidelineTitle" />
 
+    <TextView
+        android:id="@+id/textFileChosen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textColor="@color/main_green"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputCsvImportWays" />
+
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSelectFile"
         style="@style/FullWidthButton"
         android:text="Select a file"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputCsvImportWays" />
+        app:layout_constraintTop_toBottomOf="@id/textFileChosen" />
 
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonImport"
         style="@style/FullWidthButton"
         android:text="Import"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/buttonSelectFile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

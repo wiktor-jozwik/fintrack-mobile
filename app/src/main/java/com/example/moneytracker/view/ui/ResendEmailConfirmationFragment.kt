@@ -15,6 +15,7 @@ import com.example.moneytracker.databinding.FragmentResendEmailConfirmationBindi
 import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.view.ui.utils.isValidEmail
 import com.example.moneytracker.view.ui.utils.makeErrorToast
+import com.example.moneytracker.view.ui.utils.makePositiveToast
 import com.example.moneytracker.viewmodel.ResendEmailConfirmationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
@@ -58,6 +59,7 @@ class ResendEmailConfirmationFragment(
         super.onViewCreated(view, savedInstanceState)
 
         resendEmailConfirmationLiveData.observe(viewLifecycleOwner) {
+            makePositiveToast(requireContext(), it.response, 200)
             switchToLogin()
             clearFields()
         }

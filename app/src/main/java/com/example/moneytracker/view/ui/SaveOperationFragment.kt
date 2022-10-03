@@ -81,12 +81,17 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         binding.buttonSave.text = "Add"
         when (saveState) {
             SaveState.ADD -> {
+                binding.importOperationsLink.visibility = View.VISIBLE
             }
             SaveState.CLEAR -> {
+                binding.importOperationsLink.visibility = View.VISIBLE
+
                 clearFields()
                 saveState = SaveState.ADD
             }
             SaveState.EDIT -> {
+                binding.importOperationsLink.visibility = View.INVISIBLE
+
                 binding.textTitle.text = "Edit operation"
                 binding.buttonSave.text = "Edit"
                 clearFields()

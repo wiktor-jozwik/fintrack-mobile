@@ -53,7 +53,7 @@ interface MoneyTrackerApiInterface {
 
     @Multipart
     @POST("operations_import")
-    suspend fun importOperations(@Part file: MultipartBody.Part, @Part("csvImportWay") csvImportWay: RequestBody): Response<Void>
+    suspend fun importOperations(@Part file: MultipartBody.Part, @Part("csvImportWay") csvImportWay: RequestBody): Response<StringResponse>
 
     @GET("operations_import/supported_csv_ways")
     suspend fun getSupportedCsvImportWays(): Response<List<String>>

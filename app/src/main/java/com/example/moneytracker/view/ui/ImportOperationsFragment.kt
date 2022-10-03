@@ -16,20 +16,32 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentImportOperationsBinding
+import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.view.ui.utils.makeErrorToast
+import com.example.moneytracker.view.ui.utils.makePositiveToast
 import com.example.moneytracker.viewmodel.ImportOperationsViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
+    private val IMPORT_CODE = 111
     private val importOperationsViewModel: ImportOperationsViewModel by viewModels()
 
+    @Inject
+    lateinit var saveOperationFragment: ListFragment
+
     private var csvImportWaysLiveData: MutableLiveData<List<String>> = MutableLiveData()
+    private var importOperationsLiveData: MutableLiveData<StringResponse> = MutableLiveData()
+
+    private var fileUri: Uri? = null
 
     private var _binding: FragmentImportOperationsBinding? = null
     private val binding get() = _binding!!
@@ -45,21 +57,54 @@ class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        clearFields()
         _binding = null
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == IMPORT_CODE) {
+            data?.data?.let { uri ->
+                fileUri = uri
+                binding.textFileChosen.text = "FILE UPLOADED: ${File(uri.path.toString()).name}"
+                binding.textFileChosen.visibility = View.VISIBLE
+            }
+        } else super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        importOperationsLiveData.observe(viewLifecycleOwner) {
+            switchToSaveOperation()
+            makePositiveToast(requireContext(), it.response, 200)
+            clearFields()
+        }
+
         fulfillCsvImportWaysSpinner()
 
         binding.buttonSelectFile.setOnClickListener {
-            selectImage()
+            selectCsv()
         }
 
         binding.buttonImport.setOnClickListener {
-//            submitForm()
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+                .setCancelable(false)
+                .setMessage("Are you sure to trigger import?")
+                .setPositiveButton("Yes") { _, _ ->
+                    submitForm()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .show()
         }
+    }
+
+    private fun clearFields() {
+        binding.textFileChosen.text = ""
+        binding.textFileChosen.visibility = View.INVISIBLE
+        fileUri = null
+        importOperationsLiveData = MutableLiveData()
     }
 
     private fun fulfillCsvImportWaysSpinner() {
@@ -81,119 +126,61 @@ class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
         }
     }
 
-        private fun selectImage() {
-//        val intent = Intent()
-//            .setType("*/*")
-//            .setAction(Intent.ACTION_GET_CONTENT)
-            val pickIntent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+    private fun selectCsv() {
+        val pickIntent =
+            Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
-        startActivityForResult(pickIntent, 111)
+        startActivityForResult(pickIntent, IMPORT_CODE)
     }
 
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 111) {
-            data?.data?.let { uri ->
-                uploadFile(uri)
-            }
-        } else super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private fun uploadFile(uri: Uri) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            val stream = requireContext().contentResolver.openInputStream(uri) ?: return@launch
-            val request = RequestBody.create(MediaType.parse("application/csv"), stream.readBytes()) // read all bytes using kotlin extension
-            val filePart = MultipartBody.Part.createFormData(
-                "file",
-                uri.path,
-                request
-            )
-            try {
-                importOperationsViewModel.importOperations(filePart, binding.inputCsvImportWays.selectedItem.toString())
-            }
-            catch (e: Exception) {
-                Log.d("MT", e.toString())
-                return@launch
-            }
-            Log.d("MyActivity", "on finish upload file")
+    private fun submitForm() {
+        if (fileUri != null) {
+            validForm(fileUri!!)
+        } else {
+            invalidForm()
         }
     }
 
+    private fun validForm(uri: Uri) {
+        triggerImport(uri)
+    }
 
-//    fun openActivityForResult() {
-//        startForResult.launch(Intent(this, AnotherActivity::class.java))
-//    }
-//
-//
-//    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-//            result: ActivityResult ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val intent = result.data
-//            // Handle the Intent
-//            //do stuff here
-//        }
-//    }
+    private fun triggerImport(uri: Uri) {
+        val stream = requireContext().contentResolver.openInputStream(uri) ?: return
+        val request = RequestBody.create(
+            MediaType.parse("application/csv"),
+            stream.readBytes()
+        )
+        val filePart = MultipartBody.Part.createFormData(
+            "file",
+            uri.path,
+            request
+        )
+        viewLifecycleOwner.lifecycleScope.launch {
+            try {
+                importOperationsLiveData.value = importOperationsViewModel.importOperations(
+                    filePart,
+                    binding.inputCsvImportWays.selectedItem.toString()
+                )
+            } catch (e: Exception) {
+                makeErrorToast(requireContext(), e.message, 200)
+            }
+        }
+    }
 
-//    private fun selectImage() {
-//        val intent = Intent()
-//            .setType("*/*")
-//            .setAction(Intent.ACTION_GET_CONTENT)
-//
-//        startActivityForResult(Intent.createChooser(intent, "Select a file"), 111)
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//
-//        if (requestCode == 111 && resultCode == RESULT_OK) {
-//            val selectedFileUri = data?.data //The uri with the location of the file
-//            if (selectedFileUri != null && !selectedFileUri.path.isNullOrBlank()) {
-//                val path = selectedFileUri.path
-//                if (!path.isNullOrBlank()) {
-//                    val file = File(path)
-//                    viewLifecycleOwner.lifecycleScope.launch {
-//                        try {
-//                            val requestBody =
-//                                RequestBody.create(MediaType.parse("application/csv"), file)
-//                            val filePart = MultipartBody.Part.createFormData(
-//                                "file",
-//                                selectedFileUri.toString(),
-//                                requestBody
-//                            )
-//
-//                            Log.d("MT", filePart.toString())
-//
-//                            importOperationsViewModel.importOperations(filePart, "")
-//
-//                        } catch (e: Exception) {
-//                            makeErrorToast(requireContext(), e.message, 200)
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
+    private fun invalidForm() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+            .setTitle("Invalid form")
+            .setMessage("Please provide requested fields.")
+            .setPositiveButton("Okay") { _, _ -> {} }
+            .show()
+    }
 
-
-//
-//    private fun submitForm() {
-//        viewLifecycleOwner.lifecycleScope.launch {
-//            try {
-//                addCurrencyLiveData.value = saveCurrencyViewModel.addNewCurrency(
-//                    binding.inputCurrency.selectedItem.toString(),
-//                )
-//            } catch (e: Exception) {
-//                makeErrorToast(requireContext(), e.message, 200)
-//            }
-//        }
-//    }
-//
-//    private fun switchToCurrencyList() {
-//        parentFragmentManager.beginTransaction().apply {
-//            replace(R.id.homeFrameLayoutFragment, listCurrencyFragment)
-//            commit()
-//        }
-//    }
-
+    private fun switchToSaveOperation() {
+        parentFragmentManager.beginTransaction().apply {
+            replace(R.id.homeFrameLayoutFragment, saveOperationFragment)
+            commit()
+        }
+    }
 }
