@@ -46,13 +46,7 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
         super.onViewCreated(view, savedInstanceState)
 
         userProfileLiveData.observe(viewLifecycleOwner) {
-            var (email, firstName, lastName, phoneNumber) = it.user
-
-            email = getValidText(email)
-            firstName = getValidText(firstName)
-            lastName = getValidText(lastName)
-            phoneNumber = getValidText(phoneNumber)
-            email = getValidText(email)
+            val (email, firstName, lastName, phoneNumber) = it.user
 
             binding.textFirstNameData.text = firstName
             binding.textFirstNameProgressBar.visibility = View.INVISIBLE
@@ -99,20 +93,6 @@ class UserProfileFragment : Fragment(R.layout.fragment_user_profile) {
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
-        }
-    }
-
-    private fun getValidText(text: String?): String {
-        val maxCharacterForText = 15
-
-        if (text.isNullOrBlank()) {
-            return "-"
-        }
-
-        return if (text.length > maxCharacterForText) {
-            text.substring(0, maxCharacterForText) + ".."
-        } else {
-            text.substring(0, maxCharacterForText.coerceAtMost(text.length))
         }
     }
 }

@@ -8,6 +8,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.CategoryBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.view.ui.utils.cutText
 
 class CategoryListAdapter(
     categories: List<Category>,
@@ -56,7 +57,7 @@ class CategoryListAdapter(
 
         holder.binding.apply {
             id.text = currentCategory.id.toString()
-            textName.text = currentCategory.name
+            textName.text = currentCategory.name.cutText(40)
             imageType.setColorFilter(ContextCompat.getColor(imageType.context, color))
             buttonDelete.setOnClickListener {
                 deleteOnClickListener.onClick(currentCategory.id)

@@ -3,9 +3,8 @@ package com.example.moneytracker.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
-import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.example.moneytracker.service.repository.mt.OperationRepository
-import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
+import com.example.moneytracker.view.ui.utils.cutText
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,13 +42,8 @@ class ChartCategoriesSplitViewModel @Inject constructor(
             categoriesValues.add(outcomes)
         }
 
-        val maxCharsOfCategory = 10
         categoriesNames = categoriesNames.map {
-            if (it.length > maxCharsOfCategory) {
-                it.substring(0, maxCharsOfCategory) + ".."
-            } else {
-                it.substring(0, maxCharsOfCategory.coerceAtMost(it.length))
-            }
+            it.cutText(10)
         }.toMutableList()
 
         val sortedCategories = categoriesNames.zip(categoriesValues).sortedByDescending {

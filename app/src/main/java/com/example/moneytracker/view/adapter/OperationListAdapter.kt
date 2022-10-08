@@ -8,6 +8,7 @@ import com.example.moneytracker.R
 import com.example.moneytracker.databinding.OperationBinding
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.view.ui.utils.cutText
 import java.time.format.DateTimeFormatter
 
 
@@ -55,10 +56,12 @@ class OperationListAdapter(
     override fun onBindViewHolder(holder: OperationViewHolder, position: Int) {
         val currentOperation = operationsList[position]
 
+        val maxTextLength = 25
+
         holder.binding.apply {
             id.text = currentOperation.id.toString()
-            textName.text = currentOperation.name
-            textCategory.text = currentOperation.category.name
+            textName.text = currentOperation.name.cutText(maxTextLength)
+            textCategory.text = currentOperation.category.name.cutText(maxTextLength)
             textDate.text =
                 currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             buttonDelete.setOnClickListener {
