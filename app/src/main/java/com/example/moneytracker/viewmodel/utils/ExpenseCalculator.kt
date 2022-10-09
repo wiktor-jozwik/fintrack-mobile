@@ -33,6 +33,9 @@ class ExpenseCalculator @Inject constructor(
         var outcomes = 0.0
 
         operations.forEach {
+            if (it.category.isInternal) {
+                return@forEach
+            }
             val moneyAmountInDefaultCurrency = if (it.currency.name == defaultCurrencyName) {
                 it.moneyAmount
             } else {

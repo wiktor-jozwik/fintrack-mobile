@@ -99,10 +99,14 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         val categoryType = arguments?.getString("categoryType")
         val categoryId = arguments?.getString("categoryId")
         val categoryName = arguments?.getString("categoryName")
+        val isInternal = arguments?.getString("isInternal")
 
         if (arguments != null && !categoryType.isNullOrBlank()) {
             binding.inputNameText.setText(categoryName)
             binding.id.text = categoryId
+            if (isInternal.toBoolean()) {
+                binding.inputInternal.isChecked = true
+            }
             when (enumValueOf<CategoryType>(categoryType)) {
                 CategoryType.INCOME -> binding.radioButtonIncome.isChecked = true
                 CategoryType.OUTCOME -> binding.radioButtonOutcome.isChecked = true
@@ -121,23 +125,26 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
             hashMapOf("Outcome" to CategoryType.OUTCOME, "Income" to CategoryType.INCOME)
 
         val operationCategoryType = categoryType[selectedRadioButtonText]
+        val isInternal = binding.inputInternal.isChecked
 
         if (validateCategoryName() == null && operationCategoryType != null) {
-            validForm(operationCategoryType)
+            validForm(operationCategoryType, isInternal)
         } else {
             invalidForm()
         }
     }
 
-    private fun validForm(operationCategoryType: CategoryType) {
+    private fun validForm(operationCategoryType: CategoryType, isInternal: Boolean) {
         val id = binding.id.text
+
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
                     saveCategoryLiveData.value = saveCategoryViewModel.editCategory(
                         Integer.parseInt(id.toString()),
                         binding.inputNameText.text.toString().removeSpaces(),
-                        operationCategoryType
+                        operationCategoryType,
+                        isInternal
                     )
                 } catch (e: Exception) {
                     makeErrorToast(requireContext(), e.message, 200)
@@ -148,7 +155,8 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
                 try {
                     saveCategoryLiveData.value = saveCategoryViewModel.addNewCategory(
                         binding.inputNameText.text.toString().removeSpaces(),
-                        operationCategoryType
+                        operationCategoryType,
+                        isInternal
                     )
                 } catch (e: Exception) {
                     makeErrorToast(requireContext(), e.message, 200)
@@ -168,6 +176,7 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         binding.inputNameText.setText("")
         binding.radioButtonOutcome.isChecked = true
         binding.radioButtonIncome.isChecked = false
+        binding.inputInternal.isChecked = false
         clearHelpers()
     }
 

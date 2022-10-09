@@ -13,9 +13,9 @@ class SaveCategoryViewModel @Inject constructor(
     private val categoryRepository: CategoryRepository,
 ) : ViewModel() {
 
-    suspend fun addNewCategory(name: String, type: CategoryType): Category =
-        categoryRepository.addNewCategory(CategoryCreateInput(name, type))
+    suspend fun addNewCategory(name: String, type: CategoryType, isInternal: Boolean): Category =
+        categoryRepository.addNewCategory(CategoryCreateInput(name, type, isInternal))
 
-    suspend fun editCategory(id: Int, name: String, type: CategoryType): Category =
-        categoryRepository.editCategory(id, CategoryCreateInput(name, type))
+    suspend fun editCategory(id: Int, name: String, type: CategoryType, isInternal: Boolean): Category =
+        categoryRepository.editCategory(id, CategoryCreateInput(name, type, isInternal))
 }

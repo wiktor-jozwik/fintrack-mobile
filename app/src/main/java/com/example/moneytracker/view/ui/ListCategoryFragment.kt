@@ -129,6 +129,7 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
         bundle.putString("categoryId", category.id.toString())
         bundle.putString("categoryName", category.name)
         bundle.putString("categoryType", category.type.toString())
+        bundle.putString("isInternal", category.isInternal.toString())
 
         parentFragmentManager.beginTransaction().apply {
             saveCategoryFragment.arguments = bundle

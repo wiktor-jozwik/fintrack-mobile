@@ -7,6 +7,7 @@
     <color name="main_red">@color/secondary</color>
     <color name="main_green">@color/primary</color>
     <color name="blue">#289FFF</color>
+    <color name="orange">#FF9800</color>
 
     <color name="text">@color/white</color>
     <color name="text_hint">#B3B3B3</color>

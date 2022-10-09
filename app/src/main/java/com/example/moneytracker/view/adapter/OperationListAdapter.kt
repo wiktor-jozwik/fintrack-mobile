@@ -62,6 +62,15 @@ class OperationListAdapter(
             id.text = currentOperation.id.toString()
             textName.text = currentOperation.name.cutText(maxTextLength)
             textCategory.text = currentOperation.category.name.cutText(maxTextLength)
+
+            val namesColor: Int = if (currentOperation.category.isInternal) {
+                ContextCompat.getColor(id.context, R.color.text_hint)
+            } else {
+                ContextCompat.getColor(id.context, R.color.white)
+            }
+            textName.setTextColor(namesColor)
+            textCategory.setTextColor(namesColor)
+
             textDate.text =
                 currentOperation.date.format(DateTimeFormatter.ofPattern("yyyy/MM/dd"))
             buttonDelete.setOnClickListener {

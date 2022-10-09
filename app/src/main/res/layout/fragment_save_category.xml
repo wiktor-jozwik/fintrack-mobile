@@ -32,9 +32,9 @@
         android:id="@+id/inputNameContainer"
         style="@style/TextInputLayout"
         android:layout_marginTop="80dp"
-        app:layout_constraintTop_toTopOf="@id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guidelineTitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputNameText"
@@ -48,10 +48,10 @@
         android:id="@+id/textCategoryType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select category type"
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:layout_marginBottom="10dp"
+        android:text="Category type"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/inputNameContainer" />
 
@@ -77,13 +77,24 @@
             android:text="Income" />
     </RadioGroup>
 
+    <CheckBox
+        android:id="@+id/inputInternal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Internal? (operations won't be calculated)"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/inputCategoryType" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSave"
         style="@style/FullWidthButton"
         android:text="Save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/inputCategoryType" />
+        app:layout_constraintTop_toBottomOf="@id/inputInternal" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

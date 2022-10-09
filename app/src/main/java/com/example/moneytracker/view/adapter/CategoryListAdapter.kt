@@ -1,6 +1,7 @@
 package com.example.moneytracker.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
@@ -53,11 +54,17 @@ class CategoryListAdapter(
 
     override fun onBindViewHolder(holder: OperationCategoryViewHolder, position: Int) {
         val currentCategory = categoriesList[position]
-        val color = if (currentCategory.type == CategoryType.OUTCOME) R.color.main_red else R.color.main_green
+        val color =
+            if (currentCategory.type == CategoryType.OUTCOME) R.color.main_red else R.color.main_green
 
         holder.binding.apply {
             id.text = currentCategory.id.toString()
             textName.text = currentCategory.name.cutText(40)
+            if (currentCategory.isInternal) {
+                imageInternal.visibility = View.VISIBLE
+            } else {
+                imageInternal.visibility = View.INVISIBLE
+            }
             imageType.setColorFilter(ContextCompat.getColor(imageType.context, color))
             buttonDelete.setOnClickListener {
                 deleteOnClickListener.onClick(currentCategory.id)
