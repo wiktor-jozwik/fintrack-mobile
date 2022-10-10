@@ -51,6 +51,6 @@ class UserProfileViewModel @Inject constructor(
             return "-"
         }
 
-        return text.cutText(15)
+        return text.cutText(20)
     }
 }
