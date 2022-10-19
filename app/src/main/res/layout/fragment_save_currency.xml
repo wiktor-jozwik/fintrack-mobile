@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/textTitle"
         style="@style/TextTitle"
-        android:text="Save currency"
+        android:text="Add currency"
         app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +19,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="120dp" />
-
 
     <TextView
         android:id="@+id/textCurrency"
@@ -47,15 +46,13 @@
         app:layout_constraintStart_toEndOf="@id/textCurrency"
         app:layout_constraintTop_toBottomOf="@+id/guidelineTitle" />
 
-
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSave"
         style="@style/FullWidthButton"
-        android:text="Save"
+        android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/inputCurrency" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.moneytracker.service.repository.mt
 
+import com.example.moneytracker.service.model.mt.DefaultCurrencyOperation
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
@@ -12,14 +13,14 @@ import javax.inject.Inject
 class OperationRepository @Inject constructor(
     private val moneyTrackerApi: MoneyTrackerApi,
 ) {
-    suspend fun getAllOperations(): List<Operation> =
-        responseErrorHandler(moneyTrackerApi.api.getAllOperations())
-
     suspend fun getAllOperationsInRanges(
-        startDate: LocalDate,
-        endDate: LocalDate
+        startDate: LocalDate?,
+        endDate: LocalDate?
     ): List<Operation> =
         responseErrorHandler(moneyTrackerApi.api.getAllOperationsInRange(startDate, endDate))
+
+    suspend fun getAllOperationsInDefaultCurrency(startDate: LocalDate?, endDate: LocalDate?): List<DefaultCurrencyOperation> =
+        responseErrorHandler(moneyTrackerApi.api.getAllOperationsInDefaultCurrency(startDate, endDate))
 
     suspend fun addNewOperation(operationCreateInput: OperationCreateInput): Operation =
         responseErrorHandler(moneyTrackerApi.api.saveOperation(operationCreateInput))

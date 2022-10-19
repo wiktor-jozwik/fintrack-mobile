@@ -1,8 +1,8 @@
 package com.example.moneytracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
-import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.example.moneytracker.view.ui.utils.cutText
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
@@ -24,11 +24,8 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         val categoriesValues = mutableListOf<Double>()
         val categoriesBars = mutableListOf<BarEntry>()
 
-        val operations: List<Operation> = if (startDate != null && endDate != null) {
-            operationRepository.getAllOperationsInRanges(startDate, endDate)
-        } else {
-            operationRepository.getAllOperations()
-        }
+        val operations = operationRepository.getAllOperationsInDefaultCurrency(startDate, endDate)
+        Log.d("MT", operations.toString())
 
         val categoriesOutcomeGrouped = operations.filter {
             it.category.type == CategoryType.OUTCOME
@@ -55,6 +52,8 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         }
 
         Pair(sortedCategories.first, categoriesBars)
+
+        Log.d("MT", Pair(sortedCategories.first, categoriesBars).toString())
 
         return Pair(sortedCategories.first, categoriesBars)
     }

@@ -10,13 +10,16 @@ import java.time.LocalDate
 
 interface MoneyTrackerApiInterface {
     @GET("operations")
-    suspend fun getAllOperations(): Response<List<Operation>>
-
-    @GET("operations")
     suspend fun getAllOperationsInRange(
-        @Query("startDate") startDate: LocalDate,
-        @Query("endDate") endDate: LocalDate
+        @Query("startDate") startDate: LocalDate?,
+        @Query("endDate") endDate: LocalDate?
     ): Response<List<Operation>>
+
+    @GET("operations/default_currency")
+    suspend fun getAllOperationsInDefaultCurrency(
+        @Query("startDate") startDate: LocalDate?,
+        @Query("endDate") endDate: LocalDate?
+    ): Response<List<DefaultCurrencyOperation>>
 
     @GET("categories")
     suspend fun getAllCategories(): Response<List<Category>>
@@ -53,7 +56,10 @@ interface MoneyTrackerApiInterface {
 
     @Multipart
     @POST("operations_import")
-    suspend fun importOperations(@Part file: MultipartBody.Part, @Part("csvImportWay") csvImportWay: RequestBody): Response<StringResponse>
+    suspend fun importOperations(
+        @Part file: MultipartBody.Part,
+        @Part("csvImportWay") csvImportWay: RequestBody
+    ): Response<StringResponse>
 
     @GET("operations_import/supported_csv_ways")
     suspend fun getSupportedCsvImportWays(): Response<List<String>>

@@ -1,21 +1,16 @@
 package com.example.moneytracker.viewmodel.utils
 
 import com.example.moneytracker.service.model.mt.CategoryType
+import com.example.moneytracker.service.model.mt.DefaultCurrencyOperation
 import com.example.moneytracker.service.model.mt.Expenses
-import com.example.moneytracker.service.model.mt.Operation
-import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import javax.inject.Inject
 
 class ExpenseCalculator @Inject constructor(
-    private val currencyRepository: CurrencyRepository,
     private val currencyCalculator: CurrencyCalculator
 ) {
 
-    suspend fun calculate(operations: List<Operation>): Pair<Double, Double> {
-        val defaultCurrencyName: String = currencyRepository.getUserDefaultCurrency().name
-
+    fun calculate(operations: List<DefaultCurrencyOperation>): Pair<Double, Double> {
         val (totalIncome, totalOutcome) = calculateIncomesAndOutcomes(
-            defaultCurrencyName,
             operations
         )
         return Pair(
@@ -25,9 +20,8 @@ class ExpenseCalculator @Inject constructor(
     }
 
 
-    private suspend fun calculateIncomesAndOutcomes(
-        defaultCurrencyName: String,
-        operations: List<Operation>
+    private fun calculateIncomesAndOutcomes(
+        operations: List<DefaultCurrencyOperation>
     ): Expenses {
         var incomes = 0.0
         var outcomes = 0.0
@@ -36,20 +30,10 @@ class ExpenseCalculator @Inject constructor(
             if (it.category.isInternal) {
                 return@forEach
             }
-            val moneyAmountInDefaultCurrency = if (it.currency.name == defaultCurrencyName) {
-                it.moneyAmount
-            } else {
-                currencyRepository.convertCurrency(
-                    it.currency.name,
-                    defaultCurrencyName,
-                    it.moneyAmount,
-                    it.date
-                )
-            }
 
             when (it.category.type) {
-                CategoryType.INCOME -> incomes += moneyAmountInDefaultCurrency
-                CategoryType.OUTCOME -> outcomes += moneyAmountInDefaultCurrency
+                CategoryType.INCOME -> incomes += it.moneyAmountInDefaultCurrency
+                CategoryType.OUTCOME -> outcomes += it.moneyAmountInDefaultCurrency
             }
         }
 

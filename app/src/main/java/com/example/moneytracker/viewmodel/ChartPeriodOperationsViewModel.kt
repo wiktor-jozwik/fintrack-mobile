@@ -1,7 +1,7 @@
 package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.service.model.mt.DefaultCurrencyOperation
 import com.example.moneytracker.service.repository.mt.OperationRepository
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
@@ -37,7 +37,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
             .with(TemporalAdjusters.firstDayOfMonth());
         val toDate = LocalDate.now(ZoneId.systemDefault()).with(TemporalAdjusters.lastDayOfMonth());
 
-        val operations = operationRepository.getAllOperationsInRanges(fromDate, toDate)
+        val operations = operationRepository.getAllOperationsInDefaultCurrency(fromDate, toDate)
 
         val monthsRequired = mutableListOf<Int>()
         var monthToInsert = fromDate.monthValue
@@ -53,12 +53,13 @@ class ChartPeriodOperationsViewModel @Inject constructor(
     }
 
     private suspend fun getAllTimeOperations(): Pair<List<BarEntry>, List<BarEntry>> {
-        val operations = operationRepository.getAllOperations()
+        val operations = operationRepository.getAllOperationsInDefaultCurrency(null, null)
+
         return groupYearlyOperations(operations.sortedByDescending { it.date })
     }
 
-    private suspend fun groupMonthlyOperations(
-        operations: List<Operation>,
+    private fun groupMonthlyOperations(
+        operations: List<DefaultCurrencyOperation>,
         monthsRequired: List<Int>
     ): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
         val monthlyOperationsMap = operations.groupBy {
@@ -75,7 +76,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
         return getMonthlyOutcomesAndIncomesBarsGrouped(monthlyOperationsEntries)
     }
 
-    private suspend fun groupYearlyOperations(operations: List<Operation>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+    private fun groupYearlyOperations(operations: List<DefaultCurrencyOperation>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
         val yearlyOperations = operations.groupBy {
             it.date.year
         }.entries.sortedBy { it.key }
@@ -102,7 +103,7 @@ class ChartPeriodOperationsViewModel @Inject constructor(
         return Pair(incomesBars, outcomesBars)
     }
 
-    private suspend fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<Operation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
+    private fun getMonthlyOutcomesAndIncomesBarsGrouped(monthOperations: List<Map.Entry<Int, List<DefaultCurrencyOperation>>>): Pair<MutableList<BarEntry>, MutableList<BarEntry>> {
         val outcomesBars = mutableListOf<BarEntry>()
         val incomesBars = mutableListOf<BarEntry>()
 

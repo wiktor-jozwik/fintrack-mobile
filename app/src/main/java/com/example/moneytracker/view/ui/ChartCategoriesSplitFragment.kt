@@ -2,6 +2,7 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -115,6 +116,7 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
         categoriesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val data = BarData(categoriesSet)
+        data.barWidth = 0.65f
         barChart.axisLeft.axisMinimum = 0f;
         barChart.axisLeft.textSize = 14f;
 

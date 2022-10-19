@@ -11,7 +11,7 @@ class ListOperationViewModel @Inject constructor(
     private val operationRepository: OperationRepository
 ) : ViewModel() {
     suspend fun getAllOperations(): List<Operation> =
-        operationRepository.getAllOperations()
+        operationRepository.getAllOperationsInRanges(null, null)
 
     suspend fun deleteOperation(operationId: Int): Operation =
         operationRepository.deleteOperation(operationId)

@@ -18,7 +18,7 @@ class YearlyOperationsSummaryViewModel @Inject constructor(
         val year = LocalDate.now().year
         val startDate = LocalDate.parse("${year}-01-01")
         val endDate = LocalDate.parse("${year}-12-31")
-        val yearlyOperations = operationRepository.getAllOperationsInRanges(startDate, endDate)
+        val yearlyOperations = operationRepository.getAllOperationsInDefaultCurrency(startDate, endDate)
 
         val (income, outcome) = expenseCalculator.calculate(yearlyOperations)
         val balance = currencyCalculator.roundMoney(income - outcome)

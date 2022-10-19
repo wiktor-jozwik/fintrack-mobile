@@ -9,7 +9,6 @@ import com.example.moneytracker.service.repository.mt.UserRepository
 import com.example.moneytracker.view.ui.utils.cutText
 import com.example.moneytracker.viewmodel.utils.ExpenseCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,8 +39,9 @@ class UserProfileViewModel @Inject constructor(
 
 
     suspend fun getTotalExpenses(): Expenses {
-        val operations = operationRepository.getAllOperations()
-        val (income, outcome) = expenseCalculator.calculate(operations)
+        val yearlyOperations = operationRepository.getAllOperationsInDefaultCurrency(null, null)
+
+        val (income, outcome) = expenseCalculator.calculate(yearlyOperations)
 
         return Expenses(income, outcome)
     }
