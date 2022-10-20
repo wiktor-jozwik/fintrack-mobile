@@ -1,5 +1,6 @@
 package com.example.moneytracker.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.CategoryType
 import com.example.moneytracker.service.repository.mt.OperationRepository
@@ -37,6 +38,13 @@ class ChartCategoriesSplitViewModel @Inject constructor(
             categoriesValues.add(outcomes)
         }
 
+
+        val minNumberOfBarsPlaceholders = 20
+        while (categoriesNames.size < minNumberOfBarsPlaceholders && categoriesValues.size < minNumberOfBarsPlaceholders) {
+            categoriesNames.add("")
+            categoriesValues.add(0.0)
+        }
+
         categoriesNames = categoriesNames.map {
             it.cutText(10)
         }.toMutableList()
@@ -49,7 +57,7 @@ class ChartCategoriesSplitViewModel @Inject constructor(
             categoriesBars.add(BarEntry(index.toFloat(), value.toFloat()))
         }
 
-        Pair(sortedCategories.first, categoriesBars)
+        Log.d("MT", Pair(sortedCategories.first, categoriesBars).toString())
 
         return Pair(sortedCategories.first, categoriesBars)
     }

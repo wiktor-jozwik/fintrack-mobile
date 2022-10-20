@@ -22,6 +22,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -122,6 +123,16 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
         categoriesSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.text)
 
         val data = BarData(categoriesSet)
+        data.setValueFormatter(object : ValueFormatter() {
+            override fun getFormattedValue(value: Float): String {
+                return if (value > 0) {
+                    super.getFormattedValue(value)
+                } else {
+                    ""
+                }
+            }
+        })
+
         data.barWidth = 0.65f
         barChart.axisLeft.axisMinimum = 0f;
         barChart.axisLeft.textSize = 14f;
@@ -163,7 +174,7 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
         rightAxis.isEnabled = false
 
         barChart.data = data
-        barChart.setVisibleXRangeMaximum(8f)
+        barChart.setVisibleXRangeMaximum(7f)
         barChart.extraBottomOffset = 2f
         barChart.invalidate()
         barChart.animateY(600)
