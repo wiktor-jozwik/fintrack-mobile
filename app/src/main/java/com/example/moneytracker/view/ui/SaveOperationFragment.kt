@@ -1,16 +1,19 @@
 package com.example.moneytracker.view.ui
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
@@ -20,6 +23,7 @@ import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.view.ui.enums.SaveState
+import com.example.moneytracker.view.ui.utils.cutText
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.viewmodel.SaveOperationViewModel
@@ -128,6 +132,19 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         if (!operationId.isNullOrBlank()) {
             saveState = SaveState.EDIT
         }
+//
+//        val OnCatSpinnerCL: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+//                (parent.getChildAt(0) as TextView).setTextColor(Color.BLUE)
+//                (parent.getChildAt(0) as TextView).textSize = 5f
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {}
+//        }
+
+//        m_spnDia = findViewById(R.id.spiDia) as Spinner
+//        val a = binding.inputCategory.getChildAt(0) as TextView
+//        a.setTextColor(Color.BLUE)
     }
 
     private fun fillEditInformation() {
@@ -188,7 +205,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         }
 
         categoryLiveData.observe(viewLifecycleOwner) {
-            val categoriesNames = it.map { category -> category.name }
+            val categoriesNames = it.map { category -> "(${category.type.toString().substring(0, 3)}) ${category.name}" }
             val categoriesAdapter = ArrayAdapter(
                 activity as Context,
                 android.R.layout.simple_spinner_item,
