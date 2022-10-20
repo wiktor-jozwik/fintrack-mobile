@@ -2,7 +2,6 @@ package com.example.moneytracker.view.ui
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,8 +74,7 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                chartLiveData.value =
-                    chartCategoriesSplitViewModel.getSplitOperationByCategories(null, null)
+                setChartLiveData(null, null)
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
@@ -98,12 +96,20 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
 
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                chartLiveData.value = chartCategoriesSplitViewModel.getSplitOperationByCategories(
-                    LocalDate.parse(startDate), LocalDate.parse(endDate)
-                )
+                setChartLiveData(LocalDate.parse(startDate), LocalDate.parse(endDate))
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
+        }
+    }
+
+    private suspend fun setChartLiveData(startDate: LocalDate?, endDate: LocalDate?) {
+        val operationsSplitByCategories: Pair<List<String>, List<BarEntry>> =
+            chartCategoriesSplitViewModel.getSplitOperationByCategories(startDate, endDate)
+        if (operationsSplitByCategories.first.isNotEmpty() && operationsSplitByCategories.second.isNotEmpty()) {
+            chartLiveData.value = operationsSplitByCategories
+        } else {
+            makeErrorToast(requireContext(), "No data for specified range", 200)
         }
     }
 
