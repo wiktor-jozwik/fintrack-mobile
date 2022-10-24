@@ -22,17 +22,10 @@ import com.github.mikephil.charting.data.PieEntry
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class YearlyOperationsSummaryFragment : Fragment() {
     private val yearlyOperationsSummaryViewModel: YearlyOperationsSummaryViewModel by viewModels()
-
-    @Inject
-    lateinit var saveOperationFragment: SaveOperationFragment
-
-    @Inject
-    lateinit var saveCategoryFragment: SaveCategoryFragment
 
     private var yearlyOperationsLiveData: MutableLiveData<Triple<Double, Double, Double>> =
         MutableLiveData()
@@ -57,6 +50,8 @@ class YearlyOperationsSummaryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<View>(R.id.bottom_nav_view).visibility = View.VISIBLE
 
         binding.pieChart.setNoDataText("")
         binding.textTitle.text = "${LocalDate.now().year} summary"

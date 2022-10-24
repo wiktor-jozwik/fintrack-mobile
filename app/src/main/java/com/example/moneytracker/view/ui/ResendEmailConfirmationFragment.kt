@@ -20,15 +20,11 @@ import com.example.moneytracker.viewmodel.ResendEmailConfirmationViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ResendEmailConfirmationFragment(
 ) : Fragment(R.layout.fragment_resend_email_confirmation) {
     private val resendEmailConfirmationViewModel: ResendEmailConfirmationViewModel by viewModels()
-
-    @Inject
-    lateinit var loginFragment: UserLoginFragment
 
     private var resendEmailConfirmationLiveData: MutableLiveData<StringResponse> = MutableLiveData()
 
@@ -60,7 +56,6 @@ class ResendEmailConfirmationFragment(
 
         resendEmailConfirmationLiveData.observe(viewLifecycleOwner) {
             makePositiveToast(requireContext(), it.response, 200)
-            switchToLogin()
             clearFields()
         }
 
@@ -111,13 +106,6 @@ class ResendEmailConfirmationFragment(
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
-        }
-    }
-
-    private fun switchToLogin() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, loginFragment)
-            commit()
         }
     }
 

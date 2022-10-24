@@ -5,26 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartBinding
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ChartFragment : Fragment(R.layout.fragment_chart) {
-    @Inject
-    lateinit var chartPeriodOperationsFragment: ChartPeriodOperationsFragment
-
-    @Inject
-    lateinit var chartCategoriesSplitFragment: ChartCategoriesSplitFragment
-
-    @Inject
-    lateinit var chartGoldFragment: ChartGoldFragment
-
-    @Inject
-    lateinit var chartCurrencyFragment: ChartCurrencyFragment
-
     private var _binding: FragmentChartBinding? = null
     private val binding get() = _binding!!
 
@@ -46,32 +34,24 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonShowPeriodOperationsChart.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, chartPeriodOperationsFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_chartFragment_to_chartPeriodOperationsFragment)
         }
 
         binding.buttonShowCategoriesSplitChart.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, chartCategoriesSplitFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_chartFragment_to_chartCategoriesSplitFragment)
+
         }
 
-
-        binding.buttonShowGoldChart.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, chartGoldFragment)
-                commit()
-            }
-        }
+//
+//        binding.buttonShowGoldChart.setOnClickListener {
+//            parentFragmentManager.beginTransaction().apply {
+//                replace(R.id.homeFrameLayoutFragment, chartGoldFragment)
+//                commit()
+//            }
+//        }
 
         binding.buttonShowCurrencyChart.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, chartCurrencyFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_chartFragment_to_chartCurrencyFragment)
         }
     }
 }

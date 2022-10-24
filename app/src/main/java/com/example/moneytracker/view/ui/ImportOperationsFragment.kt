@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentImportOperationsBinding
 import com.example.moneytracker.service.model.mt.StringResponse
@@ -27,16 +27,12 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
     private val IMPORT_CODE = 111
     private val importOperationsViewModel: ImportOperationsViewModel by viewModels()
-
-    @Inject
-    lateinit var saveOperationFragment: ListFragment
 
     private var csvImportWaysLiveData: MutableLiveData<List<String>> = MutableLiveData()
     private var importOperationsLiveData: MutableLiveData<StringResponse> = MutableLiveData()
@@ -75,7 +71,7 @@ class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
         super.onViewCreated(view, savedInstanceState)
 
         importOperationsLiveData.observe(viewLifecycleOwner) {
-            switchToSaveOperation()
+            findNavController(view).navigate(R.id.action_importOperationsFragment_to_listOperationFragment)
             makePositiveToast(requireContext(), it.response, 200)
             clearFields()
         }
@@ -175,12 +171,5 @@ class ImportOperationsFragment : Fragment(R.layout.fragment_import_operations) {
             .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }
             .show()
-    }
-
-    private fun switchToSaveOperation() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, saveOperationFragment)
-            commit()
-        }
     }
 }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserRegisterBinding
 import com.example.moneytracker.service.model.mt.Currency
@@ -22,15 +23,10 @@ import com.example.moneytracker.viewmodel.UserRegisterViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
     private val userRegisterViewModel: UserRegisterViewModel by viewModels()
-
-    @Inject
-    lateinit var userLoginFragment: UserLoginFragment
 
     private var registerUserLiveData: MutableLiveData<User> = MutableLiveData()
     private var currencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
@@ -62,8 +58,8 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
         super.onViewCreated(view, savedInstanceState)
 
         registerUserLiveData.observe(viewLifecycleOwner) {
-            switchToLogin()
             clearFields()
+            findNavController(view).navigate(R.id.action_userRegisterFragment_to_userLoginFragment)
         }
 
         fulfillCurrencySpinner()
@@ -72,10 +68,7 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
         passwordTextChangeListener()
 
         binding.loginLink.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, userLoginFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_userRegisterFragment_to_userLoginFragment)
         }
 
         binding.buttonRegister.setOnClickListener {
@@ -131,13 +124,6 @@ class UserRegisterFragment : Fragment(R.layout.fragment_user_register) {
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
-        }
-    }
-
-    private fun switchToLogin() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, userLoginFragment)
-            commit()
         }
     }
 

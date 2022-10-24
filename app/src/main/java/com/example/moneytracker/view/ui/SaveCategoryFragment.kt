@@ -3,7 +3,6 @@ package com.example.moneytracker.view.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentSaveCategoryBinding
 import com.example.moneytracker.service.model.mt.Category
@@ -22,14 +22,10 @@ import com.example.moneytracker.viewmodel.SaveCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
     private val saveCategoryViewModel: SaveCategoryViewModel by viewModels()
-
-    @Inject
-    lateinit var listCategoryFragment: ListCategoryFragment
 
     private var saveCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
 
@@ -79,8 +75,8 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
         super.onViewCreated(view, savedInstanceState)
 
         saveCategoryLiveData.observe(viewLifecycleOwner) {
-            switchToCategoryList()
             clearFields()
+            findNavController(view).navigate(R.id.action_saveCategoryFragment_to_listCategoryFragment)
         }
 
         categoryNameTextChangeListener()
@@ -162,13 +158,6 @@ class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
-        }
-    }
-
-    private fun switchToCategoryList() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, listCategoryFragment)
-            commit()
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.moneytracker.view.ui
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,12 +8,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
-import com.example.moneytracker.databinding.FragmentListBinding
+import com.example.moneytracker.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class ListFragment : Fragment(R.layout.fragment_list) {
-    private var _binding: FragmentListBinding? = null
+class MainFragment : Fragment(R.layout.fragment_main) {
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
+
+    private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -20,7 +25,7 @@ class ListFragment : Fragment(R.layout.fragment_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentListBinding.inflate(inflater, container, false)
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -31,17 +36,12 @@ class ListFragment : Fragment(R.layout.fragment_list) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val token = sharedPreferences.getString("JWT_REFRESH_TOKEN", "")
 
-        binding.buttonShowOperations.setOnClickListener {
-            findNavController(view).navigate(R.id.action_listFragment_to_listOperationFragment)
-        }
-
-        binding.buttonShowCategories.setOnClickListener {
-            findNavController(view).navigate(R.id.action_listFragment_to_listCategoryFragment)
-        }
-
-        binding.buttonShowCurrencies.setOnClickListener {
-            findNavController(view).navigate(R.id.action_listFragment_to_listCurrencyFragment)
+        if (token != null && token.isNotEmpty()) {
+            findNavController(view).navigate(R.id.action_mainFragment_to_yearlyOperationsSummaryFragment)
+        } else {
+            findNavController(view).navigate(R.id.action_mainFragment_to_userLoginFragment)
         }
     }
 }

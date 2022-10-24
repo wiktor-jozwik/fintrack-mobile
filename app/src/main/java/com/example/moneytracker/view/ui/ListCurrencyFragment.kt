@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentListCurrencyBinding
@@ -19,14 +20,10 @@ import com.example.moneytracker.viewmodel.ListCurrencyViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
     private val listCurrencyViewModel: ListCurrencyViewModel by viewModels()
-
-    @Inject
-    lateinit var saveCurrencyFragment: SaveCurrencyFragment
 
     private var listCurrencyLiveData: MutableLiveData<List<Currency>> = MutableLiveData()
     private var deleteCurrencyLiveData: MutableLiveData<Currency> = MutableLiveData()
@@ -55,10 +52,7 @@ class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonPlus.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, saveCurrencyFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_listCurrencyFragment_to_saveCurrencyFragment)
         }
 
         val deleteLambda = CurrencyListAdapter.OnClickListener { userCurrencyId ->

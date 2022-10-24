@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/userLoginFragment"
+        android:name="com.example.moneytracker.view.ui.UserLoginFragment"
+        android:label="UserLoginFragment">
+        <action
+            android:id="@+id/action_userLoginFragment_to_userRegisterFragment"
+            app:destination="@id/userRegisterFragment" />
+        <action
+            android:id="@+id/action_userLoginFragment_to_yearlyOperationsSummaryFragment"
+            app:destination="@id/yearlyOperationsSummaryFragment" />
+        <action
+            android:id="@+id/action_userLoginFragment_to_resendEmailConfirmationFragment"
+            app:destination="@id/resendEmailConfirmationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegisterFragment"
+        android:name="com.example.moneytracker.view.ui.UserRegisterFragment"
+        android:label="UserRegisterFragment">
+        <action
+            android:id="@+id/action_userRegisterFragment_to_userLoginFragment"
+            app:destination="@id/userLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/yearlyOperationsSummaryFragment"
+        android:name="com.example.moneytracker.view.ui.YearlyOperationsSummaryFragment"
+        android:label="YearlyOperationsSummaryFragment" />
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.example.moneytracker.view.ui.ListFragment"
+        android:label="ListFragment">
+        <action
+            android:id="@+id/action_listFragment_to_listOperationFragment"
+            app:destination="@id/listOperationFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_listCategoryFragment"
+            app:destination="@id/listCategoryFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_listCurrencyFragment"
+            app:destination="@id/listCurrencyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.example.moneytracker.view.ui.ChartFragment"
+        android:label="ChartFragment">
+        <action
+            android:id="@+id/action_chartFragment_to_chartPeriodOperationsFragment"
+            app:destination="@id/chartPeriodOperationsFragment" />
+
+        <action
+            android:id="@+id/action_chartFragment_to_chartCategoriesSplitFragment"
+            app:destination="@id/chartCategoriesSplitFragment" />
+        <action
+            android:id="@+id/action_chartFragment_to_chartCurrencyFragment"
+            app:destination="@id/chartCurrencyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfileFragment"
+        android:name="com.example.moneytracker.view.ui.UserProfileFragment"
+        android:label="UserProfileFragment" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.example.moneytracker.view.ui.MainFragment"
+        android:label="MainFragment">
+        <action
+            android:id="@+id/action_mainFragment_to_userLoginFragment"
+            app:destination="@id/userLoginFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_yearlyOperationsSummaryFragment"
+            app:destination="@id/yearlyOperationsSummaryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resendEmailConfirmationFragment"
+        android:name="com.example.moneytracker.view.ui.ResendEmailConfirmationFragment"
+        android:label="ResendEmailConfirmationFragment">
+        <action
+            android:id="@+id/action_resendEmailConfirmationFragment_to_userLoginFragment"
+            app:destination="@id/userLoginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chartPeriodOperationsFragment"
+        android:name="com.example.moneytracker.view.ui.ChartPeriodOperationsFragment"
+        android:label="ChartPeriodOperationsFragment">
+        <action
+            android:id="@+id/action_chartPeriodOperationsFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chartCategoriesSplitFragment"
+        android:name="com.example.moneytracker.view.ui.ChartCategoriesSplitFragment"
+        android:label="ChartCategoriesSplitFragment">
+        <action
+            android:id="@+id/action_chartCategoriesSplitFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chartCurrencyFragment"
+        android:name="com.example.moneytracker.view.ui.ChartCurrencyFragment"
+        android:label="ChartCurrencyFragment">
+        <action
+            android:id="@+id/action_chartCurrencyFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listOperationFragment"
+        android:name="com.example.moneytracker.view.ui.ListOperationFragment"
+        android:label="ListOperationFragment">
+        <action
+            android:id="@+id/action_listOperationFragment_to_saveOperationFragment"
+            app:destination="@id/saveOperationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listCategoryFragment"
+        android:name="com.example.moneytracker.view.ui.ListCategoryFragment"
+        android:label="ListCategoryFragment">
+        <action
+            android:id="@+id/action_listCategoryFragment_to_saveCategoryFragment"
+            app:destination="@id/saveCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listCurrencyFragment"
+        android:name="com.example.moneytracker.view.ui.ListCurrencyFragment"
+        android:label="ListCurrencyFragment">
+        <action
+            android:id="@+id/action_listCurrencyFragment_to_saveCurrencyFragment"
+            app:destination="@id/saveCurrencyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveOperationFragment"
+        android:name="com.example.moneytracker.view.ui.SaveOperationFragment"
+        android:label="SaveOperationFragment">
+        <action
+            android:id="@+id/action_saveOperationFragment_to_listOperationFragment"
+            app:destination="@id/listOperationFragment" />
+        <action
+            android:id="@+id/action_saveOperationFragment_to_importOperationsFragment"
+            app:destination="@id/importOperationsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveCategoryFragment"
+        android:name="com.example.moneytracker.view.ui.SaveCategoryFragment"
+        android:label="SaveCategoryFragment">
+        <action
+            android:id="@+id/action_saveCategoryFragment_to_listCategoryFragment"
+            app:destination="@id/listCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/saveCurrencyFragment"
+        android:name="com.example.moneytracker.view.ui.SaveCurrencyFragment"
+        android:label="SaveCurrencyFragment">
+        <action
+            android:id="@+id/action_saveCurrencyFragment_to_listCurrencyFragment"
+            app:destination="@id/listCurrencyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/importOperationsFragment"
+        android:name="com.example.moneytracker.view.ui.ImportOperationsFragment"
+        android:label="ImportOperationsFragment">
+        <action
+            android:id="@+id/action_importOperationsFragment_to_listOperationFragment"
+            app:destination="@id/listOperationFragment" />
+    </fragment>
+</navigation>

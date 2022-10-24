@@ -1,24 +1,16 @@
 package com.example.moneytracker.view.ui
 
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    @Inject
-    lateinit var userLoginFragment: UserLoginFragment
-
-    @Inject
-    lateinit var homeFragment: HomeFragment
-
-    @Inject
-    lateinit var sharedPreferences: SharedPreferences
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,18 +19,25 @@ class MainActivity : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        val token = sharedPreferences.getString("JWT_REFRESH_TOKEN", "")
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        if (token != null && token.isNotEmpty()) {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, homeFragment)
-                commit()
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottom_nav_view)
+        bottomNavigationView.setupWithNavController(navController)
+
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            val stackCount: Int = navHostFragment.childFragmentManager.backStackEntryCount
+
+            val selectedDestinationId = item.itemId
+
+            if (stackCount > 1) {
+                navController.popBackStack(selectedDestinationId, true)
             }
-        } else {
-            supportFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, userLoginFragment)
-                commit()
-            }
+
+            navController.navigate(selectedDestinationId)
+
+            return@setOnItemSelectedListener true
         }
     }
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentListCategoryBinding
@@ -19,14 +20,10 @@ import com.example.moneytracker.viewmodel.ListCategoryViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
     private val listCategoryViewModel: ListCategoryViewModel by viewModels()
-
-    @Inject
-    lateinit var saveCategoryFragment: SaveCategoryFragment
 
     private var listCategoryLiveData: MutableLiveData<List<Category>> = MutableLiveData()
     private var deleteCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
@@ -55,10 +52,7 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonPlus.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.homeFrameLayoutFragment, saveCategoryFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_listCategoryFragment_to_saveCategoryFragment)
         }
 
         val deleteLambda = CategoryListAdapter.DeleteOnClickListener { categoryId ->
@@ -69,6 +63,7 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
 
         val editLambda = CategoryListAdapter.EditOnClickListener { category ->
             editCategory(
+                view,
                 category,
             )
         }
@@ -124,17 +119,17 @@ class ListCategoryFragment : Fragment(R.layout.fragment_list_category) {
             .show()
     }
 
-    private fun editCategory(category: Category) {
+    private fun editCategory(view: View, category: Category) {
         val bundle = Bundle()
         bundle.putString("categoryId", category.id.toString())
         bundle.putString("categoryName", category.name)
         bundle.putString("categoryType", category.type.toString())
         bundle.putString("isInternal", category.isInternal.toString())
 
-        parentFragmentManager.beginTransaction().apply {
-            saveCategoryFragment.arguments = bundle
-            replace(R.id.homeFrameLayoutFragment, saveCategoryFragment)
-            commit()
-        }
+
+        findNavController(view).navigate(
+            R.id.action_listCategoryFragment_to_saveCategoryFragment,
+            bundle
+        )
     }
 }

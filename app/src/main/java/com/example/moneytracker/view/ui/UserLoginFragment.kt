@@ -7,10 +7,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentUserLoginBinding
 import com.example.moneytracker.service.model.mt.JwtResponse
@@ -23,17 +25,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserLoginFragment @Inject constructor(
-    private val sharedPreferences: SharedPreferences,
-    private val userRegisterFragment: UserRegisterFragment,
-) : Fragment(R.layout.fragment_user_login) {
+class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
     private val userLoginViewModel: UserLoginViewModel by viewModels()
 
     @Inject
-    lateinit var homeFragment: HomeFragment
-
-    @Inject
-    lateinit var resendEmailConfirmationFragment: ResendEmailConfirmationFragment
+    lateinit var sharedPreferences: SharedPreferences
 
     private var loginUserLiveData: MutableLiveData<JwtResponse> = MutableLiveData()
 
@@ -60,8 +56,26 @@ class UserLoginFragment @Inject constructor(
         clearHelpers()
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().findViewById<View>(R.id.bottom_nav_view).visibility = View.GONE
+
+        requireActivity()
+            .onBackPressedDispatcher
+            .addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
+                        .setMessage("Are you sure you want to exit?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes") { _, _ -> run { activity?.finish() } }
+                        .setNegativeButton("No") { dialog, _ -> run { dialog.dismiss() } }
+                        .show()
+                }
+            })
+
+        eraseTokens()
 
         loginUserLiveData.observe(viewLifecycleOwner) {
             with(sharedPreferences.edit()) {
@@ -70,7 +84,7 @@ class UserLoginFragment @Inject constructor(
                 apply()
             }
 
-            switchToHome()
+            findNavController(view).navigate(R.id.action_userLoginFragment_to_yearlyOperationsSummaryFragment)
             clearFields()
         }
 
@@ -78,21 +92,23 @@ class UserLoginFragment @Inject constructor(
         passwordTextChangeListener()
 
         binding.registerLink.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, userRegisterFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_userLoginFragment_to_userRegisterFragment)
         }
 
         binding.resendEmailLink.setOnClickListener {
-            parentFragmentManager.beginTransaction().apply {
-                replace(R.id.mainFrameLayoutFragment, resendEmailConfirmationFragment)
-                commit()
-            }
+            findNavController(view).navigate(R.id.action_userLoginFragment_to_resendEmailConfirmationFragment)
         }
 
         binding.buttonLogin.setOnClickListener {
             submitForm()
+        }
+    }
+
+    private fun eraseTokens() {
+        with(sharedPreferences.edit()) {
+            putString("JWT_ACCESS_TOKEN", "")
+            putString("JWT_REFRESH_TOKEN", "")
+            apply()
         }
     }
 
@@ -160,13 +176,6 @@ class UserLoginFragment @Inject constructor(
         }
     }
 
-    private fun switchToHome() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.mainFrameLayoutFragment, homeFragment)
-            commit()
-        }
-    }
-
     private fun clearFields() {
         binding.inputEmailText.setText("")
         binding.inputPasswordText.setText("")
@@ -188,7 +197,7 @@ class UserLoginFragment @Inject constructor(
         MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialog)
             .setTitle("Invalid form")
             .setMessage("Please provide requested fields.")
-            .setPositiveButton("Okay") { _, _ -> {} }
+            .setPositiveButton("Okay") { _, _ -> run {} }
             .show()
     }
 }

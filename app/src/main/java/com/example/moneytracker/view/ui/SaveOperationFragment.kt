@@ -1,29 +1,25 @@
 package com.example.moneytracker.view.ui
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation.findNavController
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentSaveOperationBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
 import com.example.moneytracker.view.ui.enums.SaveState
-import com.example.moneytracker.view.ui.utils.cutText
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
 import com.example.moneytracker.viewmodel.SaveOperationViewModel
@@ -40,12 +36,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     private val saveOperationViewModel: SaveOperationViewModel by viewModels()
-
-    @Inject
-    lateinit var listOperationFragment: ListOperationFragment
-
-    @Inject
-    lateinit var importOperationsFragment: ImportOperationsFragment
 
     @Inject
     lateinit var datePickerFragment: DatePickerFragment
@@ -109,7 +99,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         saveOperationLiveData.observe(viewLifecycleOwner) {
-            switchToOperationList()
+            findNavController(view).navigate(R.id.action_saveOperationFragment_to_listOperationFragment)
             clearFields()
         }
 
@@ -121,7 +111,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         operationNameTextChangeListener()
 
         binding.importOperationsLink.setOnClickListener {
-            switchToImportOperations()
+            findNavController(view).navigate(R.id.action_saveOperationFragment_to_importOperationsFragment)
         }
 
         binding.buttonSave.setOnClickListener {
@@ -132,19 +122,6 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         if (!operationId.isNullOrBlank()) {
             saveState = SaveState.EDIT
         }
-//
-//        val OnCatSpinnerCL: AdapterView.OnItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-//                (parent.getChildAt(0) as TextView).setTextColor(Color.BLUE)
-//                (parent.getChildAt(0) as TextView).textSize = 5f
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {}
-//        }
-
-//        m_spnDia = findViewById(R.id.spiDia) as Spinner
-//        val a = binding.inputCategory.getChildAt(0) as TextView
-//        a.setTextColor(Color.BLUE)
     }
 
     private fun fillEditInformation() {
@@ -205,7 +182,11 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
         }
 
         categoryLiveData.observe(viewLifecycleOwner) {
-            val categoriesNames = it.map { category -> "(${category.type.toString().substring(0, 3)}) ${category.name}" }
+            val categoriesNames = it.map { category ->
+                "(${
+                    category.type.toString().substring(0, 3)
+                }) ${category.name}"
+            }
             val categoriesAdapter = ArrayAdapter(
                 activity as Context,
                 android.R.layout.simple_spinner_item,
@@ -344,20 +325,6 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
                     makeErrorToast(requireContext(), e.message, 200)
                 }
             }
-        }
-    }
-
-    private fun switchToImportOperations() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, importOperationsFragment)
-            commit()
-        }
-    }
-
-    private fun switchToOperationList() {
-        parentFragmentManager.beginTransaction().apply {
-            replace(R.id.homeFrameLayoutFragment, listOperationFragment)
-            commit()
         }
     }
 
