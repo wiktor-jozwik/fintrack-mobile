@@ -122,6 +122,7 @@ class ListOperationFragment : Fragment(R.layout.fragment_list_operation) {
         bundle.putString("operationId", operation.id.toString())
         bundle.putString("operationName", operation.name)
         bundle.putString("operationCategoryName", operation.category.name)
+        bundle.putString("operationCategoryType", operation.category.type.toString())
         bundle.putString("operationCurrencyName", operation.currency.name)
         bundle.putString("operationDate", operation.date.formatToIsoDateWithDashes())
         bundle.putString("operationMoneyAmount", operation.moneyAmount.toString())

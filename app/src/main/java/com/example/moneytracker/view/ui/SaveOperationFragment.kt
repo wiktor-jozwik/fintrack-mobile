@@ -132,13 +132,16 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
             val operationMoneyAmount = arguments?.getString("operationMoneyAmount")
             val operationCurrencyName = arguments?.getString("operationCurrencyName")
             val operationCategoryName = arguments?.getString("operationCategoryName")
+            val operationCategoryType = arguments?.getString("operationCategoryType")
 
             binding.id.text = operationId
             binding.textDate.text = operationDate
             binding.inputNameText.setText(operationName)
             binding.inputMoneyAmountText.setText(operationMoneyAmount)
             editCurrencyName = operationCurrencyName
-            editCategoryName = operationCategoryName
+            if (!operationCategoryName.isNullOrBlank() && !operationCategoryType.isNullOrBlank()) {
+                editCategoryName = mapCategoryName(operationCategoryName, operationCategoryType)
+            }
 
             arguments = null
         }
@@ -183,9 +186,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
 
         categoryLiveData.observe(viewLifecycleOwner) {
             val categoriesNames = it.map { category ->
-                "(${
-                    category.type.toString().substring(0, 3)
-                }) ${category.name}"
+                mapCategoryName(category.name, category.type.toString())
             }
             val categoriesAdapter = ArrayAdapter(
                 activity as Context,
@@ -296,6 +297,8 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
             DateTimeFormatter.ofPattern("yyyy-MM-dd")
         )
 
+        val categoryName = binding.inputCategory.selectedItem.toString().substring(6)
+
         if (!id.isNullOrBlank()) {
             viewLifecycleOwner.lifecycleScope.launch {
                 try {
@@ -304,7 +307,8 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
                         binding.inputNameText.text.toString(),
                         binding.inputMoneyAmountText.text.toString().toDouble(),
                         date,
-                        binding.inputCategory.selectedItem.toString(),
+                        // substring for cut (OUT) or (INC) from category name
+                        categoryName,
                         binding.inputCurrency.selectedItem.toString()
                     )
                 } catch (e: Exception) {
@@ -318,7 +322,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
                         binding.inputNameText.text.toString(),
                         binding.inputMoneyAmountText.text.toString().toDouble(),
                         date,
-                        binding.inputCategory.selectedItem.toString(),
+                        categoryName,
                         binding.inputCurrency.selectedItem.toString()
                     )
                 } catch (e: Exception) {
@@ -352,5 +356,11 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
             .setMessage("Please provide requested fields.")
             .setPositiveButton("Okay") { _, _ -> {} }
             .show()
+    }
+
+    private fun mapCategoryName(categoryName: String, categoryType: String): String {
+        return "(${
+            categoryType.substring(0, 3)
+        }) $categoryName"
     }
 }
