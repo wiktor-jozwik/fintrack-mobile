@@ -22,7 +22,7 @@
         android:title="Profile" />
 
     <item
-        android:id="@id/userLoginFragment"
+        android:id="@+id/userLogoutNav"
         android:icon="@drawable/ic_logout"
         android:title="Logout" />
 </menu>

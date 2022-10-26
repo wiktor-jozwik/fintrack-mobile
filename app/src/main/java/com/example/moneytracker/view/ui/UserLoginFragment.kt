@@ -56,7 +56,6 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
         clearHelpers()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,8 +73,6 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
                         .show()
                 }
             })
-
-        eraseTokens()
 
         loginUserLiveData.observe(viewLifecycleOwner) {
             with(sharedPreferences.edit()) {
@@ -101,14 +98,6 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
 
         binding.buttonLogin.setOnClickListener {
             submitForm()
-        }
-    }
-
-    private fun eraseTokens() {
-        with(sharedPreferences.edit()) {
-            putString("JWT_ACCESS_TOKEN", "")
-            putString("JWT_REFRESH_TOKEN", "")
-            apply()
         }
     }
 
