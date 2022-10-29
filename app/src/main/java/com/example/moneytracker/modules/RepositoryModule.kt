@@ -1,10 +1,8 @@
 package com.example.moneytracker.modules
 
-import com.example.moneytracker.service.repository.exchangerate.ExchangerateApi
 import com.example.moneytracker.service.repository.mt.*
 import com.example.moneytracker.service.repository.nbp.NbpApi
 import com.example.moneytracker.service.repository.nbp.NbpRepository
-import com.example.moneytracker.viewmodel.utils.CurrencyCalculator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,9 +31,8 @@ object RepositoryModule {
     @Provides
     fun provideCurrencyRepository(
         moneyTrackerApi: MoneyTrackerApi,
-        exchangerateApi: ExchangerateApi,
     ) =
-        CurrencyRepository(moneyTrackerApi, exchangerateApi)
+        CurrencyRepository(moneyTrackerApi)
 
     @Singleton
     @Provides

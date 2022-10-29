@@ -2,7 +2,6 @@ package com.example.moneytracker.modules
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.moneytracker.service.repository.exchangerate.ExchangerateApi
 import com.example.moneytracker.service.repository.mt.MoneyTrackerApi
 import com.example.moneytracker.service.repository.mt.AuthInterceptor
 import com.example.moneytracker.service.repository.nbp.NbpApi
@@ -35,9 +34,4 @@ object ConfigModule {
     @Provides
     fun provideNbpApi(): NbpApi =
         NbpApi()
-
-    @Singleton
-    @Provides
-    fun provideExchangerateApi(): ExchangerateApi =
-        ExchangerateApi()
 }

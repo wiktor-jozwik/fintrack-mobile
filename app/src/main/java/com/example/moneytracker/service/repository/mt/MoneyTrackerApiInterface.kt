@@ -42,6 +42,14 @@ interface MoneyTrackerApiInterface {
     @GET("currencies")
     suspend fun getAllCurrencies(): Response<List<Currency>>
 
+    @GET("currency_rates")
+    suspend fun getCurrencyRates(
+        @Query("baseCurrency") baseCurrency: String,
+        @Query("currency") currency: String,
+        @Query("startDate") startDate: LocalDate,
+        @Query("endDate") endDate: LocalDate
+    ): Response<List<CurrencyRate>>
+
     @POST("operations")
     suspend fun saveOperation(@Body operation: OperationCreateInput): Response<Operation>
 
