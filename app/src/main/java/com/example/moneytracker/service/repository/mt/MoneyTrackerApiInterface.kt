@@ -15,6 +15,7 @@ interface MoneyTrackerApiInterface {
         @Query("endDate") endDate: LocalDate?
     ): Response<List<Operation>>
 
+    @Headers("Cache-Control: no-cache")
     @GET("operations/default_currency")
     suspend fun getAllOperationsInDefaultCurrency(
         @Query("startDate") startDate: LocalDate?,
