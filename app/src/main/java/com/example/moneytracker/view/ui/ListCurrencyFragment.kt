@@ -51,7 +51,7 @@ class ListCurrencyFragment : Fragment(R.layout.fragment_list_currency) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonPlus.setOnClickListener {
+        binding.bubbleAdd.setOnClickListener {
             findNavController(view).navigate(R.id.action_listCurrencyFragment_to_saveCurrencyFragment)
         }
 

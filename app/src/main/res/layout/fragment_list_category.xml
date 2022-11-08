@@ -4,22 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/buttonPlus"
-        style="@style/FullWidthButton"
-        android:layout_marginTop="15dp"
-        android:text="+"
-        android:textSize="30dp"
-        app:layout_constraintBottom_toTopOf="@id/recyclerViewCategoryItems"
-        app:layout_constraintEnd_toEndOf="parent"
+    <TextView
+        android:id="@+id/textTitle"
+        style="@style/TextTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Categories"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/bubbleAdd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="12dp"
+        app:fabSize="mini"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        android:contentDescription="Add"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewCategoryItems"
         style="@style/RecyclerViewStyle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPlus" />
+        app:layout_constraintTop_toBottomOf="@id/textTitle"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

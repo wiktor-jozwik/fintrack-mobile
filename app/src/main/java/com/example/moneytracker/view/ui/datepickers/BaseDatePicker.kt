@@ -1,4 +1,4 @@
-package com.example.moneytracker.view.ui
+package com.example.moneytracker.view.ui.datepickers
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -9,7 +9,7 @@ import androidx.fragment.app.setFragmentResult
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CategoryStartDatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener {
+open class BaseDatePicker(private val dateKeyString: String): DialogFragment(), DatePickerDialog.OnDateSetListener {
     private val calendar = Calendar.getInstance();
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -30,8 +30,8 @@ class CategoryStartDatePickerFragment : DialogFragment(), DatePickerDialog.OnDat
         val selectedDate = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(calendar.time)
 
         val selectedDateBundle = Bundle()
-        selectedDateBundle.putString("CATEGORY_START_DATE", selectedDate)
+        selectedDateBundle.putString(dateKeyString, selectedDate)
 
-        setFragmentResult("REQUEST_KEY", selectedDateBundle)
+        setFragmentResult(RequestKey.value, selectedDateBundle)
     }
 }

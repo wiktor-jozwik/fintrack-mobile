@@ -10,9 +10,14 @@ import java.time.LocalDate
 
 interface MoneyTrackerApiInterface {
     @GET("operations")
-    suspend fun getAllOperationsInRange(
+    suspend fun getAllOperations(
         @Query("startDate") startDate: LocalDate?,
-        @Query("endDate") endDate: LocalDate?
+        @Query("endDate") endDate: LocalDate?,
+        @Query("categoryType") categoryType: CategoryType?,
+        @Query("searchName") searchName: String?,
+        @Query("includeInternal") includeInternal: Boolean?,
+        @Query("operator") operator: String?,
+        @Query("moneyAmount") moneyAmount: Double?,
     ): Response<List<Operation>>
 
     @GET("operations/default_currency")

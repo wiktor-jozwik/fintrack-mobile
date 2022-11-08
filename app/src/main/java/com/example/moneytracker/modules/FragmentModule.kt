@@ -1,8 +1,6 @@
 package com.example.moneytracker.modules
 
-import com.example.moneytracker.view.ui.CategoryEndDatePickerFragment
-import com.example.moneytracker.view.ui.CategoryStartDatePickerFragment
-import com.example.moneytracker.view.ui.DatePickerFragment
+import com.example.moneytracker.view.ui.datepickers.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,13 +12,21 @@ import javax.inject.Singleton
 object FragmentModule {
     @Singleton
     @Provides
-    fun provideDatePickerFragment() = DatePickerFragment()
+    fun provideOperationSaveDatePickerFragment() = OperationSaveDatePickerFragment("OperationSaveDatePickerFragment")
 
     @Singleton
     @Provides
-    fun provideCategoryStartDatePickerFragment() = CategoryStartDatePickerFragment()
+    fun provideCategoryStartDatePickerFragment() = CategoryStartDatePickerFragment("CategoryStartDatePickerFragment")
 
     @Singleton
     @Provides
-    fun provideCategoryEndDatePickerFragment() = CategoryEndDatePickerFragment()
+    fun provideCategoryEndDatePickerFragment() = CategoryEndDatePickerFragment("CategoryEndDatePickerFragment")
+
+    @Singleton
+    @Provides
+    fun provideOperationFilterStartDatePickerFragment() = OperationFilterStartDatePickerFragment("OperationFilterStartDatePickerFragment")
+
+    @Singleton
+    @Provides
+    fun provideOperationFilterEndDatePickerFragment() = OperationFilterEndDatePickerFragment("OperationFilterEndDatePickerFragment")
 }

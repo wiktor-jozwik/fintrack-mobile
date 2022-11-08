@@ -27,7 +27,7 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         val operations = operationRepository.getAllOperationsInDefaultCurrency(startDate, endDate)
 
         val categoriesOutcomeGrouped = operations.filter {
-            it.category.type == CategoryType.OUTCOME
+            it.category.type == CategoryType.OUTCOME && !it.category.isInternal
         }.groupBy {
             it.category
         }

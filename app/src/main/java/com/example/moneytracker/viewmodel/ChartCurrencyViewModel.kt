@@ -2,7 +2,6 @@ package com.example.moneytracker.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.moneytracker.service.model.mt.Currency
-import com.example.moneytracker.service.model.mt.CurrencyRate
 import com.example.moneytracker.service.repository.mt.CurrencyRepository
 import com.github.mikephil.charting.data.Entry
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,10 +28,6 @@ class ChartCurrencyViewModel @Inject constructor(
         x: Int,
         monthOrYear: Period
     ): Pair<List<Entry>, List<String>> {
-        var currencyRates = listOf<CurrencyRate>()
-        val currencyEntries = mutableListOf<Entry>()
-        val xLabels = mutableListOf<String>()
-
         val baseCurrency: String = currencyRepository.getUserDefaultCurrency().name
 
         val calendar = Calendar.getInstance();
@@ -43,24 +38,24 @@ class ChartCurrencyViewModel @Inject constructor(
             calendar.get(Calendar.DAY_OF_MONTH)
         )
 
-        when (monthOrYear) {
+        val startDate: LocalDate = when (monthOrYear) {
             Period.MONTH -> {
-                currencyRates = currencyRepository.getCurrencyRates(
-                    baseCurrency,
-                    chosenCurrency,
-                    currentDate.minusMonths(x.toLong()),
-                    currentDate
-                )
+                currentDate.minusMonths(x.toLong())
             }
             Period.YEAR -> {
-                currencyRates = currencyRepository.getCurrencyRates(
-                    baseCurrency,
-                    chosenCurrency,
-                    currentDate.minusYears(x.toLong()),
-                    currentDate
-                )
+                currentDate.minusYears(x.toLong())
             }
         }
+
+        val currencyRates = currencyRepository.getCurrencyRates(
+            baseCurrency,
+            chosenCurrency,
+            startDate,
+            currentDate
+        )
+
+        val currencyEntries = mutableListOf<Entry>()
+        val xLabels = mutableListOf<String>()
 
         (currencyRates).forEachIndexed { index, currencyPrice ->
             currencyEntries.add(Entry(index.toFloat(), currencyPrice.value.toFloat()))

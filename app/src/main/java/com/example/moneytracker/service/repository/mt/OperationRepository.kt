@@ -2,6 +2,7 @@ package com.example.moneytracker.service.repository.mt
 
 import com.example.moneytracker.service.model.mt.DefaultCurrencyOperation
 import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.service.model.mt.OperationSearchFilters
 import com.example.moneytracker.service.model.mt.StringResponse
 import com.example.moneytracker.service.model.mt.inputs.OperationCreateInput
 import com.example.moneytracker.view.ui.utils.responseErrorHandler
@@ -13,14 +14,33 @@ import javax.inject.Inject
 class OperationRepository @Inject constructor(
     private val moneyTrackerApi: MoneyTrackerApi,
 ) {
-    suspend fun getAllOperationsInRanges(
+    suspend fun getAllOperations(
+        operationSearchFilters: OperationSearchFilters
+    ): List<Operation> {
+        val (startDate, endDate, categoryType, searchName, includeInternal, operator, moneyAmount) = operationSearchFilters
+        return responseErrorHandler(
+            moneyTrackerApi.api.getAllOperations(
+                startDate,
+                endDate,
+                categoryType,
+                searchName,
+                includeInternal,
+                operator,
+                moneyAmount
+            )
+        )
+    }
+
+    suspend fun getAllOperationsInDefaultCurrency(
         startDate: LocalDate?,
         endDate: LocalDate?
-    ): List<Operation> =
-        responseErrorHandler(moneyTrackerApi.api.getAllOperationsInRange(startDate, endDate))
-
-    suspend fun getAllOperationsInDefaultCurrency(startDate: LocalDate?, endDate: LocalDate?): List<DefaultCurrencyOperation> =
-        responseErrorHandler(moneyTrackerApi.api.getAllOperationsInDefaultCurrency(startDate, endDate))
+    ): List<DefaultCurrencyOperation> =
+        responseErrorHandler(
+            moneyTrackerApi.api.getAllOperationsInDefaultCurrency(
+                startDate,
+                endDate
+            )
+        )
 
     suspend fun addNewOperation(operationCreateInput: OperationCreateInput): Operation =
         responseErrorHandler(moneyTrackerApi.api.saveOperation(operationCreateInput))
@@ -31,7 +51,10 @@ class OperationRepository @Inject constructor(
     suspend fun deleteOperation(operationId: Int): Operation =
         responseErrorHandler(moneyTrackerApi.api.deleteOperation(operationId))
 
-    suspend fun importOperations(file: MultipartBody.Part, csvImportWay: RequestBody): StringResponse =
+    suspend fun importOperations(
+        file: MultipartBody.Part,
+        csvImportWay: RequestBody
+    ): StringResponse =
         responseErrorHandler(moneyTrackerApi.api.importOperations(file, csvImportWay))
 
     suspend fun getSupportedCsvImportWays(): List<String> =

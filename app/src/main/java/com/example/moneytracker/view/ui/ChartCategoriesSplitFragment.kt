@@ -12,6 +12,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.moneytracker.R
 import com.example.moneytracker.databinding.FragmentChartCategoriesSplitBinding
+import com.example.moneytracker.view.ui.datepickers.BaseDatePicker
+import com.example.moneytracker.view.ui.datepickers.CategoryEndDatePickerFragment
+import com.example.moneytracker.view.ui.datepickers.CategoryStartDatePickerFragment
+import com.example.moneytracker.view.ui.datepickers.RequestKey
 import com.example.moneytracker.view.ui.utils.isValidDate
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.viewmodel.ChartCategoriesSplitViewModel
@@ -185,11 +189,11 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
             buttonDatePickerStart.setOnClickListener {
                 val supportFragmentManager = requireActivity().supportFragmentManager
                 supportFragmentManager.setFragmentResultListener(
-                    "REQUEST_KEY",
+                    RequestKey.value,
                     viewLifecycleOwner
                 ) { resultKey, bundle ->
-                    if (resultKey == "REQUEST_KEY") {
-                        val date = bundle.getString("CATEGORY_START_DATE")
+                    if (resultKey == RequestKey.value) {
+                        val date = bundle.getString("CategoryStartDatePickerFragment")
                         buttonDatePickerStart.text = date.toString()
                     }
                 }
@@ -203,11 +207,11 @@ class ChartCategoriesSplitFragment : Fragment(R.layout.fragment_chart_categories
             buttonDatePickerEnd.setOnClickListener {
                 val supportFragmentManager = requireActivity().supportFragmentManager
                 supportFragmentManager.setFragmentResultListener(
-                    "REQUEST_KEY",
+                    RequestKey.value,
                     viewLifecycleOwner
                 ) { resultKey, bundle ->
-                    if (resultKey == "REQUEST_KEY") {
-                        val date = bundle.getString("CATEGORY_END_DATE")
+                    if (resultKey == RequestKey.value) {
+                        val date = bundle.getString("CategoryEndDatePickerFragment")
                         buttonDatePickerEnd.text = date.toString()
                     }
                 }

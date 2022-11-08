@@ -19,6 +19,8 @@ import com.example.moneytracker.databinding.FragmentSaveOperationBinding
 import com.example.moneytracker.service.model.mt.Category
 import com.example.moneytracker.service.model.mt.Currency
 import com.example.moneytracker.service.model.mt.Operation
+import com.example.moneytracker.view.ui.datepickers.OperationSaveDatePickerFragment
+import com.example.moneytracker.view.ui.datepickers.RequestKey
 import com.example.moneytracker.view.ui.enums.SaveState
 import com.example.moneytracker.view.ui.utils.makeErrorToast
 import com.example.moneytracker.view.ui.utils.removeSpaces
@@ -38,7 +40,7 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
     private val saveOperationViewModel: SaveOperationViewModel by viewModels()
 
     @Inject
-    lateinit var datePickerFragment: DatePickerFragment
+    lateinit var operationSaveDatePickerFragment: OperationSaveDatePickerFragment
 
     private var editCurrencyName: String? = null
     private var editCategoryName: String? = null
@@ -157,16 +159,16 @@ class SaveOperationFragment : Fragment(R.layout.fragment_save_operation) {
             buttonDatePicker.setOnClickListener {
                 val supportFragmentManager = requireActivity().supportFragmentManager
                 supportFragmentManager.setFragmentResultListener(
-                    "REQUEST_KEY",
+                    RequestKey.value,
                     viewLifecycleOwner
                 ) { resultKey, bundle ->
-                    if (resultKey == "REQUEST_KEY") {
-                        val date = bundle.getString("SELECTED_DATE")
+                    if (resultKey == RequestKey.value) {
+                        val date = bundle.getString("OperationSaveDatePickerFragment")
                         textDate.text = date
                     }
                 }
 
-                datePickerFragment.show(supportFragmentManager, "DatePickerFragment")
+                operationSaveDatePickerFragment.show(supportFragmentManager, "operationSaveDatePickerFragment")
             }
         }
     }
