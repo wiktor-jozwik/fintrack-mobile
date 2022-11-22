@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/userLoginFragment"
-        android:name="com.example.moneytracker.view.ui.UserLoginFragment"
+        android:name="com.example.fintrack.view.ui.UserLoginFragment"
         android:label="UserLoginFragment">
         <action
             android:id="@+id/action_userLoginFragment_to_userRegisterFragment"
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/userRegisterFragment"
-        android:name="com.example.moneytracker.view.ui.UserRegisterFragment"
+        android:name="com.example.fintrack.view.ui.UserRegisterFragment"
         android:label="UserRegisterFragment">
         <action
             android:id="@+id/action_userRegisterFragment_to_userLoginFragment"
@@ -28,11 +28,11 @@
     </fragment>
     <fragment
         android:id="@+id/yearlyOperationsSummaryFragment"
-        android:name="com.example.moneytracker.view.ui.YearlyOperationsSummaryFragment"
+        android:name="com.example.fintrack.view.ui.YearlyOperationsSummaryFragment"
         android:label="YearlyOperationsSummaryFragment" />
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.example.moneytracker.view.ui.ListFragment"
+        android:name="com.example.fintrack.view.ui.ListFragment"
         android:label="ListFragment">
         <action
             android:id="@+id/action_listFragment_to_listOperationFragment"
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/chartFragment"
-        android:name="com.example.moneytracker.view.ui.ChartFragment"
+        android:name="com.example.fintrack.view.ui.ChartFragment"
         android:label="ChartFragment">
         <action
             android:id="@+id/action_chartFragment_to_chartPeriodOperationsFragment"
@@ -61,11 +61,11 @@
     </fragment>
     <fragment
         android:id="@+id/userProfileFragment"
-        android:name="com.example.moneytracker.view.ui.UserProfileFragment"
+        android:name="com.example.fintrack.view.ui.UserProfileFragment"
         android:label="UserProfileFragment" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.moneytracker.view.ui.MainFragment"
+        android:name="com.example.fintrack.view.ui.MainFragment"
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_userLoginFragment"
@@ -76,7 +76,7 @@
     </fragment>
     <fragment
         android:id="@+id/resendEmailConfirmationFragment"
-        android:name="com.example.moneytracker.view.ui.ResendEmailConfirmationFragment"
+        android:name="com.example.fintrack.view.ui.ResendEmailConfirmationFragment"
         android:label="ResendEmailConfirmationFragment">
         <action
             android:id="@+id/action_resendEmailConfirmationFragment_to_userLoginFragment"
@@ -84,7 +84,7 @@
     </fragment>
     <fragment
         android:id="@+id/chartPeriodOperationsFragment"
-        android:name="com.example.moneytracker.view.ui.ChartPeriodOperationsFragment"
+        android:name="com.example.fintrack.view.ui.ChartPeriodOperationsFragment"
         android:label="ChartPeriodOperationsFragment">
         <action
             android:id="@+id/action_chartPeriodOperationsFragment_to_chartFragment"
@@ -92,7 +92,7 @@
     </fragment>
     <fragment
         android:id="@+id/chartCategoriesSplitFragment"
-        android:name="com.example.moneytracker.view.ui.ChartCategoriesSplitFragment"
+        android:name="com.example.fintrack.view.ui.ChartCategoriesSplitFragment"
         android:label="ChartCategoriesSplitFragment">
         <action
             android:id="@+id/action_chartCategoriesSplitFragment_to_chartFragment"
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/chartCurrencyFragment"
-        android:name="com.example.moneytracker.view.ui.ChartCurrencyFragment"
+        android:name="com.example.fintrack.view.ui.ChartCurrencyFragment"
         android:label="ChartCurrencyFragment">
         <action
             android:id="@+id/action_chartCurrencyFragment_to_chartFragment"
@@ -108,7 +108,7 @@
     </fragment>
     <fragment
         android:id="@+id/listOperationFragment"
-        android:name="com.example.moneytracker.view.ui.ListOperationFragment"
+        android:name="com.example.fintrack.view.ui.ListOperationFragment"
         android:label="ListOperationFragment">
         <action
             android:id="@+id/action_listOperationFragment_to_saveOperationFragment"
@@ -116,7 +116,7 @@
     </fragment>
     <fragment
         android:id="@+id/listCategoryFragment"
-        android:name="com.example.moneytracker.view.ui.ListCategoryFragment"
+        android:name="com.example.fintrack.view.ui.ListCategoryFragment"
         android:label="ListCategoryFragment">
         <action
             android:id="@+id/action_listCategoryFragment_to_saveCategoryFragment"
@@ -124,7 +124,7 @@
     </fragment>
     <fragment
         android:id="@+id/listCurrencyFragment"
-        android:name="com.example.moneytracker.view.ui.ListCurrencyFragment"
+        android:name="com.example.fintrack.view.ui.ListCurrencyFragment"
         android:label="ListCurrencyFragment">
         <action
             android:id="@+id/action_listCurrencyFragment_to_saveCurrencyFragment"
@@ -132,7 +132,7 @@
     </fragment>
     <fragment
         android:id="@+id/saveOperationFragment"
-        android:name="com.example.moneytracker.view.ui.SaveOperationFragment"
+        android:name="com.example.fintrack.view.ui.SaveOperationFragment"
         android:label="SaveOperationFragment">
         <action
             android:id="@+id/action_saveOperationFragment_to_listOperationFragment"
@@ -143,7 +143,7 @@
     </fragment>
     <fragment
         android:id="@+id/saveCategoryFragment"
-        android:name="com.example.moneytracker.view.ui.SaveCategoryFragment"
+        android:name="com.example.fintrack.view.ui.SaveCategoryFragment"
         android:label="SaveCategoryFragment">
         <action
             android:id="@+id/action_saveCategoryFragment_to_listCategoryFragment"
@@ -151,7 +151,7 @@
     </fragment>
     <fragment
         android:id="@+id/saveCurrencyFragment"
-        android:name="com.example.moneytracker.view.ui.SaveCurrencyFragment"
+        android:name="com.example.fintrack.view.ui.SaveCurrencyFragment"
         android:label="SaveCurrencyFragment">
         <action
             android:id="@+id/action_saveCurrencyFragment_to_listCurrencyFragment"
@@ -159,7 +159,7 @@
     </fragment>
     <fragment
         android:id="@+id/importOperationsFragment"
-        android:name="com.example.moneytracker.view.ui.ImportOperationsFragment"
+        android:name="com.example.fintrack.view.ui.ImportOperationsFragment"
         android:label="ImportOperationsFragment">
         <action
             android:id="@+id/action_importOperationsFragment_to_listOperationFragment"
