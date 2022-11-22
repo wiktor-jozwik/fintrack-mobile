@@ -1,6 +1,6 @@
-package com.example.fintrack.service.model.mt.inputs
+package com.example.fintrack.service.model.ft.inputs
 
-import com.example.fintrack.service.model.mt.CategoryType
+import com.example.fintrack.service.model.ft.CategoryType
 
 data class CategoryCreateInput(
     val name: String,

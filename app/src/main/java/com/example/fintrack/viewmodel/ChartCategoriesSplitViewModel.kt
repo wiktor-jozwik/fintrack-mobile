@@ -2,8 +2,8 @@ package com.example.fintrack.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.CategoryType
-import com.example.fintrack.service.repository.mt.OperationRepository
+import com.example.fintrack.service.model.ft.CategoryType
+import com.example.fintrack.service.repository.ft.OperationRepository
 import com.example.fintrack.view.ui.utils.cutText
 import com.example.fintrack.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
@@ -56,8 +56,6 @@ class ChartCategoriesSplitViewModel @Inject constructor(
         sortedCategories.second.forEachIndexed { index, value ->
             categoriesBars.add(BarEntry(index.toFloat(), value.toFloat()))
         }
-
-        Log.d("MT", Pair(sortedCategories.first, categoriesBars).toString())
 
         return Pair(sortedCategories.first, categoriesBars)
     }

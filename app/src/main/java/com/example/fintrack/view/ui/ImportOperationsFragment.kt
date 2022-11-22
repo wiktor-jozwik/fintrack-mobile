@@ -16,7 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentImportOperationsBinding
-import com.example.fintrack.service.model.mt.StringResponse
+import com.example.fintrack.service.model.ft.StringResponse
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.view.ui.utils.makePositiveToast
 import com.example.fintrack.viewmodel.ImportOperationsViewModel

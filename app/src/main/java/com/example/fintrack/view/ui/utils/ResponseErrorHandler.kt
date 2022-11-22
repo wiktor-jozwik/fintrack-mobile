@@ -14,7 +14,7 @@ fun <T> responseErrorHandler(res: Response<T>): T {
             res.code().toString()
         }
 
-        Log.d("MT", errMsg)
+        Log.d("FT", errMsg)
 
         if (errMsg == "Unauthorized") {
             errMsg = "Unauthorized, please re-login"

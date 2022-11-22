@@ -10,8 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentUserProfileBinding
-import com.example.fintrack.service.model.mt.Expenses
-import com.example.fintrack.service.model.mt.UserProfileData
+import com.example.fintrack.service.model.ft.Expenses
+import com.example.fintrack.service.model.ft.UserProfileData
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.viewmodel.UserProfileViewModel
 import dagger.hilt.android.AndroidEntryPoint

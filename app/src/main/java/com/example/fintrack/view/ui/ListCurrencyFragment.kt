@@ -13,7 +13,7 @@ import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentListCurrencyBinding
-import com.example.fintrack.service.model.mt.Currency
+import com.example.fintrack.service.model.ft.Currency
 import com.example.fintrack.view.adapter.CurrencyListAdapter
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.viewmodel.ListCurrencyViewModel

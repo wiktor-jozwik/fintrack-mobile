@@ -1,8 +1,8 @@
-package com.example.fintrack.service.repository.mt
+package com.example.fintrack.service.repository.ft
 
 import android.content.SharedPreferences
-import com.example.fintrack.service.model.mt.JwtResponse
-import com.example.fintrack.service.utils.Constants.Companion.MONEY_TRACKER_URL
+import com.example.fintrack.service.model.ft.JwtResponse
+import com.example.fintrack.service.utils.Constants.Companion.API_URL
 import com.google.gson.Gson
 import okhttp3.*
 import javax.inject.Inject
@@ -37,7 +37,7 @@ class AuthInterceptor @Inject constructor(
                             ""
                         )
                     )
-                    .url("${MONEY_TRACKER_URL}auth/refresh")
+                    .url("${API_URL}auth/refresh")
                     .addHeaders(refreshToken)
                     .build()
             val refreshResponse = chain.proceedDeletingTokenOnError(refreshRequest)

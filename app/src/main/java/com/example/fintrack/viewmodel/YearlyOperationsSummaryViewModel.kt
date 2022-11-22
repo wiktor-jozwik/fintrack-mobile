@@ -1,7 +1,7 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.repository.mt.OperationRepository
+import com.example.fintrack.service.repository.ft.OperationRepository
 import com.example.fintrack.viewmodel.utils.CurrencyCalculator
 import com.example.fintrack.viewmodel.utils.ExpenseCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel

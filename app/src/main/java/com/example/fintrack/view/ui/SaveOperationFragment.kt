@@ -16,9 +16,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentSaveOperationBinding
-import com.example.fintrack.service.model.mt.Category
-import com.example.fintrack.service.model.mt.Currency
-import com.example.fintrack.service.model.mt.Operation
+import com.example.fintrack.service.model.ft.Category
+import com.example.fintrack.service.model.ft.Currency
+import com.example.fintrack.service.model.ft.Operation
 import com.example.fintrack.view.ui.datepickers.OperationSaveDatePickerFragment
 import com.example.fintrack.view.ui.datepickers.RequestKey
 import com.example.fintrack.view.ui.enums.SaveState

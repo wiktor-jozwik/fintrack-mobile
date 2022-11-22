@@ -1,4 +1,4 @@
-package com.example.fintrack.service.repository.mt
+package com.example.fintrack.service.repository.ft
 
 import com.example.fintrack.service.utils.Constants
 import com.google.gson.GsonBuilder
@@ -10,10 +10,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import javax.inject.Inject
 
-class MoneyTrackerApi @Inject constructor(
+class FinTrackApi @Inject constructor(
     private val authInterceptor: AuthInterceptor,
 ) {
-    val api: MoneyTrackerApiInterface by lazy {
+    val api: FinTrackApiInterface by lazy {
         Retrofit.Builder()
             .addConverterFactory(
                 GsonConverterFactory.create(
@@ -26,7 +26,7 @@ class MoneyTrackerApi @Inject constructor(
                         }).create(),
                 )
             )
-            .baseUrl(Constants.MONEY_TRACKER_URL)
+            .baseUrl(Constants.API_URL)
             .client(
                 OkHttpClient.Builder()
                     .addInterceptor(OkHttpProfilerInterceptor())
@@ -34,6 +34,6 @@ class MoneyTrackerApi @Inject constructor(
                     .build()
             )
             .build()
-            .create(MoneyTrackerApiInterface::class.java)
+            .create(FinTrackApiInterface::class.java)
     }
 }

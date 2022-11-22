@@ -1,6 +1,6 @@
 package com.example.fintrack.modules
 
-import com.example.fintrack.service.repository.mt.*
+import com.example.fintrack.service.repository.ft.*
 import com.example.fintrack.service.repository.nbp.NbpApi
 import com.example.fintrack.service.repository.nbp.NbpRepository
 import dagger.Module
@@ -14,25 +14,25 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Singleton
     @Provides
-    fun provideUserRepository(moneyTrackerApi: MoneyTrackerApi) =
-        UserRepository(moneyTrackerApi)
+    fun provideUserRepository(finTrackApi: FinTrackApi) =
+        UserRepository(finTrackApi)
 
     @Singleton
     @Provides
-    fun provideOperationRepository(moneyTrackerApi: MoneyTrackerApi) =
-        OperationRepository(moneyTrackerApi)
+    fun provideOperationRepository(finTrackApi: FinTrackApi) =
+        OperationRepository(finTrackApi)
 
     @Singleton
     @Provides
-    fun provideOperationCategoryRepository(moneyTrackerApi: MoneyTrackerApi) =
-        CategoryRepository(moneyTrackerApi)
+    fun provideOperationCategoryRepository(finTrackApi: FinTrackApi) =
+        CategoryRepository(finTrackApi)
 
     @Singleton
     @Provides
     fun provideCurrencyRepository(
-        moneyTrackerApi: MoneyTrackerApi,
+        finTrackApi: FinTrackApi,
     ) =
-        CurrencyRepository(moneyTrackerApi)
+        CurrencyRepository(finTrackApi)
 
     @Singleton
     @Provides

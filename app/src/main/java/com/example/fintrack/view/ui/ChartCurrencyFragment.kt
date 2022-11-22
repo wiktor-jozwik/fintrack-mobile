@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentChartCurrencyBinding
-import com.example.fintrack.service.model.mt.Currency
+import com.example.fintrack.service.model.ft.Currency
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.viewmodel.ChartCurrencyViewModel
 import com.github.mikephil.charting.components.Legend

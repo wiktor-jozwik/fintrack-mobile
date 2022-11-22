@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fintrack.databinding.CurrencyBinding
-import com.example.fintrack.service.model.mt.Currency
+import com.example.fintrack.service.model.ft.Currency
 
 
 class CurrencyListAdapter(

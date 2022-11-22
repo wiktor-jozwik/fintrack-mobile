@@ -1,8 +1,8 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.DefaultCurrencyOperation
-import com.example.fintrack.service.repository.mt.OperationRepository
+import com.example.fintrack.service.model.ft.DefaultCurrencyOperation
+import com.example.fintrack.service.repository.ft.OperationRepository
 import com.example.fintrack.viewmodel.utils.ExpenseCalculator
 import com.github.mikephil.charting.data.BarEntry
 import dagger.hilt.android.lifecycle.HiltViewModel

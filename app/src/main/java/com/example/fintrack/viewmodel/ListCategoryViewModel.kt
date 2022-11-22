@@ -1,8 +1,8 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.Category
-import com.example.fintrack.service.repository.mt.CategoryRepository
+import com.example.fintrack.service.model.ft.Category
+import com.example.fintrack.service.repository.ft.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

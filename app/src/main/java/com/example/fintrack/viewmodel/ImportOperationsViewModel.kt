@@ -1,8 +1,8 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.StringResponse
-import com.example.fintrack.service.repository.mt.OperationRepository
+import com.example.fintrack.service.model.ft.StringResponse
+import com.example.fintrack.service.repository.ft.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import okhttp3.MediaType
 import okhttp3.MultipartBody

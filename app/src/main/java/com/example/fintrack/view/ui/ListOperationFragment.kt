@@ -15,9 +15,9 @@ import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentListOperationBinding
-import com.example.fintrack.service.model.mt.CategoryType
-import com.example.fintrack.service.model.mt.Operation
-import com.example.fintrack.service.model.mt.OperationSearchFilters
+import com.example.fintrack.service.model.ft.CategoryType
+import com.example.fintrack.service.model.ft.Operation
+import com.example.fintrack.service.model.ft.OperationSearchFilters
 import com.example.fintrack.utils.formatToIsoDateWithDashes
 import com.example.fintrack.view.adapter.OperationListAdapter
 import com.example.fintrack.view.ui.datepickers.OperationFilterEndDatePickerFragment

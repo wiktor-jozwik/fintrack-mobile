@@ -1,10 +1,10 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.Category
-import com.example.fintrack.service.model.mt.CategoryType
-import com.example.fintrack.service.model.mt.inputs.CategoryCreateInput
-import com.example.fintrack.service.repository.mt.CategoryRepository
+import com.example.fintrack.service.model.ft.Category
+import com.example.fintrack.service.model.ft.CategoryType
+import com.example.fintrack.service.model.ft.inputs.CategoryCreateInput
+import com.example.fintrack.service.repository.ft.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

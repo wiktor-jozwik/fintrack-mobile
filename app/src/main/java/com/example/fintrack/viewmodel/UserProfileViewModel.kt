@@ -1,11 +1,11 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.Expenses
-import com.example.fintrack.service.model.mt.User
-import com.example.fintrack.service.model.mt.UserProfileData
-import com.example.fintrack.service.repository.mt.OperationRepository
-import com.example.fintrack.service.repository.mt.UserRepository
+import com.example.fintrack.service.model.ft.Expenses
+import com.example.fintrack.service.model.ft.User
+import com.example.fintrack.service.model.ft.UserProfileData
+import com.example.fintrack.service.repository.ft.OperationRepository
+import com.example.fintrack.service.repository.ft.UserRepository
 import com.example.fintrack.view.ui.utils.cutText
 import com.example.fintrack.viewmodel.utils.ExpenseCalculator
 import dagger.hilt.android.lifecycle.HiltViewModel

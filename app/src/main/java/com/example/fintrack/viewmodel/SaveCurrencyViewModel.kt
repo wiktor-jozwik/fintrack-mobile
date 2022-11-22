@@ -1,9 +1,9 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.Currency
-import com.example.fintrack.service.model.mt.inputs.CurrencyCreateInput
-import com.example.fintrack.service.repository.mt.CurrencyRepository
+import com.example.fintrack.service.model.ft.Currency
+import com.example.fintrack.service.model.ft.inputs.CurrencyCreateInput
+import com.example.fintrack.service.repository.ft.CurrencyRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

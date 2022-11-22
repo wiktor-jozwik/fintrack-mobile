@@ -1,4 +1,4 @@
-package com.example.fintrack.service.model.mt
+package com.example.fintrack.service.model.ft
 
 data class LogoutResponse(
     val success: Boolean

@@ -15,7 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentUserLoginBinding
-import com.example.fintrack.service.model.mt.JwtResponse
+import com.example.fintrack.service.model.ft.JwtResponse
 import com.example.fintrack.view.ui.utils.isValidEmail
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.viewmodel.UserLoginViewModel

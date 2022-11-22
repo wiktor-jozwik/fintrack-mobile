@@ -1,8 +1,8 @@
 package com.example.fintrack.viewmodel.utils
 
-import com.example.fintrack.service.model.mt.CategoryType
-import com.example.fintrack.service.model.mt.DefaultCurrencyOperation
-import com.example.fintrack.service.model.mt.Expenses
+import com.example.fintrack.service.model.ft.CategoryType
+import com.example.fintrack.service.model.ft.DefaultCurrencyOperation
+import com.example.fintrack.service.model.ft.Expenses
 import javax.inject.Inject
 
 class ExpenseCalculator @Inject constructor(

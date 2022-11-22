@@ -2,8 +2,8 @@ package com.example.fintrack.modules
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.fintrack.service.repository.mt.MoneyTrackerApi
-import com.example.fintrack.service.repository.mt.AuthInterceptor
+import com.example.fintrack.service.repository.ft.FinTrackApi
+import com.example.fintrack.service.repository.ft.AuthInterceptor
 import com.example.fintrack.service.repository.nbp.NbpApi
 import dagger.Module
 import dagger.Provides
@@ -27,8 +27,8 @@ object ConfigModule {
 
     @Singleton
     @Provides
-    fun provideMoneyTrackerApi(authInterceptor: AuthInterceptor): MoneyTrackerApi =
-        MoneyTrackerApi(authInterceptor)
+    fun provideFinTrackApi(authInterceptor: AuthInterceptor): FinTrackApi =
+        FinTrackApi(authInterceptor)
 
     @Singleton
     @Provides

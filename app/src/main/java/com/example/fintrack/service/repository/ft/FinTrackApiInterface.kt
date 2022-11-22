@@ -1,14 +1,14 @@
-package com.example.fintrack.service.repository.mt
+package com.example.fintrack.service.repository.ft
 
-import com.example.fintrack.service.model.mt.*
-import com.example.fintrack.service.model.mt.inputs.*
+import com.example.fintrack.service.model.ft.*
+import com.example.fintrack.service.model.ft.inputs.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import java.time.LocalDate
 
-interface MoneyTrackerApiInterface {
+interface FinTrackApiInterface {
     @GET("operations")
     suspend fun getAllOperations(
         @Query("startDate") startDate: LocalDate?,

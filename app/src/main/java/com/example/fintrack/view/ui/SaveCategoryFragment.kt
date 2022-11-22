@@ -13,8 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation.findNavController
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentSaveCategoryBinding
-import com.example.fintrack.service.model.mt.Category
-import com.example.fintrack.service.model.mt.CategoryType
+import com.example.fintrack.service.model.ft.Category
+import com.example.fintrack.service.model.ft.CategoryType
 import com.example.fintrack.view.ui.enums.SaveState
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.view.ui.utils.removeSpaces

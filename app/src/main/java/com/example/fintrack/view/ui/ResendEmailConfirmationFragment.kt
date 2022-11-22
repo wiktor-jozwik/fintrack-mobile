@@ -12,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentResendEmailConfirmationBinding
-import com.example.fintrack.service.model.mt.StringResponse
+import com.example.fintrack.service.model.ft.StringResponse
 import com.example.fintrack.view.ui.utils.isValidEmail
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.view.ui.utils.makePositiveToast

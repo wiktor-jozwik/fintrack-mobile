@@ -1,9 +1,9 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.JwtResponse
-import com.example.fintrack.service.model.mt.inputs.UserLoginInput
-import com.example.fintrack.service.repository.mt.UserRepository
+import com.example.fintrack.service.model.ft.JwtResponse
+import com.example.fintrack.service.model.ft.inputs.UserLoginInput
+import com.example.fintrack.service.repository.ft.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

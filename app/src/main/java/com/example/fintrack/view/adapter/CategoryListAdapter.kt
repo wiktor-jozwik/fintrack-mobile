@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fintrack.R
 import com.example.fintrack.databinding.CategoryBinding
-import com.example.fintrack.service.model.mt.Category
-import com.example.fintrack.service.model.mt.CategoryType
+import com.example.fintrack.service.model.ft.Category
+import com.example.fintrack.service.model.ft.CategoryType
 import com.example.fintrack.view.ui.utils.cutText
 
 class CategoryListAdapter(

@@ -1,9 +1,9 @@
 package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.fintrack.service.model.mt.Operation
-import com.example.fintrack.service.model.mt.OperationSearchFilters
-import com.example.fintrack.service.repository.mt.OperationRepository
+import com.example.fintrack.service.model.ft.Operation
+import com.example.fintrack.service.model.ft.OperationSearchFilters
+import com.example.fintrack.service.repository.ft.OperationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
