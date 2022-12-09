@@ -24,12 +24,6 @@ class CurrencyRepository @Inject constructor(
     suspend fun getSupportedCurrencies(): List<Currency> =
         responseErrorHandler(finTrackApi.api.getAllCurrencies())
 
-    suspend fun getSupportedCurrenciesWithoutDefault(): List<Currency> =
-        responseErrorHandler(finTrackApi.api.getSupportedCurrenciesWithoutDefault())
-
-    suspend fun getUserDefaultCurrency(): Currency =
-        responseErrorHandler(finTrackApi.api.getUserDefaultCurrency())
-
     suspend fun deleteUserCurrency(userCurrencyId: Int): Currency =
         responseErrorHandler(finTrackApi.api.deleteUserCurrency(userCurrencyId))
 

@@ -1,6 +1,7 @@
 package com.example.fintrack.view.ui
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,11 +30,15 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
     private val chartCurrencyViewModel: ChartCurrencyViewModel by viewModels()
+
+    @Inject
+    lateinit var sharedPreferences: SharedPreferences
 
     private var chartLiveData: MutableLiveData<Pair<List<Entry>, List<String>>> =
         MutableLiveData()
@@ -185,7 +190,9 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
             }
         }
 
-        val currencyPriceSet = LineDataSet(currencyPrices, "Currency ${binding.inputCurrency.selectedItem}")
+        val baseCurrency = sharedPreferences.getString("USER_DEFAULT_CURRENCY", "")
+
+        val currencyPriceSet = LineDataSet(currencyPrices, "${binding.inputCurrency.selectedItem}/${baseCurrency}")
         currencyPriceSet.lineWidth = 2f
         currencyPriceSet.setDrawValues(false)
         currencyPriceSet.setDrawCircles(false)

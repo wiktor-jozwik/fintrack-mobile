@@ -2,6 +2,7 @@ package com.example.fintrack.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.example.fintrack.service.model.ft.JwtResponse
+import com.example.fintrack.service.model.ft.UserProfileData
 import com.example.fintrack.service.model.ft.inputs.UserLoginInput
 import com.example.fintrack.service.repository.ft.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,4 +15,8 @@ class UserLoginViewModel @Inject constructor(
 
     suspend fun loginUser(email: String, password: String): JwtResponse =
         userRepository.loginUser(UserLoginInput(email, password))
+
+    suspend fun getProfileData(): UserProfileData =
+        userRepository.getProfileData()
+
 }

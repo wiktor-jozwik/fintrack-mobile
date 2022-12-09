@@ -32,12 +32,6 @@ interface FinTrackApiInterface {
     @GET("users_currencies")
     suspend fun getUserCurrencies(): Response<List<Currency>>
 
-    @GET("users_currencies/default")
-    suspend fun getUserDefaultCurrency(): Response<Currency>
-
-    @GET("users_currencies/without_default")
-    suspend fun getSupportedCurrenciesWithoutDefault(): Response<List<Currency>>
-
     @POST("users_currencies")
     suspend fun saveUserCurrency(@Body currency: CurrencyCreateInput): Response<Currency>
 

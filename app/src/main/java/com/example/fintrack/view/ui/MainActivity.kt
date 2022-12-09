@@ -84,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         with(sharedPreferences.edit()) {
             putString("JWT_ACCESS_TOKEN", "")
             putString("JWT_REFRESH_TOKEN", "")
+            putString("USER_DEFAULT_CURRENCY", "")
             apply()
         }
     }

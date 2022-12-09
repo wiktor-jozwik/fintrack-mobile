@@ -1,5 +1,6 @@
 package com.example.fintrack.viewmodel
 
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import com.example.fintrack.service.model.ft.Currency
 import com.example.fintrack.service.repository.ft.CurrencyRepository
@@ -12,23 +13,32 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ChartCurrencyViewModel @Inject constructor(
-    private val currencyRepository: CurrencyRepository
+    private val currencyRepository: CurrencyRepository,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
     enum class Period {
         MONTH,
         YEAR
     }
 
-    suspend fun getSupportedCurrencies(): List<Currency> =
-        currencyRepository.getSupportedCurrenciesWithoutDefault()
+    suspend fun getSupportedCurrencies(): List<Currency>  {
+        val baseCurrency = sharedPreferences.getString("USER_DEFAULT_CURRENCY", "")
+            ?: throw Exception("Base currency is not defined. Contact administrator")
 
+        val usersCurrencies = currencyRepository.getSupportedCurrencies()
+
+        return usersCurrencies.filter {
+            it.name != baseCurrency
+        }
+    }
 
     suspend fun getHistoricalCurrencyPrice(
         chosenCurrency: String,
         x: Int,
         monthOrYear: Period
     ): Pair<List<Entry>, List<String>> {
-        val baseCurrency: String = currencyRepository.getUserDefaultCurrency().name
+        val baseCurrency = sharedPreferences.getString("USER_DEFAULT_CURRENCY", "")
+            ?: throw Exception("Base currency is not defined. Contact administrator")
 
         val calendar = Calendar.getInstance();
 

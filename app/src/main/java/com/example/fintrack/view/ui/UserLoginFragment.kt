@@ -16,6 +16,7 @@ import androidx.navigation.Navigation.findNavController
 import com.example.fintrack.R
 import com.example.fintrack.databinding.FragmentUserLoginBinding
 import com.example.fintrack.service.model.ft.JwtResponse
+import com.example.fintrack.service.model.ft.UserProfileData
 import com.example.fintrack.view.ui.utils.isValidEmail
 import com.example.fintrack.view.ui.utils.makeErrorToast
 import com.example.fintrack.viewmodel.UserLoginViewModel
@@ -32,6 +33,8 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
     lateinit var sharedPreferences: SharedPreferences
 
     private var loginUserLiveData: MutableLiveData<JwtResponse> = MutableLiveData()
+
+    private var userProfileLiveData: MutableLiveData<UserProfileData> = MutableLiveData()
 
     private var _binding: FragmentUserLoginBinding? = null
     private val binding get() = _binding!!
@@ -78,6 +81,13 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
             with(sharedPreferences.edit()) {
                 putString("JWT_ACCESS_TOKEN", it.jwtAccessToken)
                 putString("JWT_REFRESH_TOKEN", it.jwtRefreshToken)
+                apply()
+            }
+        }
+
+        userProfileLiveData.observe(viewLifecycleOwner) {
+            with(sharedPreferences.edit()) {
+                putString("USER_DEFAULT_CURRENCY", it.defaultCurrency.name)
                 apply()
             }
 
@@ -159,6 +169,8 @@ class UserLoginFragment : Fragment(R.layout.fragment_user_login) {
                     binding.inputEmailText.text.toString(),
                     binding.inputPasswordText.text.toString(),
                 )
+
+                userProfileLiveData.value = userLoginViewModel.getProfileData()
             } catch (e: Exception) {
                 makeErrorToast(requireContext(), e.message, 200)
             }
