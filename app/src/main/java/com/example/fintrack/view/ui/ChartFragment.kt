@@ -42,14 +42,6 @@ class ChartFragment : Fragment(R.layout.fragment_chart) {
 
         }
 
-//
-//        binding.buttonShowGoldChart.setOnClickListener {
-//            parentFragmentManager.beginTransaction().apply {
-//                replace(R.id.homeFrameLayoutFragment, chartGoldFragment)
-//                commit()
-//            }
-//        }
-
         binding.buttonShowCurrencyChart.setOnClickListener {
             findNavController(view).navigate(R.id.action_chartFragment_to_chartCurrencyFragment)
         }

@@ -176,20 +176,20 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
         }
     }
 
-    private fun drawChart(goldPrices: List<Entry>, xLabels: List<String>) {
+    private fun drawChart(currencyPrices: List<Entry>, xLabels: List<String>) {
         val lineChart = binding.lineChart
 
-        lineChart.marker = object : MarkerView(context, R.layout.gold_marker_layout) {
+        lineChart.marker = object : MarkerView(context, R.layout.currency_marker_layout) {
             override fun refreshContent(e: Entry, highlight: Highlight) {
                 (findViewById<View>(R.id.tvContent) as TextView).text = "${e.y}"
             }
         }
 
-        val goldPriceSet = LineDataSet(goldPrices, "Currency ${binding.inputCurrency.selectedItem}")
-        goldPriceSet.lineWidth = 2f
-        goldPriceSet.setDrawValues(false)
-        goldPriceSet.setDrawCircles(false)
-        goldPriceSet.color = ContextCompat.getColor(requireContext(), R.color.main_green)
+        val currencyPriceSet = LineDataSet(currencyPrices, "Currency ${binding.inputCurrency.selectedItem}")
+        currencyPriceSet.lineWidth = 2f
+        currencyPriceSet.setDrawValues(false)
+        currencyPriceSet.setDrawCircles(false)
+        currencyPriceSet.color = ContextCompat.getColor(requireContext(), R.color.main_green)
 
         lineChart.description.isEnabled = false
         lineChart.extraRightOffset = 30f
@@ -222,7 +222,7 @@ class ChartCurrencyFragment : Fragment(R.layout.fragment_chart_currency) {
         legend.textSize = 15f
         legend.textColor = ContextCompat.getColor(requireContext(), R.color.text)
 
-        val lineData = LineData(goldPriceSet)
+        val lineData = LineData(currencyPriceSet)
         lineChart.data = lineData
 
         lineChart.invalidate()

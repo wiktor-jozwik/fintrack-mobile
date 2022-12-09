@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.example.fintrack.service.repository.ft.FinTrackApi
 import com.example.fintrack.service.repository.ft.AuthInterceptor
-import com.example.fintrack.service.repository.nbp.NbpApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -29,9 +28,4 @@ object ConfigModule {
     @Provides
     fun provideFinTrackApi(authInterceptor: AuthInterceptor): FinTrackApi =
         FinTrackApi(authInterceptor)
-
-    @Singleton
-    @Provides
-    fun provideNbpApi(): NbpApi =
-        NbpApi()
 }

@@ -1,8 +1,6 @@
 package com.example.fintrack.modules
 
 import com.example.fintrack.service.repository.ft.*
-import com.example.fintrack.service.repository.nbp.NbpApi
-import com.example.fintrack.service.repository.nbp.NbpRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,11 +31,4 @@ object RepositoryModule {
         finTrackApi: FinTrackApi,
     ) =
         CurrencyRepository(finTrackApi)
-
-    @Singleton
-    @Provides
-    fun provideNbpRepository(
-        nbpApi: NbpApi,
-    ) =
-        NbpRepository(nbpApi)
 }

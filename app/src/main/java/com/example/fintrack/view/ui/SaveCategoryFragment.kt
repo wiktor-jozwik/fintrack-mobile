@@ -26,11 +26,9 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SaveCategoryFragment : Fragment(R.layout.fragment_save_category) {
     private val saveCategoryViewModel: SaveCategoryViewModel by viewModels()
-
     private var saveCategoryLiveData: MutableLiveData<Category> = MutableLiveData()
 
     private var saveState: SaveState = SaveState.ADD
-
     private var _binding: FragmentSaveCategoryBinding? = null
     private val binding get() = _binding!!
 
