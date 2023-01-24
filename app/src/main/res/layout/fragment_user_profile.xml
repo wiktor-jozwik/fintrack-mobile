@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textTitle"
+            style="@style/TextTitle"
+            android:text="Your profile information"
+            app:layout_constraintBottom_toTopOf="@+id/guidelineTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="80dp" />
+
+        <TextView
+            android:id="@+id/textFirstName"
+            style="@style/UserProfileItem"
+            android:text="First name"
+            app:layout_constraintEnd_toStartOf="@+id/textFirstNameData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineTitle" />
+
+        <TextView
+            android:id="@+id/textFirstNameData"
+            style="@style/UserProfileItem"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/guidelineTitle" />
+
+        <ProgressBar
+            android:id="@+id/textFirstNameProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:translationY="-2dp"
+            app:layout_constraintEnd_toStartOf="@+id/textFirstNameData"
+            app:layout_constraintBottom_toBottomOf="@+id/textFirstNameData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+        <TextView
+            android:id="@+id/textLastName"
+            style="@style/UserProfileItem"
+            android:text="Last name"
+            app:layout_constraintEnd_toStartOf="@+id/textLastNameData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textFirstName" />
+
+        <TextView
+            android:id="@+id/textLastNameData"
+            style="@style/UserProfileItem"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textLastName"
+            app:layout_constraintTop_toBottomOf="@+id/textFirstNameData" />
+
+        <ProgressBar
+            android:id="@+id/textLastNameProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:translationY="-2dp"
+            app:layout_constraintEnd_toStartOf="@+id/textLastNameData"
+            app:layout_constraintBottom_toBottomOf="@+id/textLastNameData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+
+        <TextView
+            android:id="@+id/textPhoneNumber"
+            style="@style/UserProfileItem"
+            android:text="Phone number"
+            app:layout_constraintEnd_toStartOf="@+id/textPhoneNumberData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textLastName" />
+
+        <TextView
+            android:id="@+id/textPhoneNumberData"
+            style="@style/UserProfileItem"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textPhoneNumber"
+            app:layout_constraintTop_toBottomOf="@+id/textLastNameData" />
+
+        <ProgressBar
+            android:id="@+id/textPhoneNumberProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            app:layout_constraintEnd_toStartOf="@+id/textPhoneNumberData"
+            app:layout_constraintBottom_toBottomOf="@+id/textPhoneNumberData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+        <TextView
+            android:id="@+id/textEmail"
+            style="@style/UserProfileItem"
+            android:text="Email"
+            app:layout_constraintEnd_toStartOf="@+id/textEmailData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textPhoneNumber" />
+
+        <TextView
+            android:id="@+id/textEmailData"
+            style="@style/UserProfileItem"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textEmail"
+            app:layout_constraintTop_toBottomOf="@+id/textPhoneNumberData" />
+
+        <ProgressBar
+            android:id="@+id/textEmailProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            app:layout_constraintEnd_toStartOf="@+id/textEmailData"
+            app:layout_constraintBottom_toBottomOf="@+id/textEmailData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+        <TextView
+            android:id="@+id/textDefaultCurrency"
+            style="@style/UserProfileItem"
+            android:text="Default currency"
+            app:layout_constraintEnd_toStartOf="@+id/textDefaultCurrencyData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textEmail" />
+
+        <TextView
+            android:id="@+id/textDefaultCurrencyData"
+            style="@style/UserProfileItem"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textDefaultCurrency"
+            app:layout_constraintTop_toBottomOf="@+id/textEmailData" />
+
+        <ProgressBar
+            android:id="@+id/textDefaultCurrencyProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            app:layout_constraintEnd_toStartOf="@+id/textDefaultCurrencyData"
+            app:layout_constraintBottom_toBottomOf="@+id/textDefaultCurrencyData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+        <TextView
+            android:id="@+id/textTotalIncome"
+            style="@style/UserProfileItem"
+            android:text="Total income"
+            app:layout_constraintEnd_toStartOf="@+id/textTotalIncomeData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textDefaultCurrency" />
+
+        <TextView
+            android:id="@+id/textTotalIncomeData"
+            style="@style/UserProfileItem"
+            android:text=""
+            android:textColor="@color/primary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textTotalIncome"
+            app:layout_constraintTop_toBottomOf="@+id/textDefaultCurrencyData" />
+
+        <ProgressBar
+            android:id="@+id/textTotalIncomeProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            app:layout_constraintEnd_toStartOf="@+id/textTotalIncomeData"
+            app:layout_constraintBottom_toBottomOf="@+id/textTotalIncomeData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+        <TextView
+            android:id="@+id/textTotalOutcome"
+            style="@style/UserProfileItem"
+            android:text="Total outcome"
+            app:layout_constraintEnd_toStartOf="@+id/textTotalOutcomeData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTotalIncome" />
+
+        <TextView
+            android:id="@+id/textTotalOutcomeData"
+            style="@style/UserProfileItem"
+            android:text=""
+            android:textColor="@color/main_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@id/textTotalOutcome"
+            app:layout_constraintTop_toBottomOf="@+id/textTotalIncomeData" />
+
+        <ProgressBar
+            android:id="@+id/textTotalOutcomeProgressBar"
+            style="@style/UserProfileItemProgressBar"
+            app:layout_constraintEnd_toStartOf="@+id/textTotalOutcomeData"
+            app:layout_constraintBottom_toBottomOf="@+id/textTotalOutcomeData"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
